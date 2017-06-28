@@ -72,19 +72,33 @@ After the processing of history data, a new order with certain volume is accpted
 **A sample result is show below (with a virtual order whose volume is 10000  )**
 
 > ​							**Slice Order **
->    9h ---  9.5h  	send *782* ( 7.82472% )  	predicted average price is *12.464*
+>
+>    9h ---  9.5h  	send *782* ( 7.82472% )  	predicted average price is *12.464* 
+>
 >  9.5h ---   10h 	send *626* (  6.2693% )  	predicted average price is *12.5223*
+>
 >   10h --- 10.5h 	send *801* (  8.0136% )  	predicted average price is *12.4899*
+>
 > 10.5h ---   11h 	 send *679* ( 6.79489% )  	predicted average price is *12.5301*
+>
 >   11h --- 11.5h  	send *881* ( 8.81841% ) 	 predicted average price is *12.511*
+>
 > 11.5h ---   12h 	 send *655* ( 6.55837% )  	predicted average price is *12.5037*
+>
 >   12h --- 12.5h  	send *689* ( 6.89672% )  	predicted average price is *12.5241*
+>
 > 12.5h ---   13h 	 send *692* ( 6.92957% ) 	 predicted average price is *12.4485*
+>
 >   13h --- 13.5h  	send *702* ( 7.02155% ) 	 predicted average price is *12.53*
+>
 > 13.5h ---   14h  	send *644* ( 6.44833% ) 	 predicted average price is *12.4354*
+>
 >   14h --- 14.5h  	send *750* ( 7.50772% ) 	 predicted average price is *12.5386*
+>
 > 14.5h ---   15h 	 send *697* ( 6.97063% ) 	 predicted average price is *12.4794*
+>
 >   15h --- 15.5h 	 send *849* (  8.4932% ) 	 predicted average price is *12.4863*
+>
 > 15.5h ---   16h  	send *545* ( 5.45299% ) 	 predicted average price is *12.4988*
 >
 > Total cost is 124873   Average price is 12.4873
