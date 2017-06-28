@@ -27,37 +27,51 @@ Lantency of the processing of each quote is also highlighted. Refering to the sa
 
 **A sample of final report is showed below:**
 
-> **part 1: summary information refering to exchanges**
+> *************** part 1: summary information refering to exchanges***********
 >
-> ​					 **IEX**
-> *AAPL* : Dealed quanty@151000   Average price@146.629
-> *GOOG* : Dealed quanty@915200   Average price@917.354
+> * **IEX**
 >
-> ​              				**NASDAQ**
+>   AAPL* : Dealed quanty@151000   Average price@146.629
 >
-> *AAPL* : Dealed quanty@290700   Average price@146.929
-> *GOOG* : Dealed quanty@1896500   Average price@917.331
+>   *GOOG* : Dealed quanty@915200   Average price@917.354
 >
-> ​             				**NYSE**
+> * **NASDAQ**
 >
-> *AAPL* : Dealed quanty@440500   Average price@146.98
+>   *AAPL* : Dealed quanty@290700   Average price@146.929
 >
-> *GOOG* : Dealed quanty@2709600   Average price@916.326
+>   *GOOG* : Dealed quanty@1896500   Average price@917.33
 >
-> **part 2: summary information refering to orders**
+> * **NYSE**
 >
-> *Order 1*:   Total quantity: 1000000   Average price: 918.402
+>   *AAPL* : Dealed quanty@440500   Average price@146.98
 >
-> *Order 2*:   Total quantity: 1642600   Average price: 927.69
-> ​		 Left volume: 357400          Divided to: IEX@79889  NASDAQ@126141  NYSE@151369  
+>   *GOOG* : Dealed quanty@2709600   Average price@916.326
 >
-> *Order 3*:   Total quantity: 10000   Average price: 153.617
+>   ​
 >
-> *Order 4*:   Total quantity: 872200   Average price: 146.826
-> ​		 Left volume: 4127800       Divided to: IEX@987082  NASDAQ@2692043  NYSE@448673  
+> **************part 2: summary information refering to orders**************
 >
-> *Order 5*:   Total quantity: 2878700   Average price: 910.11
-> ​		 Left volume: 2121300       Divided to: IEX@596615  NASDAQ@596615  NYSE@928068  
+> * *Order 1*:   Total quantity: 1000000   Average price: 918.402
+>
+> * *Order 2*:   Total quantity: 1642600   Average price: 927.69
+>
+>   ​		 Left volume: 357400          
+>
+>   ​		 Divided to: IEX@79889  NASDAQ@126141  NYSE@151369  
+>
+> * *Order 3*:   Total quantity: 10000   Average price: 153.617
+>
+> * *Order 4*:   Total quantity: 872200   Average price: 146.826
+>
+>   ​		 Left volume: 4127800    
+>
+>   ​	         Divided to: IEX@987082  NASDAQ@2692043  NYSE@448673  
+>
+> * *Order 5*:   Total quantity: 2878700   Average price: 910.11
+>
+>   ​		 Left volume: 2121300      
+>
+>   ​		 Divided to: IEX@596615  NASDAQ@596615  NYSE@928068  
 
 ## Iceberg
 
@@ -71,7 +85,7 @@ After the processing of history data, a new order with certain volume is accpted
 
 **A sample result is show below (with a virtual order whose volume is 10000  )**
 
-> ​							**Slice Order **
+> ******************************************************Slice Order**************************************************
 >
 >    9h ---  9.5h  	send *782* ( 7.82472% )  	predicted average price is *12.464* 
 >
