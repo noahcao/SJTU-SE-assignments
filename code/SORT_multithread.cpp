@@ -23,13 +23,14 @@ PS.after real test on a personal computer, time used to process each quote is ab
 
 using namespace std;
 
+ofstream status("real_time_status_mt.txt");
+
 LARGE_INTEGER litmp;				// variants defined to record the time used of each quote processing
 LONGLONG QPart1, QPart2;			// same as above
 double dfMinus, dfFreq, dfTim;		// same as above
 
 double total_time_quote = 0;		// record the total time used to process quotes
 
-CEvent status_update;
 map<string, map<string, pair<int, double>>> deal_order;		// exchange->symbol-><quantity, total cost>;
 map<string, map<string, pair<int, double>>> book_ask;		// exchange->symbol-><quantity, price>;
 map<string, map<string, pair<int, double>>> book_bid;		// exchange->symbol-><quantity, price>;
@@ -74,7 +75,88 @@ vector<Order> order_generalize(string order_file) {
 }
 
 string order_file = "Orders.csv";
-vector<Order> orders;
+vector<Order> orders = order_generalize(order_file); // generalize the order book through given order file;
+
+void status_update() {
+	status.setf(ios::left);
+	status << "Level1 Books Updated!" << endl;
+	status << "***************** Ask Book ***************** " << endl;
+	for (map<string, map<string, pair<int, double>>>::iterator ex = book_ask.begin(); ex != book_ask.end(); ex++) {
+		status.setf(ios::left);
+		status << setw(10) << ex->first << ": ";
+		for (map<string, pair<int, double>>::iterator sy = ex->second.begin(); sy != ex->second.end(); sy++) {
+			status << "  " << setw(6) << sy->first << setw(5) << sy->second.first << "@" << setw(8) << sy->second.second;
+		}
+		status << endl;
+	}
+	status << endl << "***************** Bid Book ***************** " << endl;
+	for (map<string, map<string, pair<int, double>>>::iterator ex = book_bid.begin(); ex != book_bid.end(); ex++) {
+		status.setf(ios::left);
+		status << setw(10) << ex->first << ": ";;
+		for (map<string, pair<int, double>>::iterator sy = ex->second.begin(); sy != ex->second.end(); sy++) {
+			status << "  " << setw(6) << sy->first << setw(5) << sy->second.first << "@" << setw(8) << sy->second.second;
+		}
+		status << endl;
+	}
+	for (int i = 0; i < orders.size(); i++) {
+		status << endl << "Order " << i + 1 << setw(4) << ": ";
+		status << "Total quantity: " << orders[i].filled << "   ";
+		if (orders[i].filled < orders[i].quantity) {
+			// for orders not being totally filled, divide the remaining volume to situable exchanges
+			int left = orders[i].quantity - orders[i].filled;
+			status << "Left volume: " << setw(8) << left;
+			status << "Divided to: ";
+			// Note that we caculate the diveded volume to each exchange only refering to the information
+			// of top level on the bid and ask books
+			if (orders[i].side == "Buy") {
+				int total = 0;
+				for (map<string, map<string, pair<int, double>>>::iterator it = book_ask.begin(); it != book_ask.end(); it++) {
+					total += it->second[orders[i].symbol].first;
+				}
+				for (map<string, map<string, pair<int, double>>>::iterator it = book_ask.begin(); it != book_ask.end(); it++) {
+					status << it->first << "@" << int(double(left)*it->second[orders[i].symbol].first / total) << "  ";
+				}
+			}
+			if (orders[i].side == "Sell") {
+				int total = 0;
+				for (map<string, map<string, pair<int, double>>>::iterator it = book_bid.begin(); it != book_bid.end(); it++) {
+					total += it->second[orders[i].symbol].first;
+				}
+				for (map<string, map<string, pair<int, double>>>::iterator it = book_bid.begin(); it != book_bid.end(); it++) {
+					status << it->first << "@" << int(double(left)*it->second[orders[i].symbol].first / total) << "  ";
+				}
+			}
+		}
+		status << endl;
+	}
+	status << endl;
+}
+
+void result_write() {
+	ofstream fout("final_report_mt.txt");		// output textfile
+
+	fout << "All quotes finished ! Total time to process qutoes is: " << total_time_quote << "s" << endl << endl;
+	fout << "The result of aggressive take: " << endl << endl;
+
+	fout.setf(ios::left);
+	for (map<string, map<string, pair<int, double>>>::iterator ex = deal_order.begin(); ex != deal_order.end(); ex++) {
+		fout << "*************** " << ex->first << " ****************" << endl << endl;
+		for (map<string, pair<int, double>>::iterator sy = ex->second.begin(); sy != ex->second.end(); sy++) {
+			fout << setw(5) << sy->first << ": ";
+			fout << "Dealed quanty@" << sy->second.first << "   ";
+			fout << "Average price@" << sy->second.second / sy->second.first << endl << endl;
+		}
+	}
+
+	fout << "-------------------------" << endl;
+
+	for (int i = 0; i < orders.size(); i++) {
+		fout << endl << "Order " << i + 1 << setw(4) << ": ";
+		fout << "Total quantity: " << orders[i].filled << "   ";
+		fout << "Average price: " << orders[i].cost / orders[i].filled << endl;
+	}
+	fout.close();
+}
 
 void thread_quote(string quote_file) {
 	ifstream in_q(quote_file);
@@ -164,114 +246,75 @@ void thread_quote(string quote_file) {
 		dfMinus = (double)(QPart2 - QPart1);
 		dfTim = dfMinus / dfFreq;
 		
-		EnterCriticalSection(&g_CS);
-		cout << endl << "time used: " << dfTim*1000000 << "¦Ìs" << endl;
-		LeaveCriticalSection(&g_CS);
+		status << "A quote finished! Time used: " << dfTim*1000000 << "¦Ìs" << endl << endl;
+		status << "                  Order status: " << endl;
+		status.setf(ios::left);
+		// print the updated information of orders
+		for (int i = 0; i < orders.size(); i++) {
+			status << "order " << i + 1 << " :";
+			status << "total quantity: " << setw(8) << orders[i].quantity;
+			status << "  filled: " << setw(8) << orders[i].filled;
+			status << "  left: " << setw(8) << orders[i].quantity - orders[i].filled << endl;
+		}
+		status << endl;
+		// print the updated information of books
 		total_time_quote += dfTim;
-		if (!total_taken) status_update.SetEvent();			// send singal to main thread to update status of order and book
+		if (!total_taken) status_update();			// update status of order and book
 	}
-	quote_finish = true;
+	result_write();
 }
 
 void thread_main() {
-	orders = order_generalize(order_file);					// generalize the order book through given order file
-	while (WaitForSingleObject(status_update, INFINITE) == WAIT_OBJECT_0) {
-		EnterCriticalSection(&g_CS);
-		cout << "                  Order status: " << endl;
-		cout.setf(ios::left);
-		// print the updated information of orders
-		for (int i = 0; i < orders.size(); i++) {
-			cout << "order " << i + 1 << " :";
-			cout << "total quantity: " << setw(8) << orders[i].quantity;
-			cout << "  filled: " << setw(8) << orders[i].filled;
-			cout << "  left: " << setw(8) << orders[i].quantity - orders[i].filled << endl;
-		}
-		// print the updated information of books
-		cout << endl << "                  Level1 Books " << endl << endl;
-		cout <<  "***************** Ask Book ***************** " << endl;
-		for (map<string, map<string, pair<int, double>>>::iterator ex = book_ask.begin(); ex != book_ask.end(); ex++) {
-			cout.setf(ios::left);
-			cout << setw(10) << ex->first << ": ";
-			for (map<string, pair<int, double>>::iterator sy = ex->second.begin(); sy != ex->second.end(); sy++) {
-				cout << "  " << setw(6) << sy->first << setw(5) << sy->second.first << "@" << setw(8) << sy->second.second;
+	/* thread to get command input by user and show the real-time status or orders or level1 books
+	 * note that though real-time information in tracked, the processing of quotes needs only about
+	 * 0.02s, so when user input the command, that's highly likely that the ouput result is all same
+	 * which is the final status of orders and level1 books*/
+	while (true) {
+		string command;
+		cout << "Command options to get real-time information('O' for orders, 'B' for level1 books, 'Q' to quit):";
+		if (cin >> command) {
+			if (command == "O") {
+				for (int i = 0; i < orders.size(); i++) {
+					cout << endl << "Order " << i + 1 << setw(4) << ": ";
+					cout << "Total quantity: " << orders[i].filled << "   ";
+					cout << "Average price: " << orders[i].cost / orders[i].filled << endl;
+				}
+				cout << endl;
 			}
-			cout << endl;
-		}
-		cout << endl << "***************** Bid Book ***************** " << endl;
-		for (map<string, map<string, pair<int, double>>>::iterator ex = book_bid.begin(); ex != book_bid.end(); ex++) {
-			cout.setf(ios::left);
-			cout << setw(10) << ex->first << ": ";;
-			for (map<string, pair<int, double>>::iterator sy = ex->second.begin(); sy != ex->second.end(); sy++) {
-				cout << "  " << setw(6) << sy->first << setw(5) << sy->second.first << "@" << setw(8) << sy->second.second;
+			if (command == "B") {
+				cout << endl << "***************** Ask Book ***************** " << endl;
+				for (map<string, map<string, pair<int, double>>>::iterator ex = book_ask.begin(); ex != book_ask.end(); ex++) {
+					cout.setf(ios::left);
+					cout << setw(10) << ex->first << ": ";
+					for (map<string, pair<int, double>>::iterator sy = ex->second.begin(); sy != ex->second.end(); sy++) {
+						cout << "  " << setw(6) << sy->first << setw(5) << sy->second.first << "@" << setw(8) << sy->second.second;
+					}
+					cout << endl;
+				}
+				cout << endl << "***************** Bid Book ***************** " << endl;
+				for (map<string, map<string, pair<int, double>>>::iterator ex = book_bid.begin(); ex != book_bid.end(); ex++) {
+					cout.setf(ios::left);
+					cout << setw(10) << ex->first << ": ";;
+					for (map<string, pair<int, double>>::iterator sy = ex->second.begin(); sy != ex->second.end(); sy++) {
+						cout << "  " << setw(6) << sy->first << setw(5) << sy->second.first << "@" << setw(8) << sy->second.second;
+					}
+					cout << endl;
+				}
+				cout << endl;
 			}
-			cout << endl;
-		}
-		cout << endl;
-		LeaveCriticalSection(&g_CS);
-	}
-}
-
-void result_write() {
-	ofstream fout("report.txt");		// output textfile
-	// write the result of aggresive strategy according to orders to the created text file 
-	fout.setf(ios::left);
-	for (map<string, map<string, pair<int, double>>>::iterator ex = deal_order.begin(); ex != deal_order.end(); ex++) {
-		fout << "                  " << ex->first << endl;
-		for (map<string, pair<int, double>>::iterator sy = ex->second.begin(); sy != ex->second.end(); sy++) {
-			fout << setw(5) << sy->first << ": ";
-			fout << "Dealed quanty@" << sy->second.first << "   ";
-			fout << "Average price@" << sy->second.second / sy->second.first << endl;
+			if (command == "Q") { return; }
 		}
 	}
-
-	fout << "-------------------------" << endl;
-
-	for (int i = 0; i < orders.size(); i++) {
-		fout << endl << "Order " << i + 1 << setw(4) << ": ";
-		fout << "Total quantity: " << orders[i].filled << "   ";
-		fout << "Average price: " << orders[i].cost / orders[i].filled << endl;
-		if (orders[i].filled < orders[i].quantity) {
-			// for orders not being totally filled, divide the remaining volume to situable exchanges
-			int left = orders[i].quantity - orders[i].filled;
-			fout << "Left volume: " << setw(8) << left;
-			fout << "Divided to: ";
-			// Note that we caculate the diveded volume to each exchange only refering to the information
-			// of top level on the bid and ask books
-			if (orders[i].side == "Buy") {
-				int total = 0;
-				for (map<string, map<string, pair<int, double>>>::iterator it = book_ask.begin(); it != book_ask.end(); it++) {
-					total += it->second[orders[i].symbol].first;
-				}
-				for (map<string, map<string, pair<int, double>>>::iterator it = book_ask.begin(); it != book_ask.end(); it++) {
-					fout << it->first << "@" << int(double(left)*it->second[orders[i].symbol].first / total) << "  ";
-				}
-				fout << endl;
-			}
-			if (orders[i].side == "Sell") {
-				int total = 0;
-				for (map<string, map<string, pair<int, double>>>::iterator it = book_bid.begin(); it != book_bid.end(); it++) {
-					total += it->second[orders[i].symbol].first;
-				}
-				for (map<string, map<string, pair<int, double>>>::iterator it = book_bid.begin(); it != book_bid.end(); it++) {
-					fout << it->first << "@" << int(double(left)*it->second[orders[i].symbol].first / total) << "  ";
-				}
-				fout << endl;
-			}
-		}
-	}
-	fout.close();
 }
 
 int main() {
 	InitializeCriticalSection(&g_CS);
 	string quote_file = "Quotes.csv";
 	thread task_quote(thread_quote, quote_file);	// thread to process quotes
-	thread task_main(thread_main);					// thread to update the information of orders and books
+	thread task_main(thread_main);
+
+	task_main.join();
 	task_quote.join();
-	if(!quote_finish) task_main.join();				// while quotes not all processed, keep the thread active
-	if (quote_finish) {								// once all quotes processed, print the final result
-		result_write();
-		cout << endl << "Total time to process qutoes is: " << total_time_quote << "s" << endl;
-	}
+
 	system("pause");
 }

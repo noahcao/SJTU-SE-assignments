@@ -5,7 +5,7 @@ Note that the project consists of two main parts: SORT algorithm and iceberg str
 
 ## SORT
 
-For SORT, two given constructed files are used, thus *Orders.csv* and *Quotes.csv*, both of which stores data as the filename describes.
+For SORT, two given constructed files are used, thus *Orders.csv* and *Quotes.csv*, both of which store data as the filename describes.
 
 SORT includes the pre-processing of data file and strategy performance. Two strategies are adapted, Aggressive Take and Passive Placement, as explained below.
 
@@ -23,7 +23,9 @@ After all quotes have been processed according to these two strategies, do the f
 
 Note that, to do the work described above, two threads are constructed, of which one is to read process quote and the other is to process the order file and update the information of orders and level1 books when passive placement happens.
 
-Lantency of the processing of each quote is also highlighted. Refering to the sample run on my personal computer ( with a Intel Core i5-5200u cpu and under Window 10 environment), each quot process needs about 6e-6 s.
+Lantency of the processing of each quote is also highlighted. Refering to the sample run on my personal computer ( with a Intel Core i5-5200u cpu and under Window 10 environment), each quot process needs about 5e-6 s.
+
+**After passive placement, order and level1 book information are all updated and recorded in the file real_time__status.txt** 
 
 **A sample of final report is showed below:**
 
@@ -72,6 +74,8 @@ Lantency of the processing of each quote is also highlighted. Refering to the sa
 >   ​		 Left volume: 2121300      
 >
 >   ​		 Divided to: IEX@596615  NASDAQ@596615  NYSE@928068  
+
+**Note**: A single thread edition of SORT is also realized, in which, program firstly reads and has orderfile processed. Then, quotes would be read in, and sent to do aggressive take and passive placement by order.
 
 ## Iceberg
 

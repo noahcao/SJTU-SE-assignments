@@ -4,11 +4,14 @@
 #include<vector>
 #include<sstream>
 #include<map>
-#include<thread>
+#include<iomanip>
 
 using namespace std;
 
+ofstream status("real_time_status_st.txt");
+
 struct Order {
+	// define class of orders
 	string symbol;
 	string side;
 	double price;
@@ -25,11 +28,111 @@ struct Order {
 	}
 };
 
+vector<Order> orders;
+map<string, map<string, pair<int, double>>> deal_order; // exchange->symbol-><quantity, total cost>;
+map<string, map<string, pair<int, double>>> book_ask; // exchange->symbol-><quantity, price>;
+map<string, map<string, pair<int, double>>> book_bid; // exchange->symbol-><quantity, price>;
+
+void result_write() {
+	ofstream fout("final_report_st.txt");		// output textfile
+	fout.setf(ios::left);
+
+	fout << "The result of aggressive take: " << endl << endl;
+
+	for (map<string, map<string, pair<int, double>>>::iterator ex = deal_order.begin(); ex != deal_order.end(); ex++) {
+		fout << "*************** " << ex->first << " ****************" << endl << endl;
+		for (map<string, pair<int, double>>::iterator sy = ex->second.begin(); sy != ex->second.end(); sy++) {
+			fout << setw(5) << sy->first << ": ";
+			fout << "Dealed quanty@" << sy->second.first << "   ";
+			fout << "Average price@" << sy->second.second / sy->second.first << endl << endl;
+		}
+	}
+
+	fout << endl <<  "-------------------------" << endl;
+
+	for (int i = 0; i < orders.size(); i++) {
+		fout << endl << "Order " << i + 1 << setw(4) << ": ";
+		fout << "Total quantity: " << orders[i].filled << "   ";
+		fout << "Average price: " << orders[i].cost / orders[i].filled << endl;
+	}
+	fout.close();
+}
+
+vector<Order> order_generalize(string order_file) {
+	// function to generalize the information of orders into of vector of orders
+	ifstream in_order(order_file);
+	vector<Order> orders;
+	string line, temp, side, symbol, price, quantity;
+	getline(in_order, line, '\r');
+	while (getline(in_order, line, '\r')) {
+		stringstream buffer;
+		buffer << line;
+		getline(buffer, temp, ',');
+		getline(buffer, side, ',');
+		getline(buffer, symbol, ',');
+		getline(buffer, price, ',');
+		getline(buffer, quantity, ',');
+		orders.push_back(Order(symbol, side, atof(price.c_str()), atoi(quantity.c_str())));
+	}
+	return orders;
+}
+
+void status_update() {
+	status.setf(ios::left);
+	status << "Level1 Books Updated!" << endl;
+	status << "***************** Ask Book ***************** " << endl;
+	for (map<string, map<string, pair<int, double>>>::iterator ex = book_ask.begin(); ex != book_ask.end(); ex++) {
+		status.setf(ios::left);
+		status << setw(10) << ex->first << ": ";
+		for (map<string, pair<int, double>>::iterator sy = ex->second.begin(); sy != ex->second.end(); sy++) {
+			status << "  " << setw(6) << sy->first << setw(5) << sy->second.first << "@" << setw(8) << sy->second.second;
+		}
+		status << endl;
+	}
+	status << endl << "***************** Bid Book ***************** " << endl;
+	for (map<string, map<string, pair<int, double>>>::iterator ex = book_bid.begin(); ex != book_bid.end(); ex++) {
+		status.setf(ios::left);
+		status << setw(10) << ex->first << ": ";;
+		for (map<string, pair<int, double>>::iterator sy = ex->second.begin(); sy != ex->second.end(); sy++) {
+			status << "  " << setw(6) << sy->first << setw(5) << sy->second.first << "@" << setw(8) << sy->second.second;
+		}
+		status << endl;
+	}
+	for (int i = 0; i < orders.size(); i++) {
+		status << endl << "Order " << i + 1 << setw(4) << ": ";
+		status << "Total quantity: " << orders[i].filled << "   ";
+		if (orders[i].filled < orders[i].quantity) {
+			// for orders not being totally filled, divide the remaining volume to situable exchanges
+			int left = orders[i].quantity - orders[i].filled;
+			status << "Left volume: " << setw(8) << left;
+			status << "Divided to: ";
+			// Note that we caculate the diveded volume to each exchange only refering to the information
+			// of top level on the bid and ask books
+			if (orders[i].side == "Buy") {
+				int total = 0;
+				for (map<string, map<string, pair<int, double>>>::iterator it = book_ask.begin(); it != book_ask.end(); it++) {
+					total += it->second[orders[i].symbol].first;
+				}
+				for (map<string, map<string, pair<int, double>>>::iterator it = book_ask.begin(); it != book_ask.end(); it++) {
+					status << it->first << "@" << int(double(left)*it->second[orders[i].symbol].first / total) << "  ";
+				}
+			}
+			if (orders[i].side == "Sell") {
+				int total = 0;
+				for (map<string, map<string, pair<int, double>>>::iterator it = book_bid.begin(); it != book_bid.end(); it++) {
+					total += it->second[orders[i].symbol].first;
+				}
+				for (map<string, map<string, pair<int, double>>>::iterator it = book_bid.begin(); it != book_bid.end(); it++) {
+					status << it->first << "@" << int(double(left)*it->second[orders[i].symbol].first / total) << "  ";
+				}
+			}
+		}
+		status << endl;
+	}
+	status << endl;
+}
+
 void SORT(string quote_file, vector<Order> &orders) {
-	ofstream fout("report.txt");
-	map<string, map<string, pair<int, double>>> deal_order; // exchange->symbol-><quantity, total cost>;
-	map<string, map<string, pair<int, double>>> book_ask; // exchange->symbol-><quantity, price>;
-	map<string, map<string, pair<int, double>>> book_bid; // exchange->symbol-><quantity, price>;
 	ifstream in_q(quote_file);
 	string quote;
 	string exchange;
@@ -109,79 +212,15 @@ void SORT(string quote_file, vector<Order> &orders) {
 				book_ask[exchange][symbol].first = quote_size;
 				book_ask[exchange][symbol].second = quote_price;
 			}
+			status_update();			// send singal to main thread to update status of order and book
 		}
 	}
-
-	// write the result of aggresive strategy according to orders to the created text file 
-	for (map<string, map<string, pair<int, double>>>::iterator ex = deal_order.begin(); ex != deal_order.end(); ex++) {
-		fout << "For " << ex->first << " :" << endl ;
-		for (map<string, pair<int, double>>::iterator sy = ex->second.begin(); sy != ex->second.end(); sy++) {
-			fout << sy->first << ": " << endl;
-			fout << "Dealed quanty is " << sy->second.first << "   ";
-			fout << "Average price is " << sy->second.second / sy->second.first << endl << endl;
-		}
-	}
-
-	fout << "-------------------------" << endl;
-
-	// ************** Part 2: Passive pacement ***********
-	for (int i = 0; i < orders.size(); i++) {
-		fout << endl << "For order " << i + 1 << " : " << endl;
-		fout << "Total quantity is " << orders[i].filled << "   ";
-		fout << "Average price is " << orders[i].cost / orders[i].filled << endl;
-		if (orders[i].filled < orders[i].quantity) {
-			// for orders not being totally filled, divide the remaining volume to situable exchanges
-			int left = orders[i].quantity - orders[i].filled;
-			fout << "Left volume is " << left << endl;
-			fout << "Divided to: ";
-			// Note that we caculate the diveded volume to each exchange only refering to the information
-			// of top level on the bid and ask books
-			if (orders[i].side == "Buy") {
-				int total = 0;
-				for (map<string, map<string, pair<int, double>>>::iterator it = book_ask.begin(); it != book_ask.end(); it++) {
-					total += it->second[orders[i].symbol].first;
-				}
-				for (map<string, map<string, pair<int, double>>>::iterator it = book_ask.begin(); it != book_ask.end(); it++) {
-					fout << it->first << ": " << int(double(left)*it->second[orders[i].symbol].first/total) << "  ";
-				}
-				fout << endl;
-			}
-			if (orders[i].side == "Sell") {
-				int total = 0;
-				for (map<string, map<string, pair<int, double>>>::iterator it = book_bid.begin(); it != book_bid.end(); it++) {
-					total += it->second[orders[i].symbol].first;
-				}
-				for (map<string, map<string, pair<int, double>>>::iterator it = book_bid.begin(); it != book_bid.end(); it++) {
-					fout << it->first << ": " << int(double(left)*it->second[orders[i].symbol].first / total) << "  ";
-				}
-				fout << endl;
-			}
-		}
-	}
-	
-	fout.close();
+	result_write();
 }
 
 int main() {
-	ifstream in_order("Orders.csv");
-	vector<Order> orders;
-	string line;
-	string temp;
-	string side;
-	string symbol;
-	string price;
-	string quantity;
-	getline(in_order, line, '\r');
-	while (getline(in_order, line, '\r')) {
-		stringstream buffer;
-		buffer << line;
-		getline(buffer, temp, ',');
-		getline(buffer, side, ',');
-		getline(buffer, symbol, ',');
-		getline(buffer, price, ',');
-		getline(buffer, quantity, ',');
-		orders.push_back(Order(symbol, side, atof(price.c_str()), atoi(quantity.c_str())));
-	}
+	string order_file = "Orders.csv";
+	orders = order_generalize(order_file); // generalize the order book through given order file;
 	string quote_file = "Quotes.csv";
 	SORT(quote_file, orders);
 }
