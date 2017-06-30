@@ -25,11 +25,11 @@ Note that, to do the work described above, two threads are constructed, of which
 
 Lantency of the processing of each quote is also highlighted. Refering to the sample run on my personal computer ( with a Intel Core i5-5200u cpu and under Window 10 environment), each quot process needs about 5e-6 s.
 
-**After passive placement, order and level1 book information are all updated and recorded in the file real_time__status.txt** 
+*After passive placement, order and level1 book information are all updated and recorded in the file ‘real_time__status.txt’*
 
 **A sample of final report is showed below:**
 
-> *************** part 1: summary information refering to exchanges***********
+> **part 1: summary information refering to exchanges**
 >
 > * **IEX**
 >
@@ -51,7 +51,7 @@ Lantency of the processing of each quote is also highlighted. Refering to the sa
 >
 >   ​
 >
-> **************part 2: summary information refering to orders**************
+> **part 2: summary information refering to orders**
 >
 > * *Order 1*:   Total quantity: 1000000   Average price: 918.402
 >
@@ -89,8 +89,6 @@ After the processing of history data, a new order with certain volume is accpted
 
 **A sample result is show below (with a virtual order whose volume is 10000  )**
 
-> ******************************************************Slice Order**************************************************
->
 >    9h ---  9.5h  	send *782* ( 7.82472% )  	predicted average price is *12.464* 
 >
 >  9.5h ---   10h 	send *626* (  6.2693% )  	predicted average price is *12.5223*
