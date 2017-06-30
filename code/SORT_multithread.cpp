@@ -1,14 +1,14 @@
 /**********************************************
 Overview:
-In the program, combined strategies are used to process the given orders and quotes, fundamental idea
-is to firstly try aggressive take, after which if a quote has not been all taken, do the passive placement
-then. Note that, during each quote processing, the time used will be print real-time, and if passive placement
-is performed, the information of orders and level1 books would also be updated and printed. Once all quoted
-have already been processed, the summary information would be output to a textfile, which contains the 
-dealed quantity and average price of each symbol in different exchange, and the final status of each order, 
-togather with the filled quantit, left quantity and average price of dealed part.
 
-PS.after real test on a personal computer, time used to process each quote is about 5e-6 s.
+Program to realize SORT on data, with consists of aggresive take and passive placement, and in
+a single thread edition. Two text files would be output, which are 'final_result_st.txt' and
+'real_time_status.txt'. The former records the final result of orders and exchanges traditngs of
+aggresive take, and the latter one records the real-time status of both orders and level1 book.
+
+PS.after real test on a personal computer, time used to process each quote is about 0.1 ms 
+	(time for writing real_time information into file is contained, otherwise, time used is about
+	3e-6 s).
 ***********************************************/
 
 #include<fstream>
@@ -240,13 +240,7 @@ void thread_quote(string quote_file) {
 				book_ask[exchange][symbol].second = quote_price;
 			}
 		}
-
-		QueryPerformanceCounter(&litmp);
-		QPart2 = litmp.QuadPart;				// timing ends
-		dfMinus = (double)(QPart2 - QPart1);
-		dfTim = dfMinus / dfFreq;
 		
-		status << "A quote finished! Time used: " << dfTim*1000000 << "¦Ìs" << endl << endl;
 		status << "                  Order status: " << endl;
 		status.setf(ios::left);
 		// print the updated information of orders
@@ -258,8 +252,15 @@ void thread_quote(string quote_file) {
 		}
 		status << endl;
 		// print the updated information of books
-		total_time_quote += dfTim;
+
 		if (!total_taken) status_update();			// update status of order and book
+
+		QueryPerformanceCounter(&litmp);
+		QPart2 = litmp.QuadPart;				// timing ends
+		dfMinus = (double)(QPart2 - QPart1);
+		dfTim = dfMinus / dfFreq;
+		status << "A quote finished! Time used: " << dfTim * 1000000 << "¦Ìs" << endl << endl;
+		total_time_quote += dfTim;
 	}
 	result_write();
 }
