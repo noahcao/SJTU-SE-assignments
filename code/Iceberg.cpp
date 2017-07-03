@@ -1,5 +1,5 @@
 /******************************
-In this program, we implement a method to slice a order with large volume into
+In this program, we implement a method to split a order with large volume into
 many small ones, and the share of each sub order is determined by the history data.
 Thus, we process history record and calculate the average price and quantity ratio
 during different time slots which would be reference for us to do further processing 
@@ -99,6 +99,7 @@ map<int, pair<double, double>> predict(map<string, map<int, pair<double, int>>> 
 
 int main() {
 	string filename = "600690.iceberg.csv";
+	ofstream fout("split_result.txt");
 	// data -> timeindex -> <total cost, total quantity>
 	map<string, map<int, pair<double, int>>> history = history_analysis(filename);
 
@@ -107,7 +108,7 @@ int main() {
 	cin >> order_volume;
 	map<int, pair<double, double>> iceberg_slice = predict(history);		// map to guid the slice to order volume
 
-	cout << endl << "****** Slice Order ******" << endl;
+	fout << endl << "****** Slice Order ******" << endl << endl;
 
 	double total_cost = 0;					// the total cost during a day
 
@@ -117,12 +118,12 @@ int main() {
 		double end_time = 9 + (i + 1)*0.5;
 		double average_price = iceberg_slice[i].second;
 		int volum = int(iceberg_slice[i].first*order_volume);
-		cout << setw(4) << start_time  << "h --- " << setw(4) << end_time <<  setw(1) << "h";
-		cout << "  send " << volum << " (" << setiosflags(ios::right) << setw(8) << iceberg_slice[i].first * 100 << "% )";
-		cout << "  predicted average price is " << iceberg_slice[i].second << endl;
+		fout << setw(4) << start_time  << "h --- " << setw(4) << end_time <<  setw(1) << "h";
+		fout << "  send " << volum << " (" << setiosflags(ios::right) << setw(8) << iceberg_slice[i].first * 100 << "% )";
+		fout << "  predicted average price is " << iceberg_slice[i].second << endl;
 		total_cost += iceberg_slice[i].second*volum;
 	}
 
 	// print the summary information of the order slice
-	cout << "Total cost is " << total_cost << "   " << "Average price is " << total_cost / order_volume << endl;
+	fout << endl << "Total cost is " << total_cost << "   " << "Average price is " << total_cost / order_volume << endl;
 }
