@@ -9,6 +9,15 @@ const int MAXNUM_KEY = 2 * ORDER - 1; // maxnum of key number for a node
 const int MINNUM_CHILD = MINNUM_KEY + 1; // minnum of children for a node
 const int MAXNUM_CHILD = MAXNUM_KEY + 1; // maxnum of children for a node
 
+template<typename keyclass>
+int searchPos(vector<keyclass> keys, keyclass key) {
+	int size = keys.size();
+	for (int i = 0; i < size; i++) {
+		if (key < keys[i]) return i;
+	}
+	return size;
+}
+
 template <typename keyclass>
 class Node{
 public:
@@ -134,4 +143,18 @@ void Tree<keyclass>::overFlow(Node<keyclass>* node) {
 	pNode->getChildren().insert(rank + 1, new_node);
 	new_node->getPar() = pNode;
 	overFlow(pNode);
+}
+
+template <typename keyclass>
+bool Tree<keyclass>::remove(const keyclass& key) {
+	Node<keyclass>* node = search(key).first;
+	if (!node) return false;
+	int rank = searchPos(node->getKeys(), key);
+	if (!node->isLeaf()) {
+		Node<keyclass>* child = node->getChildren()[rank + 1];
+		while (!child->isLeaf()) child = child->getChildren[0];
+		node->getKeys[rank] = child->getKeys[0];
+		node = child;
+	}
+	
 }
