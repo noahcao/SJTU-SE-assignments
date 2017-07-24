@@ -1,27 +1,24 @@
 #include<iostream>
 #include<vector>
 #include<string>
+#include<sstream>
 
 using namespace std;
 
-const int ORDER = 3;  // order of b+ tree
+const int ORDER = 100;  // order of b+ tree
 
-/*class idx{
+class indexing{
 public:
-	idx(int offSet, int len, idx* nextIdx = NULL, idx* previousIdx = NULL){
-		offset = offSet;
-		dattalen = len;
-		next = nextIdx;
-		previous = previousIdx;
+	indexing(int Offset, int Len){
+		len = Len;
+		offset = Offset;
 	}
+	int len;
 	int offset;
-	int dattalen;
-	idx* next;
-	idx* previous;
-};*/
+};
 
-template<typename T>
-int searchPos(vector<T> keys, T key) {
+template<class elem>
+int searchPos(vector<elem> keys, elem key) {
     // function to indicate pos of insertion
 	int size = keys.size();
 	for (int i = 0; i < size; i++) {
@@ -51,117 +48,76 @@ void removeElem(vector<elem> &vect, int pos){
 	for(int i = 0; i < pos; i++) new_vec.push_back(vect[i]);
 	for(int i = pos + 1; i < vect.size(); i++) new_vec.push_back(vect[i]);
 	vect = new_vec;
-}
+};
 
-template <typename T>
+
 class Node{
     // class of node of bplustree
 public:
 	Node(){
         // construct a totally empty node
 		parent = nullptr;
-		vector<T> keys;
-		vector<Node<T>*> children;
+		vector<string> keys;
+		vector<Node*> children;
         isLeaf = false;
 	}
-    Node(T key, string Data){
+    Node(string key, indexing Data){
 		preLeaf = NULL;
 		nextLeaf = NULL;
         isLeaf = true;
-        vector<string> data;
-        vector<T> keys;
+        vector<indexing> data;
+        vector<string> keys;
         keys.push_back(key);
         data.push_back(Data);
     }
-	Node(T key, Node<T>* lc = NULL, Node<T>* rc = NULL){
-        // construct a new node with left child and right child
-		vector<T> keys;
-		vector<Node<T>*> children;
-		parent = NULL;
-		keys.push_back(key);
-		children.push_back(lc);
-		children.push_back(rc);
-        isLeaf = false;
-		if(lc) lc->parent = this;
-		if(rc) rc->parent = this;
-	}
 	int getKeyNum(){return keys.size();}
 	bool isLeaf;
-	Node<T>* nextLeaf;
-	Node<T>* preLeaf;
-	vector<T> keys;
-	Node<T>* parent;
-	vector<string> data;
-	vector<Node<T>*> children;
+	Node* nextLeaf;
+	Node* preLeaf;
+	vector<string> keys;
+	Node* parent;
+	vector<indexing> data;
+	vector<Node*> children;
 };
 
-template<class elem>
-void insertElem(vector<Node<elem>*> &vect, int pos, elem key){
-    // reload the function insertElem, make it support the insertion
-    // of element into vector of pointers of nodes
-    vector<Node<elem>*> new_vec;
-    for(int i = 0; i < pos; i ++){
-        new_vec.push_back(vect[i]);
-    }
-    new_vec.push_back(key);
-    for(int i = pos; i < vect.size(); i++){
-        new_vec.push_back(vect[i]);
-    }
-    vect = new_vec;
-}
-
-
-template <typename T>
 class Tree{
 protected:
 	int _size;  // size of tree
 	int _order; // parameter of the order of tree
-	Node<T>* _root; // pointer of the root node
-	Node<T>* _hook; // pointer of the node which is last one searched
-	void overFlow(Node<T>*);
-	void underFlow(Node<T>*);
+	Node* _root; // pointer of the root node
+	Node* _hook; // pointer of the node which is last one searched
+	void overFlow(Node*);
+	void underFlow(Node*);
 public:
-	Tree(int order = ORDER): _order(order), _size(0)
+	Tree(int order = ORDER): _order(order)
 	{
-		_root = new Node<T>();
+		_root = new Node();
         _root->isLeaf = true;
 		leafHeader = NULL;
 	}
 	~Tree(){if(_root) delete(_root);}
-	int const order(){return _order;}
-	int const size(){return _size;}
-	Node<T>* leafHeader;
-	Node<T>* root(){return _root;}
-	bool empty() const {return !_root;}
-	pair<Node<T>*, int> search(const T& key);
-	bool insert(const T& key, string Data);
-	bool remove(const T& key);
-    Node<T>* mergeChild(Node<T>* ln, Node<T>* rn);
+	Node* leafHeader;
+	Node* root(){return _root;}
+	bool empty(){return !_root;}
+	pair<Node*, int> search(const string key);
+	indexing getData(string key);
+	bool insert(const string key, indexing Data);
+	bool remove(const string key);
+    Node* mergeChild(Node* ln, Node* rn);
     void printTree();
-    void clear();
 };
 
-template <typename T>
-void deleteTree(Node<T>* node){
-    if(node->isLeaf) delete(node);
-    else{
-        for(int i = 0; i < node->children.size(); i++){
-            deleteTree(node->children[i]);
-        }
-    }
+indexing Tree::getData(string key) {
+	pair<Node*, int> target = search(key);
+	if (!target.first) return indexing(-1, -1);
+	else {
+		Node* dataNode = target.first;
+		int index = target.second;
+		return dataNode->data[index];
+	}
 }
 
-template<typename T>
-void Tree<T>::clear() {
-    // function of clear all node in a tree
-    if(!_root) return;
-    else{
-        deleteTree(_root);
-    }
-}
-
-template<typename T>
-void printNode(Node<T>* node){
+void printNode(Node* node){
     if(node->keys.size() == 0) return;
     if(node->isLeaf){
 		cout << "   leaf   ";
@@ -182,14 +138,13 @@ void printNode(Node<T>* node){
     }
 }
 
-template<typename T>
-void Tree<T>::printTree() {
+void Tree::printTree() {
 	cout << endl;
     if(!_root) return;
     else printNode(_root);
 	cout << endl;
 	cout << "print the leaves! " << endl;
-	Node<T>* header = leafHeader;
+	Node* header = leafHeader;
 	while (header){
 		for (int i = 0; i < header->keys.size(); i++){
 			cout << header->keys[i] << "  ";
@@ -198,8 +153,7 @@ void Tree<T>::printTree() {
 	}
 }
 
-template<typename T>
-Node<T>* Tree<T>::mergeChild(Node<T> *ln, Node<T> *rn) {
+Node* Tree::mergeChild(Node *ln, Node *rn) {
     // function to merge two neighbor children
 	if (ln->isLeaf) {
 		for (int i = 0; i < rn->keys.size(); i++) {
@@ -211,7 +165,7 @@ Node<T>* Tree<T>::mergeChild(Node<T> *ln, Node<T> *rn) {
 	return ln;
 	}
 	else {
-		Node<T>* mergeNode = mergeChild(ln->children.back(), rn->children[0]);
+		Node* mergeNode = mergeChild(ln->children.back(), rn->children[0]);
 		removeElem(rn->children, 0);
 		for (int i = 0; i < rn->keys.size(); i++){
 			ln->keys.push_back(rn->keys[i]);
@@ -222,22 +176,21 @@ Node<T>* Tree<T>::mergeChild(Node<T> *ln, Node<T> *rn) {
 	}
 }
 
-template <typename T>
-pair<Node<T>*, int> Tree<T>::search(const T &key) {
+pair<Node*, int> Tree::search(const string key) {
     // search the key among the leaves of tree
-	Node<T>* node = _root;
+	Node* node = _root;
 	_hook = NULL;
 	while(node){
 		if(node->isLeaf){
-			vector<T> keys = node->keys;
+			vector<string> keys = node->keys;
 			int keyNum = keys.size();
 			for(int i = 0; i < keyNum; i++) {
-				if (keys[i] == key) return pair<Node<T>*, int>(node, i);
+				if (keys[i] == key) return pair<Node*, int>(node, i);
 			}
-			return pair<Node<T>*, int>(NULL, -1);
+			return pair<Node*, int>(NULL, -1);
 		}
 		else{
-			vector<T> keys = node->keys;
+			vector<string> keys = node->keys;
 			int keyNum = keys.size();
 			int Index = 0;
 			while(Index < keyNum){
@@ -255,20 +208,19 @@ pair<Node<T>*, int> Tree<T>::search(const T &key) {
 			}
 		}
 	}
-	return pair<Node<T>*, int>(NULL, -1);    // if key not found among leaves, return NULL
+	return pair<Node*, int>(NULL, -1);    // if key not found among leaves, return NULL
 }
 
-template <typename T>
-bool Tree<T>::insert(const T &key, string Data){
-	pair<Node<T>*, int> target = this->search(key);
-    Node<T>* node = target.first;
+bool Tree::insert(const string key, indexing Data){
+	pair<Node*, int> target = this->search(key);
+    Node* node = target.first;
     if(node) return false;
-	node = new Node<T>(key, Data);
+	node = new Node(key, Data);
     if(_hook == NULL){
         // case that leaf is root
 		node = _root;
         insertElem(node->keys, searchPos(node->keys, key), key);
-        insertElem(node->data, searchPos(node->data, Data), Data);
+        insertElem(node->data, searchPos(node->keys, key), Data);
 		if (_root->keys.size() == 1){
 			leafHeader = _root;
 			_root->nextLeaf = NULL;
@@ -280,7 +232,7 @@ bool Tree<T>::insert(const T &key, string Data){
         // case when depth of tree is bigger than 1
         // so, _hook would point to the parent of the leaf that key should be inserted into
         int rank = searchPos(_hook->keys, key);
-        Node<T>* leaf = _hook->children[rank];
+        Node* leaf = _hook->children[rank];
         int insertpos = searchPos(leaf->keys, key);
         insertElem(leaf->keys, insertpos, key);
         insertElem(leaf->data, insertpos, Data);
@@ -288,12 +240,11 @@ bool Tree<T>::insert(const T &key, string Data){
     }
 }
 
-template <typename T>
-void Tree<T>::overFlow(Node<T>* node) {
+void Tree::overFlow(Node* node) {
 	if (_order >= node->keys.size()) return;
 	int mid = (_order + 1) / 2;
-	T insertKey = node->keys[mid];
-	Node<T>* new_node = new Node<T>();
+	string insertKey = node->keys[mid];
+	Node* new_node = new Node();
     if(node->isLeaf){
         // case 1: node is leaf, the mid key should be copied to parent node
 		new_node->isLeaf = true;
@@ -319,7 +270,7 @@ void Tree<T>::overFlow(Node<T>* node) {
 			overFlow(node->parent);
 		}
 		else {
-			Node<T>* new_root = new Node<T>();
+			Node* new_root = new Node();
 			_root = new_root;
 			_root->children.push_back(node);
 			_root->children.push_back(new_node);
@@ -346,7 +297,7 @@ void Tree<T>::overFlow(Node<T>* node) {
         removeElem(node->keys, mid);	// remove the insert key from former node
 		if (node == _root) {
 			// case when node is the root (has no parent)
-			Node<T>* new_root = new Node<T>();
+			Node* new_root = new Node();
 			_root = new_root;
 			new_node->parent = _root;
 			node->parent = _root;
@@ -365,10 +316,9 @@ void Tree<T>::overFlow(Node<T>* node) {
     }
 }
 
-template <typename T>
-bool Tree<T>::remove(const T& key) {
-	pair<Node<T>*, int> target = search(key);
-	Node<T>* node = target.first;
+bool Tree::remove(const string key) {
+	pair<Node*, int> target = search(key);
+	Node* node = target.first;
 	int index = target.second;
 	if (!node) return false;
 	// if key exists, then node should be a leaf 
@@ -391,7 +341,7 @@ bool Tree<T>::remove(const T& key) {
 			// and node has more than one key
 			removeElem(node->keys, 0);
 			removeElem(node->data, 0);
-			Node<T>* formerNode = node;
+			Node* formerNode = node;
 			// Node<T>* upHolder = searchUpHolder(key);
 			// if node is the first child of parent, then its ancesstor may also
 			// have the same key
@@ -406,7 +356,7 @@ bool Tree<T>::remove(const T& key) {
 			int index = searchPos(node->keys, key);
 			if (node == _root) {
 				if (node->keys.size() == 1) {
-					Node<T>* flow_node = mergeChild(node->children[0], node->children[1]);
+					Node* flow_node = mergeChild(node->children[0], node->children[1]);
 					node->children[0]->parent = NULL;
 					_root = node->children[0];
 					while (flow_node != _root) {
@@ -417,7 +367,7 @@ bool Tree<T>::remove(const T& key) {
 				}
 				else {
 					removeElem(node->keys, index);
-					Node<T>* flow_node = mergeChild(node->children[index], node->children[index + 1]);
+					Node* flow_node = mergeChild(node->children[index], node->children[index + 1]);
 					removeElem(node->children, index + 1);
 					while (flow_node != _root) {
 						overFlow(flow_node);
@@ -428,7 +378,7 @@ bool Tree<T>::remove(const T& key) {
 			}
 			else {
 				removeElem(node->keys, index);
-				Node<T>* flow_node = mergeChild(node->children[index], node->children[index + 1]);
+				Node* flow_node = mergeChild(node->children[index], node->children[index + 1]);
 				removeElem(node->children, index + 1);
 				while (flow_node != _root) {
 					overFlow(flow_node);
@@ -450,12 +400,11 @@ bool Tree<T>::remove(const T& key) {
     }
 }
 
-template <typename T>
-void Tree<T>::underFlow(Node<T> * node) {
+void Tree::underFlow(Node* node) {
 	if ((_order + 1) / 2 <= node->keys.size() + 1) {
 		return;
 	}
-	Node<T>* pNode = node->parent;
+	Node* pNode = node->parent;
 	if(!pNode){
 		if (!node->isLeaf) {
 			if ((node->keys.size() == 0) && (node->children[0])) {
@@ -475,7 +424,7 @@ void Tree<T>::underFlow(Node<T> * node) {
 	if(0 < rank){
 		// if node is not the first child of pNode
 		// then node certainly has a left subling
-		Node<T>* ls = pNode->children[rank - 1];
+		Node* ls = pNode->children[rank - 1];
 		if((_order + 1) / 2 < ls->keys.size() + 1){
 			insertElem(node->keys, 0, pNode->keys[rank - 1]);
 			pNode->keys[rank - 1] = ls->keys[ls->keys.size() - 1];
@@ -496,7 +445,7 @@ void Tree<T>::underFlow(Node<T> * node) {
 	if(pNode->children.size() - 1 > rank) {
         // if node is not the last child of pNode
         // then node certainly has a right subling
-        Node<T> *rs = pNode->children[rank + 1];
+        Node* rs = pNode->children[rank + 1];
         if ((_order + 1) / 2 < rs->keys.size() + 1) {
             node->keys.push_back(pNode->keys[rank]);
 			if (!node->isLeaf) {
@@ -522,7 +471,7 @@ void Tree<T>::underFlow(Node<T> * node) {
     // so, we merge a subling with the node
     if(0 < rank){
         // merge node with its left subing
-        Node<T>* ls = pNode->children[rank - 1];
+        Node* ls = pNode->children[rank - 1];
         ls->keys.push_back(pNode->keys[rank - 1]);
         removeElem(pNode->keys, rank - 1);
         removeElem(pNode->children, rank);
@@ -551,7 +500,7 @@ void Tree<T>::underFlow(Node<T> * node) {
     }
     else{
         // merge node with its right subling
-        Node<T>* rs = pNode->children[rank + 1];
+        Node* rs = pNode->children[rank + 1];
         insertElem(rs->keys, 0, pNode->keys[rank]);
         removeElem(pNode->keys, rank);
         removeElem(pNode->children, rank);
@@ -585,21 +534,28 @@ void Tree<T>::underFlow(Node<T> * node) {
     return;
 }
 
+/*
 int main() {
-    Tree<int> tree;
+    Tree tree;
+	if ("10" > "2") {
+		cout << "bigger!" << endl;
+	}
 	for (int i = 1; i < 31 ; i++) {
-		cout << "i = " << i << endl;
-		tree.insert(i, to_string(i));
+		stringstream ss;
+		ss << i;
+		string key;
+		ss >> key;
+		tree.insert(key, indexing(2 * i + 1, i));
 		tree.printTree();
 	}
 	tree.printTree();
-	tree.remove(7);
+	tree.remove("7");
 	tree.printTree();
-	tree.remove(1);
+	tree.remove("1");
 	tree.printTree();
-	tree.remove(13);
+	tree.remove("13");
 	tree.printTree();
-	tree.remove(19);
+	tree.remove("19");
 	tree.printTree();
 	system("pause");
-}
+}*/
