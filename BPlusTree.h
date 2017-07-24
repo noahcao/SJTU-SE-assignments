@@ -5,7 +5,7 @@
 
 using namespace std;
 
-const int ORDER = 100;  // order of b+ tree
+const int ORDER = 24;  // order of b+ tree
 
 class indexing{
 public:
