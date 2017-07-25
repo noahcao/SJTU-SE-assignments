@@ -8,13 +8,14 @@ using namespace std;
 const int ORDER = 24;  // order of b+ tree
 
 class indexing{
+	// class to hold the information of index
 public:
 	indexing(int Offset, int Len){
 		len = Len;
 		offset = Offset;
 	}
-	int len;
-	int offset;
+	int len;	// the length of target data in data file
+	int offset;	// the offset of the position of target data in data file
 };
 
 template<class elem>
@@ -29,6 +30,7 @@ int searchPos(vector<elem> keys, elem key) {
 
 template<class elem>
 void insertElem(vector<elem> &vect, int pos, elem key){
+	int formerlen = vect.size();
     // insert a element into a vector according to given position
     vector<elem> new_vec;
     for(int i = 0; i < pos; i ++){
@@ -43,6 +45,7 @@ void insertElem(vector<elem> &vect, int pos, elem key){
 
 template<class elem>
 void removeElem(vector<elem> &vect, int pos){
+	int formerlen = vect.size();
     // remove a certain element in the vector
 	vector<elem> new_vec;
 	for(int i = 0; i < pos; i++) new_vec.push_back(vect[i]);
@@ -62,6 +65,7 @@ public:
         isLeaf = false;
 	}
     Node(string key, indexing Data){
+		// construct a data with index information
 		preLeaf = NULL;
 		nextLeaf = NULL;
         isLeaf = true;
@@ -71,9 +75,9 @@ public:
         data.push_back(Data);
     }
 	int getKeyNum(){return keys.size();}
-	bool isLeaf;
-	Node* nextLeaf;
-	Node* preLeaf;
+	bool isLeaf;	// whether this node is a leaf node
+	Node* nextLeaf;	// previous leaf of leaf node in the leaf linker
+	Node* preLeaf;	// next leaf of leaf node in the leaf linker
 	vector<string> keys;
 	Node* parent;
 	vector<indexing> data;
@@ -81,6 +85,7 @@ public:
 };
 
 class Tree{
+	// class of the B+ tress
 protected:
 	int _size;  // size of tree
 	int _order; // parameter of the order of tree
@@ -108,6 +113,7 @@ public:
 };
 
 indexing Tree::getData(string key) {
+	// get indexing information of key
 	pair<Node*, int> target = search(key);
 	if (!target.first) return indexing(-1, -1);
 	else {
@@ -118,6 +124,7 @@ indexing Tree::getData(string key) {
 }
 
 void printNode(Node* node){
+	// print a node key
     if(node->keys.size() == 0) return;
     if(node->isLeaf){
 		cout << "   leaf   ";
@@ -139,6 +146,9 @@ void printNode(Node* node){
 }
 
 void Tree::printTree() {
+	// print the structure of tree
+	// this function is mainly designed for checking 
+	// whether tree's structure is right
 	cout << endl;
     if(!_root) return;
     else printNode(_root);
@@ -162,7 +172,7 @@ Node* Tree::mergeChild(Node *ln, Node *rn) {
 		}
 		ln->nextLeaf = rn->nextLeaf;
 		if(ln->nextLeaf) ln->nextLeaf->preLeaf = ln;
-	return ln;
+		return ln;
 	}
 	else {
 		Node* mergeNode = mergeChild(ln->children.back(), rn->children[0]);
@@ -212,15 +222,18 @@ pair<Node*, int> Tree::search(const string key) {
 }
 
 bool Tree::insert(const string key, indexing Data){
+	// insert a key with index information into the tree
 	pair<Node*, int> target = this->search(key);
     Node* node = target.first;
     if(node) return false;
+	// if the key already existing, do nothing
 	node = new Node(key, Data);
     if(_hook == NULL){
         // case that leaf is root
 		node = _root;
-        insertElem(node->keys, searchPos(node->keys, key), key);
-        insertElem(node->data, searchPos(node->keys, key), Data);
+		int index = searchPos(node->keys, key);
+        insertElem(node->keys, index, key);
+        insertElem(node->data, index, Data);
 		if (_root->keys.size() == 1){
 			leafHeader = _root;
 			_root->nextLeaf = NULL;
@@ -241,6 +254,10 @@ bool Tree::insert(const string key, indexing Data){
 }
 
 void Tree::overFlow(Node* node) {
+	// to settle the overflow of node
+	// note that this function is often called recursively, which
+	// finally ends at the root node
+	Node* ss = node;
 	if (_order >= node->keys.size()) return;
 	int mid = (_order + 1) / 2;
 	string insertKey = node->keys[mid];
@@ -277,7 +294,6 @@ void Tree::overFlow(Node* node) {
 			_root->keys.push_back(insertKey);
 			node->parent = _root;
 			new_node->parent = _root;
-			return;
 		}
     }
     if(!node->isLeaf){
@@ -317,6 +333,9 @@ void Tree::overFlow(Node* node) {
 }
 
 bool Tree::remove(const string key) {
+	// remove a key from the tree
+	// note that the deletion is always begins from a leaf node
+	// in many cases, a internal node holding same key will also be deleted
 	pair<Node*, int> target = search(key);
 	Node* node = target.first;
 	int index = target.second;
@@ -342,7 +361,6 @@ bool Tree::remove(const string key) {
 			removeElem(node->keys, 0);
 			removeElem(node->data, 0);
 			Node* formerNode = node;
-			// Node<T>* upHolder = searchUpHolder(key);
 			// if node is the first child of parent, then its ancesstor may also
 			// have the same key
 			while (node == node->parent->children[0]) {
@@ -357,6 +375,7 @@ bool Tree::remove(const string key) {
 			if (node == _root) {
 				if (node->keys.size() == 1) {
 					Node* flow_node = mergeChild(node->children[0], node->children[1]);
+					removeElem(node->children, 1);
 					node->children[0]->parent = NULL;
 					_root = node->children[0];
 					while (flow_node != _root) {
@@ -395,24 +414,28 @@ bool Tree::remove(const string key) {
 			removeElem(node->keys, 0);
 			removeElem(node->data, 0);
 			underFlow(node);
-			return true;
 		}
+		return true;
     }
 }
 
 void Tree::underFlow(Node* node) {
+	// settle the underflow of node
+	// note that this function is often called recursively 
+	// which is finally ends at the root node
 	if ((_order + 1) / 2 <= node->keys.size() + 1) {
 		return;
 	}
 	Node* pNode = node->parent;
 	if(!pNode){
 		if (!node->isLeaf) {
-			if ((node->keys.size() == 0) && (node->children[0])) {
+			if ((node->keys.size() == 0) && (node->children.size() > 0)) {
+
 				// case that the root (node) has no key already but has a sole child
 				// which is not empty
 				_root = node->children[0];
 				_root->parent = NULL;
-				node->children[0] = NULL;
+				removeElem(node->children, 0);
 				delete node;
 			}
 		}
@@ -426,18 +449,21 @@ void Tree::underFlow(Node* node) {
 		// then node certainly has a left subling
 		Node* ls = pNode->children[rank - 1];
 		if((_order + 1) / 2 < ls->keys.size() + 1){
-			insertElem(node->keys, 0, pNode->keys[rank - 1]);
-			pNode->keys[rank - 1] = ls->keys[ls->keys.size() - 1];
-			removeElem(ls->keys, ls->keys.size() - 1);
 			if (ls->isLeaf) {
+				pNode->keys[rank - 1] = ls->keys[ls->keys.size() - 1];
+				insertElem(node->keys, 0, ls->keys[ls->keys.size() - 1]);
+				removeElem(ls->keys, ls->keys.size() - 1);
 				insertElem(node->data, 0, ls->data.back());
 				removeElem(ls->data, ls->data.size() - 1);
 			}
 			else {
-				insertElem(node->children, 0, ls->children[ls->children.size() - 1]);
+				insertElem(node->keys, 0, pNode->keys[rank - 1]);
+				pNode->keys[rank - 1] = ls->keys.back();
+				removeElem(ls->keys, ls->keys.size() - 1);
+				insertElem(node->children, 0, ls->children.back());
 				removeElem(ls->children, ls->children.size() - 1);
+				node->children[0]->parent = node;
 			}
-			if(!node->isLeaf) node->children[0]->parent = node;
 			return;
 		}
 	}
@@ -447,22 +473,21 @@ void Tree::underFlow(Node* node) {
         // then node certainly has a right subling
         Node* rs = pNode->children[rank + 1];
         if ((_order + 1) / 2 < rs->keys.size() + 1) {
-            node->keys.push_back(pNode->keys[rank]);
 			if (!node->isLeaf) {
+				node->keys.push_back(pNode->keys[rank]);
 				pNode->keys[rank] = rs->keys[0];
 				removeElem(rs->keys, 0);
 				node->children.push_back(rs->children[0]);
 				removeElem(rs->children, 0);
+				node->children.back()->parent = node;
 			}
 			else {
 				pNode->keys[rank] = rs->keys[1];
+				node->keys.push_back(rs->keys[0]);
 				node->data.push_back(rs->data[0]);
 				removeElem(rs->keys, 0);
 				removeElem(rs->data, 0);
 			}
-            if(!node->isLeaf) {
-                node->children.back()->parent = node;
-            }
             return;
         }
     }
@@ -472,90 +497,67 @@ void Tree::underFlow(Node* node) {
     if(0 < rank){
         // merge node with its left subing
         Node* ls = pNode->children[rank - 1];
-        ls->keys.push_back(pNode->keys[rank - 1]);
-        removeElem(pNode->keys, rank - 1);
-        removeElem(pNode->children, rank);
 		if (!node->isLeaf) {
+			ls->keys.push_back(pNode->keys[rank - 1]);
 			ls->children.push_back(node->children[0]);
+			removeElem(node->children, 0);
 			ls->children.back()->parent = ls;
-		}
-        while(!node->keys.empty()){
-            ls->keys.push_back(node->keys[0]);
-            removeElem(node->keys, 0);
-			if (!node->isLeaf) {
+			while (!node->keys.empty()){
+				ls->keys.push_back(node->keys[0]);
+				removeElem(node->keys, 0);
 				ls->children.push_back(node->children[0]);
 				removeElem(node->children, 0);
 				ls->children.back()->parent = ls;
 			}
-			else {
+		}
+		else{
+			while (!node->keys.empty()){
+				ls->keys.push_back(node->keys[0]);
+				removeElem(node->keys, 0);
 				ls->data.push_back(node->data[0]);
 				removeElem(node->data, 0);
 			}
-        }
-		if (node->isLeaf){
 			ls->nextLeaf = node->nextLeaf;
 			if (ls->nextLeaf) ls->nextLeaf->preLeaf = ls;
 		}
+		removeElem(pNode->keys, rank - 1);
+		removeElem(pNode->children, rank);
         delete(node);
     }
     else{
         // merge node with its right subling
         Node* rs = pNode->children[rank + 1];
-        insertElem(rs->keys, 0, pNode->keys[rank]);
-        removeElem(pNode->keys, rank);
-        removeElem(pNode->children, rank);
 		if (!node->isLeaf) {
+			insertElem(rs->keys, 0, pNode->keys[rank]);
 			insertElem(rs->children, 0, node->children.back());
 			removeElem(node->children, node->children.size() - 1);
 			rs->children[0]->parent = rs;
-		}
-        while(!node->keys.empty()){
-            insertElem(rs->keys, 0, node->keys.back());
-            removeElem(node->keys, node->keys.size() - 1);
-			if (!node->isLeaf){
+			while (!node->keys.empty()){
+				insertElem(rs->keys, 0, node->keys.back());
+				removeElem(node->keys, node->keys.size() - 1);
 				insertElem(rs->children, 0, node->children.back());
 				removeElem(node->children, node->children.size() - 1);
+				rs->children[0]->parent = rs;
+			}
+		}
+		else{
+			insertElem(rs->keys, 0, node->keys.back());
+			removeElem(node->keys, node->keys.size() - 1);
+			insertElem(rs->data, 0, node->data.back());
+			removeElem(node->data, node->data.size() - 1);
+			if (leafHeader == node){
+				leafHeader = rs;
+				leafHeader->preLeaf = NULL;
 			}
 			else{
-				insertElem(rs->data, 0, node->data.back());
-				removeElem(node->data, node->data.size() - 1);
+				rs->preLeaf = node->preLeaf;
+				node->preLeaf->nextLeaf = rs;
 			}
-            if(rs->children[0]){
-                rs->children[0]->parent = rs;
-            }
-        }
-		if (node->isLeaf){
-			rs->preLeaf = node->preLeaf;
-			if (rs->preLeaf) rs->preLeaf->nextLeaf = rs;
 		}
+		removeElem(pNode->keys, rank);
+		removeElem(pNode->children, rank);
         delete(node);
     }
     underFlow(pNode);
     return;
 }
-
-/*
-int main() {
-    Tree tree;
-	if ("10" > "2") {
-		cout << "bigger!" << endl;
-	}
-	for (int i = 1; i < 31 ; i++) {
-		stringstream ss;
-		ss << i;
-		string key;
-		ss >> key;
-		tree.insert(key, indexing(2 * i + 1, i));
-		tree.printTree();
-	}
-	tree.printTree();
-	tree.remove("7");
-	tree.printTree();
-	tree.remove("1");
-	tree.printTree();
-	tree.remove("13");
-	tree.printTree();
-	tree.remove("19");
-	tree.printTree();
-	system("pause");
-}*/
