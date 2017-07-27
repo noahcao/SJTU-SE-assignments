@@ -5,7 +5,7 @@
 
 using namespace std;
 
-const int ORDER = 24;  // order of b+ tree
+const int ORDER = 64;  // order of b+ tree
 
 class indexing{
 	// class to hold the information of index
@@ -176,6 +176,8 @@ Node* Tree::mergeChild(Node *ln, Node *rn) {
 	}
 	else {
 		Node* mergeNode = mergeChild(ln->children.back(), rn->children[0]);
+		rn->children[0]->parent = NULL;
+		delete(rn->children[0]);
 		removeElem(rn->children, 0);
 		for (int i = 0; i < rn->keys.size(); i++){
 			ln->keys.push_back(rn->keys[i]);
@@ -257,7 +259,6 @@ void Tree::overFlow(Node* node) {
 	// to settle the overflow of node
 	// note that this function is often called recursively, which
 	// finally ends at the root node
-	Node* ss = node;
 	if (_order >= node->keys.size()) return;
 	int mid = (_order + 1) / 2;
 	string insertKey = node->keys[mid];
@@ -375,9 +376,12 @@ bool Tree::remove(const string key) {
 			if (node == _root) {
 				if (node->keys.size() == 1) {
 					Node* flow_node = mergeChild(node->children[0], node->children[1]);
+					delete(node->children[1]);
 					removeElem(node->children, 1);
 					node->children[0]->parent = NULL;
 					_root = node->children[0];
+					removeElem(node->children, 0);
+					delete(node);
 					while (flow_node != _root) {
 						overFlow(flow_node);
 						flow_node = flow_node->parent;
@@ -387,6 +391,8 @@ bool Tree::remove(const string key) {
 				else {
 					removeElem(node->keys, index);
 					Node* flow_node = mergeChild(node->children[index], node->children[index + 1]);
+					node->children[index + 1]->parent = NULL;
+					delete(node->children[index + 1]);
 					removeElem(node->children, index + 1);
 					while (flow_node != _root) {
 						overFlow(flow_node);
@@ -398,6 +404,8 @@ bool Tree::remove(const string key) {
 			else {
 				removeElem(node->keys, index);
 				Node* flow_node = mergeChild(node->children[index], node->children[index + 1]);
+				node->children[index + 1]->parent = NULL;
+				delete(node->children[index + 1]);
 				removeElem(node->children, index + 1);
 				while (flow_node != _root) {
 					overFlow(flow_node);
@@ -430,7 +438,6 @@ void Tree::underFlow(Node* node) {
 	if(!pNode){
 		if (!node->isLeaf) {
 			if ((node->keys.size() == 0) && (node->children.size() > 0)) {
-
 				// case that the root (node) has no key already but has a sole child
 				// which is not empty
 				_root = node->children[0];
@@ -450,8 +457,8 @@ void Tree::underFlow(Node* node) {
 		Node* ls = pNode->children[rank - 1];
 		if((_order + 1) / 2 < ls->keys.size() + 1){
 			if (ls->isLeaf) {
-				pNode->keys[rank - 1] = ls->keys[ls->keys.size() - 1];
-				insertElem(node->keys, 0, ls->keys[ls->keys.size() - 1]);
+				pNode->keys[rank - 1] = ls->keys.back();
+				insertElem(node->keys, 0, ls->keys.back());
 				removeElem(ls->keys, ls->keys.size() - 1);
 				insertElem(node->data, 0, ls->data.back());
 				removeElem(ls->data, ls->data.size() - 1);

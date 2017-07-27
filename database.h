@@ -16,8 +16,6 @@
 		Mode B: when index is too large, do all operations and reading all index into memory is
 			not practical, so many operations should be done in memory and file seperatedly, thus,
 			synchronization between record in memory and that in file can't be kept all the time
-		Mode C: Likely with mode B in many concepts. But while the .idx file of mode A and mode B
-			is comptible, .idx file constructed and used under mode C is not universal with them.
 	Note that resulting from the concern on performance for further analysis and evaluation, mode 
 	A is chosen by de fault. What's more, the realization of mode B have different methods, which
 	are not always comptible with mode A on the structure of .idx file. More information could be 
@@ -30,63 +28,36 @@
 #include<fstream>
 #include<cstring>
 #include<sstream>
+#include<map>
 
 using namespace std;
 
 const int cacheSize = 10;	// the max size of cache
+const int bufferSize = 100;
 const int maxRecInMry = 100000000; // max number of record in memory simultaneously
 
 enum STORE_TYPE { INSERT, REPLACE, STORE };
 enum OPEN_TYPE { READ, WRITE, CREATE };
-enum DB_MODE {A, B, C}
+enum DB_MODE { A, B};
 
 const char SPERATOT = ';';	// character to seperate two index information
 const char SPACE = ' ';		// character to seperate different parts in an index
 
 class Token{
+public:
 	// class to record the modification of data in memory
-	Token(string key, string data, int pos, bool deletion = false){
-		modNode = node;
+	Token(string Key, string Data, int Pos, bool deletion = false){
+		key = Key;
+		data = Data;
+		pos = Pos;
 		deleted = deletion;
-	}
-	void refresh(fstream datafile){
-		if(!deleted){
-			datafile.seekp(pos);
-			datafile << data;
-		}
 	}
 	string key;
 	string data;
 	int pos;	// the pos to write new data record
 	bool newSpace; // whether write modified data at the end of data file
 	bool deleted; // show whether the operation on modNode is deletion
-}
-
-bool memFound(vector<pair<string, string>> cache, string key) {
-	// find whether the key existed in the cache
-	if (cache.empty()) return false;
-	pair<string, string> header;
-	for (int i = 0; i < cache.size(); i++){
-		if (cache[i].first == key) return true;
-	}
-	return false;
-}
-
-string getMem(vector<pair<string, string>> cache, string key) {
-	// get a data connoted with certain key in the cache
-	for (int i = 0; i < cache.size(); i++) {
-		if (cache[i].first == key) return cache[i].second;
-	}
-}
-
-void addCache(vector<pair<string, string>> cache, string key, string data) {
-	// add information into the cache
-	if (cache.size() == cacheSize) {
-		cache.erase(cache.end() - 1);
-		cache.insert(cache.begin(), pair<string, string>(key, data));
-	}
-	else cache.insert(cache.begin(), pair<string, string>(key, data));
-}
+};
 
 class mrySpace{
 	// class defined, which is the memory space used to store index information
@@ -107,7 +78,7 @@ public:
 class DBHANDLE{
 	// class of a database handle
 public:
-	DBHANDLE(char *pathname, OPEN_TYPE oflag, DB_MODE = A);
+	DBHANDLE(char *pathname, OPEN_TYPE oflag, DB_MODE mode);
 	Tree* tree;		// the data structure of database, default a b plus tree
 	Node* header;	// pointer to the first leaf node in tree
 	Node* hook;		// a reading iterator to traverse all leaf nodes
@@ -123,27 +94,30 @@ public:
 	void rewind();
 	string nextrec(string key);
 	bool reUse(string key, string data);
-	void write_idx(); // edit idx file when close the db
-	vector<pair<string, string>> cache;
+	void write_idx(DB_MODE); // edit idx file when close the db
+	vector<pair<string, string>> cache;	// a variable defined to store information watched lately
 	map<string, Token*> buffer;
-	void addToken(string key, string data, int pos, bool deleted = false);
-	void updateData();
-	// a variable defined to store information watched lately
+	void addToken(string key, string data, int pos, bool deleted);
+	void updateData();	// hold records changed lately with a threshold of number
 };
 
 void DBHANDLE::addToken(string key, string data, int pos, bool deleted = false){
 	// updata the information of record into the buffer
 	bool inBuffer = buffer.count(key) != 0;
-	if(!deletd){
-		buffer[key]->deletd = true;
-		return;
-	}
 	if(inBuffer){
+		if (deleted){
+			buffer[key]->deleted = true;
+			return;
+		}
 		buffer[key]->data = data;
 		buffer[key]->pos = pos;
 		return;
 	}
 	else{
+		if (deleted){
+			buffer[key] = new Token(key, "", -1, true);
+			return;
+		}
 		buffer[key] = new Token(key, data, pos);
 		return;
 	}
@@ -153,11 +127,12 @@ void DBHANDLE::updateData(){
 	// updata the record in buffer into the data file
 	for(map<string, Token*>::iterator it = buffer.begin(); it != buffer.end(); it++){
 		Token* token = it->second;
-		if(!token->deletd){
+		if(!token->deleted){
 			data_file.seekp(token->pos);
-			data_file << data_file->data;
+			data_file << token->data;
 		}
 	}
+	buffer.clear(); // clear all elements in buffer
 }
 
 DBHANDLE::DBHANDLE(char *pathname, OPEN_TYPE oflag, DB_MODE mode = A) {
@@ -184,7 +159,17 @@ DBHANDLE::DBHANDLE(char *pathname, OPEN_TYPE oflag, DB_MODE mode = A) {
 		// already, create two empty file
 		index_file.open(idx, ios::out|ios::in);
 		data_file.open(dat, ios::out|ios::in);
+		if ((!index_file) || (!index_file)){
+			index_file.open(idx, ios::out);
+			data_file.open(dat, ios::out);
+			index_file.close();
+			data_file.close();
+			index_file.open(idx, ios::out | ios::in);
+			data_file.open(dat, ios::out | ios::in);
+		}
 	}
+	if (!index_file) cout << "opening index file failed!" << endl;
+	if (!data_file) cout << "opening data file failed" << endl;
 	tree = new Tree();
 	filledMry = NULL;
 	emptyMry = NULL;
@@ -193,13 +178,13 @@ DBHANDLE::DBHANDLE(char *pathname, OPEN_TYPE oflag, DB_MODE mode = A) {
 	data_file.seekg(0);
 	if (oflag != CREATE) {
 		int readNum = 0;
-		if(mode != C){
+		if (mode != B){
 			// if mode = A or B, should pre construct a tree with large 
 			// record at advance
 			string key;
 			string len;
 			string offset;
-			while(!index_file.eof()){
+			while (!index_file.eof()){
 				// traverse all stored index information in .idx file
 				index_file >> key;
 				if (key.size() == 0) break;
@@ -208,23 +193,19 @@ DBHANDLE::DBHANDLE(char *pathname, OPEN_TYPE oflag, DB_MODE mode = A) {
 				len.erase(len.end() - 1);
 				tree->insert(key, indexing(atoi(offset.c_str()), atoi(len.c_str())));
 				mrySpace* new_space = new mrySpace(atoi(offset.c_str()), atoi(len.c_str()));
-				if(filledMry != NULL) filledMry->preSpace = new_space;
+				if (filledMry != NULL) filledMry->preSpace = new_space;
 				new_space->nextSpace = filledMry;
 				filledMry = new_space;
 				key = "";
 				len = "";
 				offset = "";
-				if(mode == B){
-					readNum ++;
-					if(readNum == maxRecInMry) break;
+				if (mode == B){
+					readNum++;
+					if (readNum == maxRecInMry) break;
 				}
 			}
 			header = tree->leafHeader;
 			hook = tree->leafHeader;
-		}
-		else{
-			// if mode = C, only the root node should be read at this timepoint
-			readIndexC(tree, index_file);
 		}
 	}
 }
@@ -315,9 +296,10 @@ bool DBHANDLE::reUse(string key, string data){
 				}	
 			}
 			tree->insert(key, indexing(pos, needLen));
-			// updateData();
-			data_file.seekg(pos);	// overwrite data information
-			data_file << data;
+			addToken(key, data, pos);
+			if(buffer.size() > bufferSize) updateData();
+			// data_file.seekg(pos);	// overwrite data information
+			// data_file << data;
 			return true;
 		}
 		header = header->nextSpace;
@@ -332,15 +314,27 @@ int DBHANDLE::Store(string key, string data, STORE_TYPE flag){
 		alread stored; if 'STORE', can perform both inserting and replacing operations, 
 		referring to whether the key has alread stored before.
 	*/
-	if (memFound(cache, key) && (flag == INSERT)) return -1;
+	if (buffer.count(key) != 0){
+		if (buffer[key]->deleted){
+			if (flag == REPLACE) return -1;
+			else{
+				buffer.erase(key);
+			}
+		}
+		else{
+			if (flag == INSERT) return -1;
+		}
+	}
 	pair<Node*, int> target = tree->search(key);
 	bool existed = target.first != NULL;
-	if((existed)&&(flag == INSERT)) return 1;
+	if((existed)&&(flag == INSERT)) return -1;
 	if((!existed)&&(flag == REPLACE)) return -1;
 	else{
 		int dataLen = data.size();
 		if(!existed){
-			bool reuse = reUse(key, data);
+			// cout << "not existed" << endl;
+			bool reuse = false;
+			// bool reuse = reUse(key, data);
 			// firstly, try to reuse memory released before
 			if(!reuse){
 				int maxOffSet;
@@ -354,12 +348,14 @@ int DBHANDLE::Store(string key, string data, STORE_TYPE flag){
 				filledMry = new_space;
 				int len = data.size();
 				tree->insert(key, indexing(maxOffSet, len));
-				// addToken(key, data, maxOffSet);
-				data_file.seekp(maxOffSet);
-				data_file << data;
+				addToken(key, data, maxOffSet);
+				if(buffer.size() > bufferSize) updateData();
+				// data_file.seekp(maxOffSet);
+				// data_file << data;
 			}
 		}
 		else{
+			// cout << "existed" << endl;
 			Node* dataNode = target.first;
 			int index = target.second;
 			if(dataNode->data[target.second].len >= dataLen){
@@ -374,9 +370,10 @@ int DBHANDLE::Store(string key, string data, STORE_TYPE flag){
 					}
 					else mryBlock = mryBlock->nextSpace;
 				}
-				// addToken(key, data, offset);
-				data_file.seekp(offset);
-				data_file << data;
+				addToken(key, data, offset);
+				if(buffer.size() > bufferSize) updateData();
+				// data_file.seekp(offset);
+				// data_file << data;
 			}
 			else{
 				// former memory space is not enough for new data
@@ -406,9 +403,10 @@ int DBHANDLE::Store(string key, string data, STORE_TYPE flag){
 				if(filledMry) filledMry->preSpace = new_space;
 				new_space->preSpace = NULL;
 				filledMry = new_space;
-				// addToken(key, data, maxOffSet);
-				data_file.seekp(maxOffSet);
-				data_file << data;
+				addToken(key, data, maxOffSet);
+				if(buffer.size() > bufferSize) updateData();
+				// data_file.seekp(maxOffSet);
+				// data_file << data;
 			}
 		}
 		return 0;
@@ -416,14 +414,13 @@ int DBHANDLE::Store(string key, string data, STORE_TYPE flag){
 }
 
 string DBHANDLE::Fetch(string key){
-	if (memFound(cache, key)) return getMem(cache, key);
-	if(buffer.count(key) != 0){
-		if(buffer[key]->deleted) return "";
+	if (buffer.count(key) != 0){
+		if (buffer[key]->deleted) return "";
 		else return buffer[key]->data;
 	}
-	// catch the data connected to give index 
-	// firstly, check the cache for searching key
+	// firstly, check the buffer for searching key
 	pair<Node* , int> target = tree->search(key);
+	// if key doesn't be found in cache buffer, search it in tree
 	if(!target.first) return "";
 	Node* dataNode = target.first;
 	int index = target.second;
@@ -432,12 +429,18 @@ string DBHANDLE::Fetch(string key){
 	data_file.seekg(offset);
 	string output;
 	for (int i = 0; i < len; i++) output += data_file.get();
-	addCache(cache, key, output);
 	return output;
 }
 
 int DBHANDLE::Delete(string key){
 	// delete the key stored in database
+	if (buffer.count(key) != 0){
+		if (buffer[key]->deleted) return 0;
+		else{
+			buffer[key]->deleted = true;
+			return 0;
+		}
+	}
 	pair<Node*, int> target = tree->search(key);
 	if(!target.first) return -1;	// if key doesn't be stored, return
 	else{
@@ -464,7 +467,8 @@ int DBHANDLE::Delete(string key){
 			}
 			header = header->nextSpace;
 		}
-		// addToken(key, "", -1, true);
+		addToken(key, "", -1, true);
+		if (buffer.size() > bufferSize) updateData();
 		tree->remove(key);
 		return 0;
 	}
@@ -491,8 +495,9 @@ DBHANDLE* db_open(char *pathname, OPEN_TYPE oflag, DB_MODE mode = A){
 
 void db_close(DBHANDLE* db){
 	// close database
-	db->write_idx();
+	db->write_idx();	// write the new .idx file
 	db->index_file.close();
+	db->updateData();	// update record in .data file
 	db->data_file.close();
 }
 
