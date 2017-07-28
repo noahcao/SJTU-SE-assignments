@@ -23,7 +23,7 @@
 	already.
 */
 
-#include"BPlusTree.h"
+#include"bplustree.h"
 #include<string>
 #include<fstream>
 #include<cstring>

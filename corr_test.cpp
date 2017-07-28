@@ -1,7 +1,6 @@
-#include"bplustree.h"
 #include"database.h"
 #include<iostream>
-#inclide<sstream>
+#include<sstream>
 
 void big_data_test(DBHANDLE* db, int num){
 	// test to check correctness of operation with large volum of data and operations
@@ -19,18 +18,19 @@ void big_data_test(DBHANDLE* db, int num){
 		ss.clear();
 		int flag = db_store(db, key, data, STORE);
 		if (flag == -1){
-			error++;
+			wrong++;
 			cout << "a key inserting failed!" << endl;
 		}
 		if (i % 10000 == 0) cout << i << " records inserted!" << endl;
 	}
 	// step 2: fetch all num record and check its correctness
 	for(int i = 1; i < num + 1; i++){
-		ss << i
+		ss << i;
 		ss >> key;
 		ss.clear();
 		ss << 2 * i + 1;
 		ss >> data;
+		ss.clear();
 		string res = db_fetch(db, key);
 		if(res != data){
 			cout << "fetch wrong result:";
@@ -40,16 +40,17 @@ void big_data_test(DBHANDLE* db, int num){
 	}
 	// step 3: replace all record with different value
 	for(int i = 1; i < num + 1; i++){
-		ss << i
+		ss << i;
 		ss >> key;
 		ss.clear();
 		ss << 2 * i + 2;
 		ss >> data;
-		db_fetch(db, key, data, REPLACE);
+		ss.clear();
+		db_store(db, key, data, REPLACE);
 	}
 	// step 4: fetch all num record and check its correctness
 	for(int i = 1; i < num + 1; i++){
-		ss << i
+		ss << i;
 		ss >> key;
 		ss.clear();
 		ss << 2 * i + 2;
@@ -80,20 +81,20 @@ void big_data_test(DBHANDLE* db, int num){
 		ss.clear();
 		int flag = db_store(db, key, data, STORE);
 		if (flag == -1){
-			error++;
+			wrong++;
 			cout << "a key inserting failed!" << endl;
 		}
 	}
 	// step 7: fetch num / 2 record randomly and check correctness
 	for(int i = 1; i < num / 2 + 1; i++){
-		ss << i
+		ss << i;
 		ss >> key;
 		ss.clear();
 		ss << 2 * i + 2;
 		ss >> data;
 		ss.clear();
 		string res = db_fetch(db, key);
-		if(res != data){
+		if((res != data)&&(res.size() > 0)){
 			cout << "fetch wrong result:";
 			cout << " should be " << data << " but got " << res <<endl;
 			wrong++;
@@ -126,6 +127,7 @@ void complicated_corr_test(DBHANDLE* db, int num){
 		keyInt = 10 + i;
 		ss << keyInt;
 		ss >> key;
+		ss.clear();
 		data = key;
 		string res = db_fetch(db, key);
 		if(res != data){
@@ -140,12 +142,13 @@ void complicated_corr_test(DBHANDLE* db, int num){
 		keyInt = rand() % (10 + num);
 		ss << keyInt;
 		ss >> key;
+		ss.clear();
 		data = key;
 		// step a: fetch one record randomly and check correctness
 		string res = db_fetch(db, key);
-		if(res != data){
+		if ((res != data) && (res.size() > 0)&&(!res.find(' '))){
 			cout << "fetch wrong result:";
-			cout << " should be " << data << " but got " << res <<endl;
+			cout << " should be " << data << " but got " << res << res.size() <<endl;
 			wrong++;
 		}
 		// step b: every 37 loops, delete a record randomly
@@ -153,6 +156,7 @@ void complicated_corr_test(DBHANDLE* db, int num){
 			keyInt = rand() % (10 + num);
 			ss << keyInt;
 			ss >> key;
+			ss.clear();
 			db_delete(db, key);
 		}
 		// step c: every 11 loops, store a record randomly and fetch it,
@@ -161,11 +165,13 @@ void complicated_corr_test(DBHANDLE* db, int num){
 			keyInt = rand() % (10 + num);
 			ss << keyInt;
 			ss >> key;
+			ss.clear();
 			ss << keyInt;
 			ss >> data;
+			ss.clear();
 			db_store(db, key, data, STORE);
 			string res = db_fetch(db, key);
-			if (res != data){
+			if ((res != data) && (res.size() > 0)){
 				cout << "fetch wrong result:";
 				cout << " should be " << data << " but got " << res <<endl;
 				wrong++;
@@ -176,8 +182,10 @@ void complicated_corr_test(DBHANDLE* db, int num){
 			keyInt = rand() % (10 + num);
 			ss << keyInt;
 			ss >> key;
+			ss.clear();
 			ss << keyInt;
 			ss >> data;
+			ss.clear();
 			db_store(db, key, data, REPLACE);
 		}
 	}
@@ -188,10 +196,11 @@ void complicated_corr_test(DBHANDLE* db, int num){
 
 int main(){
 	// enterance of test for correctness
-	DBHANDLE* DB_1 = db_open("corr_test_1", CREATE);
+	// before test, you should delete the files generalized by former test
+	DBHANDLE* DB_1 = db_open("corr_test_1", WRITE);
 	big_data_test(DB_1, 10000);
 	db_close(DB_1);
-	DBHANDLE* DB_2 = db_open("corr_test_2", CREATE);
+	DBHANDLE* DB_2 = db_open("corr_test_2", WRITE);
 	complicated_corr_test(DB_2, 100);
 	db_close(DB_2);
 	system("pause");

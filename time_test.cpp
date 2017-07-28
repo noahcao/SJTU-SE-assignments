@@ -111,8 +111,10 @@ void volume_nodesize_test(DBHANDLE* db, int nrec){
 		dataInt = keyInt;
 		ss << keyInt;
 		ss >> key;
+		ss.clear();
 		ss << dataInt;
 		ss >> data;
+		ss.clear();
 		db_store(db, key, data, STORE);
 	}
 	double end = clock();
@@ -124,6 +126,7 @@ void volume_nodesize_test(DBHANDLE* db, int nrec){
 		keyInt = i;
 		ss << keyInt;
 		ss >> key;
+		ss.clear();
 		string res = db_fetch(db, key);
 	}
 	end = clock();
@@ -136,8 +139,10 @@ void volume_nodesize_test(DBHANDLE* db, int nrec){
 		dataInt = keyInt;
 		ss << keyInt;
 		ss >> key;
+		ss.clear();
 		ss << dataInt;
 		ss >> data;
+		ss.clear();
 		db_store(db, key, data, REPLACE);
 	}
 	end = clock();
@@ -149,6 +154,7 @@ void volume_nodesize_test(DBHANDLE* db, int nrec){
 		keyInt = rand()%(nrec - 1);
 		ss << keyInt;
 		ss >> key;
+		ss.clear();
 		db_delete(db, key);
 	}
 	end = clock();
@@ -160,46 +166,55 @@ void buffer_time_test(DBHANDLE* db){
 	stringstream ss;
 	string key;
 	string data;
+	int keyInt;
+	int dataInt;
 	double start = clock();
-	for(int i = 0; i < 1000; i++){
+	for(int i = 0; i < 10000; i++){
 		// step 1: insert 50 records randomly
 		for(int k = 0; k < 50; k++){
-			keyInt = rand()%1000;
+			keyInt = rand()%10000;
 			dataInt = keyInt;
 			ss << keyInt;
 			ss >> key;
+			ss.clear();
 			ss << dataInt;
 			ss >> data;
+			ss.clear();
 			db_store(db, key, data, STORE);
 		}
 		// step 2: delte 20 records randomly
 		for(int k = 0; k < 20; k++){
-			keyInt = rand()%1000;
+			keyInt = rand()%10000;
 			ss << keyInt;
 			ss >> key;
+			ss.clear();
 			ss << dataInt;
 			ss >> data;
+			ss.clear();
 			db_store(db, key, data, REPLACE);
 		}
 		// step 3: fetch 20 records randomly
 		for(int k = 0; k < 20; k++){
-			keyInt = rand()%1000;
+			keyInt = rand()%10000;
 			ss << keyInt;
 			ss >> key;
+			ss.clear();
 			string res = db_fetch(db, key);
 		}
 		// step 4: delete 20 records randomly
 		for(int k = 0; k < 20; k++){
-			keyInt = rand()%1000;
+			keyInt = rand()%10000;
 			ss << keyInt;
 			ss >> key;
+			ss.clear();
 			db_delete(db, key);
 		}
 		// step 5: fetch 20 records randomly
 		for(int k = 0; k < 20; k++){
-			keyInt = rand()%1000;
+			keyInt = rand()%10000;
 			ss << keyInt;
 			ss >> key;
+			ss.clear();
 			string res = db_fetch(db, key);
 		}
 	}
@@ -210,15 +225,20 @@ void buffer_time_test(DBHANDLE* db){
 
 int main(){
 	// enterance to do test on time lantency
+	// it's recommanded that do one test once,to avoid the mess 
+	// of outpout hint
+
 	DBHANDLE* DB_1 = db_open("time_test_1", CREATE);
 	complicated_time_test(DB_1, 10000);
 	db_close(DB_1);
+
 	// DB_2 is both for the test about data volume and
 	// about node size, you should change the nodesize
 	// parameter in file "bplustree.h"
 	DBHANDLE* DB_2 = db_open("time_test_2", CREATE);
-	complicated_time_test(DB_2, 10000);
+	volume_nodesize_test(DB_2, 100000);
 	db_close(DB_2);
+
 	// DB_3 is for the test about buffer, you should change
 	// the parameter bufferSize in file "database.h"
 	DBHANDLE* DB_3 = db_open("time_test_3", CREATE);
