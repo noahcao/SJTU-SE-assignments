@@ -2,20 +2,27 @@
   <div id="app">
     <h1>{{title}}</h1>
     <div style="padding-left: 20px;padding-right: 20px" id="intro">
-      This page is used to relize a easy demo of our projectt - ' Appoint at sjtu'.
+      这个网页是用于服务交大的学生，帮助他们对自己需要的多人活动（比如一同打球、自习、户外活动等）寻找伙伴。
     </div>
     <div id="signature">
       <strong>Find source code of webpage on <a href="https://github.com/noahcao/front_end_homework">Github</a></strong>
     </div>
+    <div id='table'>
+        <p>
+         <router-link to="/Board">test</router-link>
+        </p>
+        <router-view/>
+    </div>
   </div>
 </template>
+
 
 <script>
 export default {
   name: 'app',
   data () {
     return {
-      title: 'Appoint At SJTU',
+      title: '约在交大',
       name: 'Homepage',
       fields: 'Computer Vision'
     }
