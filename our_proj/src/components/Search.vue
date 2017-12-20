@@ -25,8 +25,42 @@
       {{message | capitalize | upper}}
     </div>
     <p v-for="user in users">
-      {{user.name}}
+      {{user.name}}  
     </p>
+    <p v-for="(value, key) in strings">
+    {{key}}:{{value}}
+    </p>
+    <div v-bind:class="[errorClass,activeClass]"></div>
+    <button v-on:click="counterAdd">增加1</button>
+    <p>这个按钮被点击了 {{ counter }} 次。</p>
+    <button v-on:click="counterDes">减少1</button>
+    <p>{{counter}}</p>
+    <button  v-on:click="greet">Greet</button>
+    <div>
+      <p>
+    <button type="button" class="btn btn-default">
+        <span class="glyphicon glyphicon-sort-by-attributes"></span>
+    </button>
+    <button type="button" class="btn btn-default">
+        <span class="glyphicon glyphicon-sort-by-attributes-alt"></span>
+    </button>
+    <button type="button" class="btn btn-default">
+        <span class="glyphicon glyphicon-sort-by-order"></span>
+    </button>
+    <button type="button" class="btn btn-default">
+        <span class="glyphicon glyphicon-sort-by-order-alt"></span>
+    </button>
+    </p>
+    <button type="button" class="btn btn-default btn-lg">
+          <span class="glyphicon glyphicon-user"></span> User
+    </button>
+    <button type="button" class="btn btn-default btn-sm">
+          <span class="glyphicon glyphicon-user"></span> User
+    </button>
+    <button type="button" class="btn btn-default btn-xs">
+          <span class="glyphicon glyphicon-user"></span> User
+</button>
+    </div>
   </div>
 </template>
 
@@ -41,10 +75,18 @@
         input: 'input information',
         message: 'test_string',
         ok: true,
+        activeClass: 'active',
+        errorClass: 'text-danger',
+        counter: 0,
         users: [
           {name: 'CaoJinkun'},
           {name: 'LiLinghui'}
-          ]
+          ],
+        strings: {
+          value1: 'this is a test',
+          value2: 'dddd',
+          value3: 'sssadda'
+        }
       }
     },
     methods:{
@@ -53,7 +95,21 @@
         },
         changeok: function(){
             this.seen = !(this.seen)
-        }
+        },
+        counterAdd: function(){
+          this.counter += 1
+        },
+        counterDes: function(){
+          this.counter -=1
+        },
+        greet: function (event) {
+            // `this` 在方法里指当前 Vue 实例
+             alert('Hello ' + this.message + '!')
+            // `event` 是原生 DOM 事件
+            if (event) {
+            alert(event.target.tagName)
+          }
+      }
     },
     filters:{
         capitalize: function(value){
@@ -75,4 +131,12 @@
     background: #555;
     color: #fff;
   }
+  .active {
+  width: 100px;
+  height: 100px;
+  background: green;
+  }
+  .text-danger {
+          background: red;
+        }
 </style>

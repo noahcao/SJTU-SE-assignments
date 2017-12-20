@@ -8,6 +8,8 @@ function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
 
+var webpack=require('webpack');
+
 module.exports = {
   context: path.resolve(__dirname, '../'),
   entry: {
@@ -25,8 +27,16 @@ module.exports = {
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
       '@': resolve('src'),
+      'bootstrap':resolve('node_modules/bootstrap'),
     }
   },
+  plugins: [
+  new webpack.optimize.CommonsChunkPlugin('common.js'),
+  new webpack.ProvidePlugin({
+    jQuery: "jquery",
+    $: "jquery"
+    })
+    ],
   module: {
     rules: [
       ...(config.dev.useEslint? [{

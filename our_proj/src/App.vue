@@ -10,12 +10,15 @@
       <strong>Find source code of webpage on <a href="https://github.com/noahcao/front_end_homework">Github</a></strong>
     </div>
 
-    <div id='table'>
+    <div id='table' v-if="routershow">
         <p>
          <router-link to="/Board">test</router-link>
           <router-link to="/Search">search</router-link>
         </p>
         <router-view/>
+    </div>
+    <div>
+      <button v-on:click="say('hi')">Say hi</button>
     </div>
     <div role="dialog" class="modal fade" id="layer">
       <div class="modal-dialog">
@@ -45,8 +48,15 @@
       return {
         title: '约在交大',
         name: 'Homepage',
-        fields: 'Computer Vision'
+        fields: 'Computer Vision',
+        routershow: true
       }
+    },
+    methods:{
+      say: function (message) {
+      this.routershow = !this.routershow
+
+    }
     }
   };
   window.onload = function(){
