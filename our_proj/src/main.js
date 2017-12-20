@@ -14,3 +14,10 @@ new Vue({
   template: '<App/>',
   components: { App }
 })
+/*
+new Vue({
+  el: '#app',
+  router: Routers,
+  template: '<Main/>',
+  components: { Main }
+})*/

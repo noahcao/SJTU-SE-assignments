@@ -23,7 +23,7 @@ export default {
       title: '公告板',
       name: 'Board',
       users: [
-        {firstname:'ssssddd', lastname:'sssfffs'},
+        {firstname:'ssdd', lastname:'sssfffs'},
         {firstname:'ssss', lastname:'ssss'}
       ]
     }
