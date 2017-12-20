@@ -5,6 +5,7 @@ import App from './App'
 import Routers from './router'
 import Main from './Main'
 import $ from 'jquery'
+import datum from '@/store/data'
 
 Vue.config.productionTip = false
 
@@ -15,10 +16,4 @@ new Vue({
   template: '<App/>',
   components: { App }
 })
-/*
-new Vue({
-  el: '#app',
-  router: Routers,
-  template: '<Main/>',
-  components: { Main }
-})*/
+
