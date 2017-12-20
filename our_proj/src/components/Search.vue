@@ -24,6 +24,9 @@
       <br>
       {{message | capitalize | upper}}
     </div>
+    <p v-for="user in users">
+      {{user.name}}
+    </p>
   </div>
 </template>
 
@@ -37,7 +40,11 @@
         seen: true,
         input: 'input information',
         message: 'test_string',
-        ok: true
+        ok: true,
+        users: [
+          {name: 'CaoJinkun'},
+          {name: 'LiLinghui'}
+          ]
       }
     },
     methods:{
@@ -54,7 +61,7 @@
             value = value.toString()
             return value.charAt(0).toUpperCase() + value.slice(1)
         },
-      upper: function(value){
+        upper: function(value){
             if(!value) return ''
             value = value.toString()
             return value.charAt(3).toUpperCase() + value.slice(0,3) + value.slice(3)
