@@ -4,7 +4,7 @@
         <br>
         <h1>{{title}}</h1>
         <br>
-        {{newActivity.name}}
+        {{Posters.otherPoster[0].name}}
         <div id="board">
           <div id="navigator">
             <nav class="navbar navbar-default" role="navigation">
@@ -67,7 +67,6 @@
                 <button type="button" @click="commitPoster" class="btn btn-success">提交</button>
                 <button type="button" @click="cancelCommitPoster" class="btn btn-danger">取消</button>
                 <br><br>
-                {{newActivity.name}}
               </div>
             </transition>
           </div>
@@ -81,11 +80,14 @@
 
 
 <script>
+  import global_ from './Global'
   import Vue from 'vue'
   export default {
     name: 'app',
     data () {
       return {
+        Posters: global_.Posters,
+        studyPoster: global_.Posters.studyPoster,
         title: '约在交大',
         name: 'Homepage',
         fields: 'Computer Vision',
@@ -98,14 +100,14 @@
         newActivity:{
           contact: "",
           name: "",
-          type: "",
-          title: "",
-          month: "月份",
-          day: "日期",
-          start_hour: "",
-          end_hour: "",
-          start_minu: "",
-          end_minu: "",
+          type: 0,      // 1：约学习 2：约户外 3：约运动 4：其他
+          title: "", 
+          month: 0,
+          day: 0,
+          start_hour: 0,
+          end_hour: 0,
+          start_minu: 0,
+          end_minu: 0,
           months: [1,2,3,4,5,6,7,8,9,10,11,12],
           days: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]
         }
