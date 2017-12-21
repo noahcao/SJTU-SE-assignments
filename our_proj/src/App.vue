@@ -4,6 +4,7 @@
         <br>
         <h1>{{title}}</h1>
         <br>
+        {{Posters.otherPoster[0].name}}
         <div id="board">
           <div id="navigator">
             <nav class="navbar navbar-default" role="navigation">
