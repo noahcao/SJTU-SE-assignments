@@ -1,4 +1,4 @@
-  <template>
+<template>
     <div id="app">
       <div id='backboard'>
         <br>
@@ -105,7 +105,7 @@
           month: 0,
           day: 0,
           start_hour: 0,
-          end_hour: 0,
+          end_hour:0,
           start_minu: 0,
           end_minu: 0,
           months: [1,2,3,4,5,6,7,8,9,10,11,12],
@@ -121,7 +121,24 @@
         alert("dddddd")
       },
       commitPoster:function(){
-        alert("commit a new poster!")
+        if(selected == "约学习"){
+          this.newActivity.type = 1;
+        }
+        else if(selected == "约户外"){
+          this.newActivity.type = 2;
+        }
+        else if(selected == "约运动"){
+          this.newActivity.type = 3;
+        }
+        else if(selected == "其他"){
+          this.newActivity.type = 4;
+        }
+        var newPoster = {
+          name = this.newActivity.name
+          contact = this.newActivity.contact
+          title = this.newActivity.title
+          month = this.newActivity.mon
+        }
       },
       cancelCommitPoster:function(){
         this.newPosterVisible = false
