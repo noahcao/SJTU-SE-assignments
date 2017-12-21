@@ -4,6 +4,7 @@
         <br>
         <h1>{{title}}</h1>
         <br>
+        {{newActivity.name}}
         <div id="board">
           <div id="navigator">
             <nav class="navbar navbar-default" role="navigation">
@@ -34,7 +35,7 @@
             <div class="dialog-cover" v-if="newPosterVisible"></div>
             <transition name="test">
               <div class="dialog-content" v-if="newPosterVisible">
-                <p class="dialog-close" @click="newPosterVisible=false">x</p>
+                <p class="dialog-close" @click="cancelCommitPoster">x</p>
                 <br>
                 <div id="newActTitle">
                   <h3>发起新活动</h3><br>
@@ -57,11 +58,16 @@
                   <option v-for="day in newActivity.days" v-bind:value="day">{{day}}</option>
                 </select>
                 <br><br>
-                <input style="width:80px" v-model="newActivity.start"> ：
-                <input style="width:80px" v-model="newActivity.end">
+                活动时间：
+                <input style="width:50px" v-model="newActivity.start_hour"> ：
+                <input style="width:50px" v-model="newActivity.start_minu"> --
+                <input style="width:50px" v-model="newActivity.end_hour"> ：
+                <input style="width:50px" v-model="newActivity.end_minu">
                 <br><br> 
-                <button type="button" class="btn btn-success">提交</button>
-                <button type="button" class="btn btn-danger">取消</button>
+                <button type="button" @click="commitPoster" class="btn btn-success">提交</button>
+                <button type="button" @click="cancelCommitPoster" class="btn btn-danger">取消</button>
+                <br><br>
+                {{newActivity.name}}
               </div>
             </transition>
           </div>
@@ -89,11 +95,6 @@
         datum: this.datum,
         newPosterVisible: false,
         selected:'' ,
-        background: {
-          backimage: "url(" + require('./assets/SJTUbackground.gif') + ")",
-          backrepeat: "no-repeat",
-          backsize: "100%, 100%"
-        },
         newActivity:{
           contact: "",
           name: "",
@@ -101,8 +102,10 @@
           title: "",
           month: "月份",
           day: "日期",
-          start: "开始时间",
-          end: "结束时间",
+          start_hour: "",
+          end_hour: "",
+          start_minu: "",
+          end_minu: "",
           months: [1,2,3,4,5,6,7,8,9,10,11,12],
           days: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]
         }
@@ -114,6 +117,25 @@
       },
       showStudy: function(){
         alert("dddddd")
+      },
+      commitPoster:function(){
+        alert("commit a new poster!")
+      },
+      cancelCommitPoster:function(){
+        this.newPosterVisible = false
+        this.initNewPoster()
+      },
+      initNewPoster:function(){
+        this.newActivity.contact= ""
+        this.newActivity.name= ""
+        this.newActivity.type= ""
+        this.newActivity.title= "",
+        this.newActivity.month= "月份"
+        this.newActivity.day= "日期"
+        this.newActivity.start_hou= ""
+        this.newActivity.end_hour= ""
+        this.newActivity.start_minu= ""
+        this.newActivity.end_minu= ""
       }
     }
   }
