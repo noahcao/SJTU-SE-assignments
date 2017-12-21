@@ -1,4 +1,4 @@
-  <template>
+<template>
     <div id="app">
       <div id='backboard'>
         <br>
@@ -34,7 +34,7 @@
             <div class="dialog-cover" v-if="newPosterVisible"></div>
             <transition name="test">
               <div class="dialog-content" v-if="newPosterVisible">
-                <p class="dialog-close" @click="newPosterVisible=false">x</p>
+                <p class="dialog-close" @click="cancelCommitPoster">x</p>
                 <br>
                 <div id="newActTitle">
                   <h3>发起新活动</h3><br>
@@ -57,11 +57,15 @@
                   <option v-for="day in newActivity.days" v-bind:value="day">{{day}}</option>
                 </select>
                 <br><br>
-                <input style="width:80px" v-model="newActivity.start"> ：
-                <input style="width:80px" v-model="newActivity.end">
+                活动时间：
+                <input style="width:50px" v-model="newActivity.start_hour"> ：
+                <input style="width:50px" v-model="newActivity.start_minu"> --
+                <input style="width:50px" v-model="newActivity.end_hour"> ：
+                <input style="width:50px" v-model="newActivity.end_minu">
                 <br><br> 
-                <button type="button" class="btn btn-success">提交</button>
-                <button type="button" class="btn btn-danger">取消</button>
+                <button type="button" @click="commitPoster" class="btn btn-success">提交</button>
+                <button type="button" @click="cancelCommitPoster" class="btn btn-danger">取消</button>
+                <br><br>
               </div>
             </transition>
           </div>
@@ -75,11 +79,14 @@
 
 
 <script>
+  import global_ from './Global'
   import Vue from 'vue'
   export default {
     name: 'app',
     data () {
       return {
+        Posters: global_.Posters,
+        studyPoster: global_.Posters.studyPoster,
         title: '约在交大',
         name: 'Homepage',
         fields: 'Computer Vision',
@@ -89,20 +96,17 @@
         datum: this.datum,
         newPosterVisible: false,
         selected:'' ,
-        background: {
-          backimage: "url(" + require('./assets/SJTUbackground.gif') + ")",
-          backrepeat: "no-repeat",
-          backsize: "100%, 100%"
-        },
         newActivity:{
           contact: "",
           name: "",
-          type: "",
-          title: "",
-          month: "月份",
-          day: "日期",
-          start: "开始时间",
-          end: "结束时间",
+          type: 0,      // 1：约学习 2：约户外 3：约运动 4：其他
+          title: "", 
+          month: 0,
+          day: 0,
+          start_hour: 0,
+          end_hour:0,
+          start_minu: 0,
+          end_minu: 0,
           months: [1,2,3,4,5,6,7,8,9,10,11,12],
           days: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]
         }
@@ -114,6 +118,42 @@
       },
       showStudy: function(){
         alert("dddddd")
+      },
+      commitPoster:function(){
+        if(selected == "约学习"){
+          this.newActivity.type = 1;
+        }
+        else if(selected == "约户外"){
+          this.newActivity.type = 2;
+        }
+        else if(selected == "约运动"){
+          this.newActivity.type = 3;
+        }
+        else if(selected == "其他"){
+          this.newActivity.type = 4;
+        }
+        var newPoster = {
+          name = this.newActivity.name
+          contact = this.newActivity.contact
+          title = this.newActivity.title
+          month = this.newActivity.mon
+        }
+      },
+      cancelCommitPoster:function(){
+        this.newPosterVisible = false
+        this.initNewPoster()
+      },
+      initNewPoster:function(){
+        this.newActivity.contact= ""
+        this.newActivity.name= ""
+        this.newActivity.type= ""
+        this.newActivity.title= "",
+        this.newActivity.month= "月份"
+        this.newActivity.day= "日期"
+        this.newActivity.start_hou= ""
+        this.newActivity.end_hour= ""
+        this.newActivity.start_minu= ""
+        this.newActivity.end_minu= ""
       }
     }
   }
