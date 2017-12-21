@@ -92,7 +92,7 @@
         name: 'Homepage',
         fields: 'Computer Vision',
         routershow: true,
-        items:[{text:'约学习',value:'约学习'},{text:'约运动',value:'约运动'},{text:'约户外',value:'于户外'},{text:'其他',value:'其他'}],
+        items:[{text:'约学习',value:'约学习'},{text:'约运动',value:'约运动'},{text:'约户外',value:'约户外'},{text:'其他',value:'其他'}],
         selected:'',
         datum: this.datum,
         newPosterVisible: false,
