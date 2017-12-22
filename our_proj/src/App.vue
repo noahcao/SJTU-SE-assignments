@@ -4,13 +4,13 @@
         <br>
         <h1>{{title}}</h1>
         <br>
-        {{Posters.otherPoster[0].name}}
+
         <div id="board">
           <div id="navigator">
             <nav class="navbar navbar-default" role="navigation">
-              <div class="container-fluid"> 
+              <div class="container-fluid">
                 <div class="navbar-header">
-                 <a class="navbar-brand" href="#">导航菜单</a>
+                 <a class="navbar-brand" href="#"></a>
                </div>
                <div>
                 <ul class="nav navbar-nav">
@@ -22,14 +22,15 @@
                       <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">
-                      <li><a href="#">约学习</a></li>
-                      <li><a href="#">约运动</a></li>
+                      <li><a v-on:click="showStudy" href="#">约学习</a></li>
+                      <li><a v-on:click="showSport" href="#">约运动</a></li>
                       <li><a v-on:click="showOutDoor" href="#">约户外</a></li>
+                      <li><a v-on:click="showOthers" href="#">约其他</a></li>
                     </ul>
                   </li>
                 </ul>
-              </div>
             </div>
+              </div>
           </nav>
           <div class="dialog-wrap" v-if="newPosterVisible">
             <div class="dialog-cover" v-if="newPosterVisible"></div>
@@ -46,15 +47,15 @@
                 联系方式：<input v-model="newActivity.contact">
                 <br><br>
                 请选择活动类型：
-                <select v-model="selected">  
+                <select v-model="selected">
                   <option v-for="item in items" v-bind:value="item.value">{{item.text}}</option>
                 </select>
                 <br><br>
                 活动日期：
-                <select v-model="newActivity.month">  
+                <select v-model="newActivity.month">
                   <option v-for="month in newActivity.months" v-bind:value="month">{{month}}</option>
                 </select>
-                <select v-model="selected">  
+                <select v-model="selected">
                   <option v-for="day in newActivity.days" v-bind:value="day">{{day}}</option>
                 </select>
                 <br><br>
@@ -63,7 +64,7 @@
                 <input style="width:50px" v-model="newActivity.start_minu"> --
                 <input style="width:50px" v-model="newActivity.end_hour"> ：
                 <input style="width:50px" v-model="newActivity.end_minu">
-                <br><br> 
+                <br><br>
                 <button type="button" @click="commitPoster" class="btn btn-success">提交</button>
                 <button type="button" @click="cancelCommitPoster" class="btn btn-danger">取消</button>
                 <br><br>
@@ -72,6 +73,20 @@
           </div>
         </div>
       </div>
+        <div id="showBoard">
+        <div class="box-inline">
+
+
+        </div>
+        <div class="box-inline">
+
+          <h2>dsadsadasdasd</h2>
+        </div>
+        <div class="box-inline">
+
+
+        </div>
+        </div>
     </div>
   </div>
 </div>
@@ -101,7 +116,7 @@
           contact: "",
           name: "",
           type: 0,      // 1：约学习 2：约户外 3：约运动 4：其他
-          title: "", 
+          title: "",
           month: 0,
           day: 0,
           start_hour: 0,
@@ -118,7 +133,13 @@
         alert("dddd")
       },
       showStudy: function(){
-        alert("dddddd")
+        alert("study posters")
+      },
+      showSport: function(){
+        alert("show sport posters!")
+      },
+      showOthers: function(){
+        alert("")
       },
       commitPoster:function(){
         if(selected == "约学习"){
@@ -132,12 +153,6 @@
         }
         else if(selected == "其他"){
           this.newActivity.type = 4;
-        }
-        var newPoster = {
-          name = this.newActivity.name
-          contact = this.newActivity.contact
-          title = this.newActivity.title
-          month = this.newActivity.mon
         }
       },
       cancelCommitPoster:function(){
@@ -170,11 +185,6 @@
     text-align: center;
     background-color: rgba(1,1,1,0);
   }
-  h1{
-    font-family: "Arial","Microsoft YaHei",sans-serif;
-    text-align: center;
-    font-size: 300%;
-  }
   div {
     background: whitesmoke;
     text-align: center;
@@ -189,25 +199,27 @@
     background-repeat: no-repeat;
     background-size: 100%, 100%;
   }
-  .background{
-    position:absolute; top:0; left:0;   
-    position: relative;
-    z-index:-1;  
-    　　filter:blur(10px);
-    　  over-flow: hidden;   
-  }
   #backboard{
-    height: 500px;
-    margin-bottom: 10px;
+    height: 600px;
+    margin-bottom: 5%;
+    margin-top: 5%;
   }
   #navigator{
-    width: 60%;
+    width: 40%;
     height: 60px;
     margin: auto;
     position: absolute;
     align-self: center;
-    margin-left: 20%;
-    margin-right: 20%;
+    margin-left: 30%;
+    margin-right: 30%;
+  }
+  .box-inline{
+    display: inline;
+    background-color: yellow;
+    height: 200px;
+    width:900px;
+    border: solid red;
+    padding-top: 200px;
   }
   .dialog-wrap{
     border: solid gray;
