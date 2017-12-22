@@ -1,20 +1,14 @@
 <template>
     <div id="app">
       <div id='backboard'>
-        <br>
-        <h1>{{title}}</h1>
-        <br>
-
-        <div id="board">
-          <div id="navigator">
-            <nav class="navbar navbar-default" role="navigation">
+        <h1 style="padding-top: 2%;padding-bottom: 1%">{{title}}</h1>
+        <div id="board" style="background: rgba(255,255,255,0)">
+          <div id="navigator" style="background: rgba(255,255,255,0);height: 9%;width: 96%">
+            <nav class="navbar navbar-default" role="navigation" style="background: rgba(255,255,255,0); border-bottom: solid lightgray">
               <div class="container-fluid">
-                <div class="navbar-header">
-                 <a class="navbar-brand" href="#"></a>
-               </div>
                <div>
-                <ul class="nav navbar-nav">
-                  <li><a href="#" @click="newPosterVisible=true">新活动</a></li>
+                <ul class="nav navbar-nav" style="width: 50%; align-content: center;margin-left: 30%">
+                  <li><a href="#" @click="newPosterVisible=true" >发起新活动</a></li>
                   <li><a href="#">搜索活动</a></li>
                   <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -32,8 +26,8 @@
             </div>
               </div>
           </nav>
-          <div class="dialog-wrap" v-if="newPosterVisible">
-            <div class="dialog-cover" v-if="newPosterVisible"></div>
+          <div class="container" style="position: absolute;height: 420px;border:solid mediumpurple 3px; border-radius: 10px;width: 500px;margin-left: 30%;margin-right: 30%;z-index:9" v-if="newPosterVisible">
+            <div class="container" v-if="newPosterVisible"></div>
             <transition name="test">
               <div class="dialog-content" v-if="newPosterVisible">
                 <p class="dialog-close" @click="cancelCommitPoster">x</p>
@@ -73,19 +67,40 @@
           </div>
         </div>
       </div>
-        <div id="showBoard">
-        <div class="box-inline">
+        <br><br><br>
+        <div class="container" id="showBoard">
+            <div class="row" style="background: rgba(255,255,255,0)">
+              <div class="col-xs-4" id="studyboard">
+                <div class="card" style="border-radius: 10px;height: 100%;">
+                  <div class="card-block" style="border-radius: 8px;">
+                    <h4 class="card-title" id="studyboardtitle">约学习</h4>
+                    <p class="card-text" style="margin: 10px">部分"约学习"邀请展示如下：</p>
+                    <div class="card" style="border: solid;height: 100%;margin-right: 3%;margin-left: 3%">
+                      {{Posters.studyPoster[0].name}}
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-
-        </div>
-        <div class="box-inline">
-
-          <h2>dsadsadasdasd</h2>
-        </div>
-        <div class="box-inline">
-
-
-        </div>
+              <div class="col-xs-4" id="sportboard">
+                <div class="card" style="border-radius: 10px;height: 100%;">
+                  <div class="card-block" style="border-radius: 8px;">
+                    <h4 class="card-title" id="sportboardtitle">约运动</h4>
+                    <p class="card-text" style="margin: 10px">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    <a href="#" class="btn btn-primary">Button</a>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xs-4" id="outdoorboard">
+                <div class="card" style="border-radius: 10px;height: 100%;">
+                  <div class="card-block" style="border-radius: 8px;">
+                    <h4 class="card-title" id="outdoorboardtitle">约户外</h4>
+                    <p class="card-text" style="margin: 10px">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    <a href="#" class="btn btn-primary">Button</a>
+                  </div>
+                </div>
+              </div>
+            </div>
         </div>
     </div>
   </div>
@@ -203,23 +218,22 @@
     height: 600px;
     margin-bottom: 5%;
     margin-top: 5%;
+    background: rgba(255, 255, 255, 0.8)
   }
   #navigator{
     width: 40%;
     height: 60px;
     margin: auto;
     position: absolute;
-    align-self: center;
-    margin-left: 30%;
-    margin-right: 30%;
   }
-  .box-inline{
-    display: inline;
-    background-color: yellow;
-    height: 200px;
-    width:900px;
-    border: solid red;
-    padding-top: 200px;
+  #showBoard{
+    height: 73%;
+    width: 98%;
+    margin-left: 1%;
+    margin-right: 1%;
+    margin-top: 1%;
+    background-color: whitesmoke;
+    background: rgba(255, 255, 255, 0.2)
   }
   .dialog-wrap{
     border: solid gray;
@@ -229,5 +243,54 @@
   .dialog-close{
     width: 20px;
     float: right;
+  }
+  #studyboard{
+    width: 30%;
+    border: solid;
+    height: 420px;
+    border-radius: 10px;
+    padding: 0px;
+    margin-left: 2.5%;
+  }
+  #outdoorboard{
+    width: 30%;
+    border: solid;
+    height: 420px;
+    border-radius: 10px;
+    padding: 0px;
+    margin-right: 2.5%;
+  }
+  #sportboard{
+    width: 30%;
+    border: solid;
+    margin-right: 2.5%;
+    margin-left: 2.5%;
+    height: 420px;
+    border-radius: 10px;
+    padding: 0px;
+  }
+  #sportboardtitle{
+    border-bottom: solid;
+    background-color: lightskyblue;
+    margin: 0px;
+    padding: 10px;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px
+  }
+  #studyboardtitle{
+    border-bottom: solid;
+    background-color: coral;
+    margin: 0px;
+    padding: 10px;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px
+  }
+  #outdoorboardtitle{
+    border-bottom: solid;
+    background-color: greenyellow;
+    margin: 0px;
+    padding: 10px;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px
   }
 </style>
