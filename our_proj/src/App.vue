@@ -71,32 +71,67 @@
         <div class="container" id="showBoard">
             <div class="row" style="background: rgba(255,255,255,0)">
               <div class="col-xs-4" id="studyboard">
-                <div class="card" style="border-radius: 10px;height: 100%;">
+                <div class="card" style="border-radius: 10px">
                   <div class="card-block" style="border-radius: 8px;">
                     <h4 class="card-title" id="studyboardtitle">约学习</h4>
-                    <p class="card-text" style="margin: 10px">部分"约学习"邀请展示如下：</p>
-                    <div class="card" style="border: solid;height: 100%;margin-right: 3%;margin-left: 3%">
-                      {{Posters.studyPoster[0].name}}
+                  </div>
+                </div>
+                <div class="modal-body" >
+                  <div v-for="poster in Posters.studyPoster">
+                    <div class="card"
+                         style="border: solid orangered; border-radius: 10px;width: 100%;margin: 10px; background-color: lightsalmon"
+                         v-on:mouseenter="showContent(poster.name)" v-on:mouseleave="hideContent">
+                      <div class="card-block" style="border-radius: 10px">
+                        <h6 class="card-title" style="background-color: lightsalmon;padding-bottom: 2px">{{poster.title}}</h6>
+                        <div class="card-text" style="border-bottom-right-radius: 10px;border-bottom-left-radius: 10px">
+                          {{poster.month}}/{{poster.day}}  {{poster.start_hour}}:{{poster.start_minu}}--{{poster.end_hour}}:{{poster.end_minu}}
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
 
               <div class="col-xs-4" id="sportboard">
-                <div class="card" style="border-radius: 10px;height: 100%;">
+                <div class="card" style="border-radius: 10px;">
                   <div class="card-block" style="border-radius: 8px;">
                     <h4 class="card-title" id="sportboardtitle">约运动</h4>
-                    <p class="card-text" style="margin: 10px">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                    <a href="#" class="btn btn-primary">Button</a>
+                  </div>
+                </div>
+                <div class="modal-body" >
+                  <div v-for="poster in Posters.sportPoster">
+                  <div class="card"
+                       style="border: solid cornflowerblue; border-radius: 10px;width: 100%;margin: 10px; background-color: lightcyan"
+                       v-on:mouseenter="showContent(poster.name)" v-on:mouseleave="hideContent">
+                    <div class="card-block" style="border-radius: 10px">
+                      <h6 class="card-title" style="background-color: lightcyan;padding-bottom: 2px">{{poster.title}}</h6>
+                      <div class="card-text" style="border-bottom-right-radius: 10px;border-bottom-left-radius: 10px">
+                      {{poster.month}}/{{poster.day}}  {{poster.start_hour}}:{{poster.start_minu}}--{{poster.end_hour}}:{{poster.end_minu}}
+                      </div>
+                    </div>
+                  </div>
                   </div>
                 </div>
               </div>
               <div class="col-xs-4" id="outdoorboard">
-                <div class="card" style="border-radius: 10px;height: 100%;">
+                <div class="card" style="border-radius: 10px;">
                   <div class="card-block" style="border-radius: 8px;">
                     <h4 class="card-title" id="outdoorboardtitle">约户外</h4>
-                    <p class="card-text" style="margin: 10px">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                    <a href="#" class="btn btn-primary">Button</a>
+                  </div>
+                </div>
+                <div class="modal-body" >
+                  <div v-for="poster in Posters.outdoorPoster">
+                    <div class="card"
+                         style="border: solid green; border-radius: 10px;width: 100%;margin: 10px; background-color: lightgreen"
+                         v-on:mouseenter="showContent(poster.name)" v-on:mouseleave="hideContent">
+                      <div class="card-block" style="border-radius: 10px">
+                        <h6 class="card-title" style="background-color: lightgreen;padding-bottom: 2px">{{poster.title}}</h6>
+                        <div class="card-text" style="border-bottom-right-radius: 10px;border-bottom-left-radius: 10px">
+                          {{poster.month}}/{{poster.day}}  {{poster.start_hour}}:{{poster.start_minu}}--{{poster.end_hour}}:{{poster.end_minu}}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                   </div>
                 </div>
               </div>
@@ -144,6 +179,8 @@
       }
     },
     methods:{
+      showContent: function(content){
+      },
       showOutDoor: function () {
         alert("dddd")
       },
@@ -246,11 +283,12 @@
   }
   #studyboard{
     width: 30%;
-    border: solid;
     height: 420px;
     border-radius: 10px;
     padding: 0px;
     margin-left: 2.5%;
+    border: solid;
+
   }
   #outdoorboard{
     width: 30%;
@@ -291,6 +329,16 @@
     margin: 0px;
     padding: 10px;
     border-top-left-radius: 7px;
-    border-top-right-radius: 7px
+    border-top-right-radius: 7px;
+  }
+  .modal-body {
+    overflow-y: scroll;
+    position: absolute;
+    width: 100%;
+    padding: 0px;
+    height: 360px;
+  }
+  .card .sportcard{
+    border: solid cornflowerblue;
   }
 </style>

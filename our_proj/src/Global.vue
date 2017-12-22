@@ -4,7 +4,7 @@
 		names: "现有poster信息",
 		Posters:{
 			number: 0,
-			studyPoster:[ 
+			studyPoster:[
 			{
 				name: "曹金坤",
 				title: "约包图自习",
@@ -30,11 +30,96 @@
 				end_minu: 30
 
 			},
+        {
+          name: "曹金坤",
+          title: "约包图自习",
+          contact: "手机110",
+          type:1,
+          day: 25,
+          month: 12,
+          start_hour: 11,
+          end_hour: 19,
+          start_minu: 0,
+          end_minu: 2
+        },
+        {
+          name: "曹金坤",
+          title: "约上海图书馆自习",
+          contact: "手机110",
+          type:1,
+          day: 25,
+          month: 11,
+          start_hour: 11,
+          end_hour: 19,
+          start_minu: 0,
+          end_minu: 2
+        },
+        {
+          name: "拉格朗日",
+          title: "约李图复习牛顿力学",
+          contact: "手机110",
+          type:1,
+          day: 25,
+          month: 12,
+          start_hour: 11,
+          end_hour: 19,
+          start_minu: 0,
+          end_minu: 2
+        },
+        {
+          name: "曹金坤",
+          title: "约包图自习",
+          contact: "手机110",
+          type:1,
+          day: 25,
+          month: 12,
+          start_hour: 11,
+          end_hour: 19,
+          start_minu: 0,
+          end_minu: 2
+        },
+        {
+          name: "陈榕",
+          title: "约复习ics",
+          contact: "手机1234567",
+          type:1,
+          day: 25,
+          month: 12,
+          start_hour: 11,
+          end_hour: 19,
+          start_minu: 0,
+          end_minu: 2
+        },
+        {
+          name: "西蒙哪·波伏娃",
+          title: "约赏析存在主义著作",
+          contact: "自由法兰西编辑部见",
+          type:1,
+          day: 25,
+          month: 12,
+          start_hour: 11,
+          end_hour: 19,
+          start_minu: 0,
+          end_minu: 2
+        },
+        {
+          name: "爱因斯坦",
+          title: "新图复习物理",
+          contact: "飞鸽传书哦",
+          type:1,
+          day: 11,
+          month: 12,
+          start_hour: 11,
+          end_hour: 19,
+          start_minu: 0,
+          end_minu: 20
+        },
 			{
 				name : "任锐老师",
 				title: "大作业答辩",
 				contact: "54749110",
 				type: 1,
+        day: 25,
 				month: 12,
 				start_hour: 11,
 				end_hour: 19,
@@ -49,6 +134,7 @@
 					contact: "邮箱kingofnature@eateverything.com",
 					type:2,
 					month: 12,
+        day: 5,
 				start_hour: 11,
 				end_hour: 19,
 				start_minu: 0,
@@ -60,11 +146,82 @@
 				contact: "qq号54749110",
 				type:2,
 				month: 12,
+        day: 18,
 				start_hour: 10,
 				end_hour: 10,
 				start_minu: 0,
 				end_minu: 20
-			}
+			},
+        {
+          name: "李子男",
+          title:"约二餐前喂猫",
+          contact: "手机1212",
+          type:4,
+          start_hour: 10,
+          month:11,
+          day: 25,
+          end_hour: 10,
+          start_minu: 0,
+          end_minu: 20
+        },
+        {
+          name: "李子男",
+          title:"约一餐前喂猫",
+          contact: "手机1212",
+          type:4,
+          start_hour: 10,
+          month:11,
+          day: 25,
+          end_hour: 10,
+          start_minu: 0,
+          end_minu: 20
+        },
+        {
+          name: "编不出来名字了",
+          title:"苏州金鸡湖马拉松",
+          contact: "手机1212",
+          type:4,
+          start_hour: 10,
+          month:11,
+          day: 25,
+          end_hour: 10,
+          start_minu: 0,
+          end_minu: 20
+        },{
+          name: "曹金坤",
+          title:"东极岛摄影",
+          contact: "手机1212",
+          type:4,
+          start_hour: 10,
+          month:11,
+          day: 25,
+          end_hour: 10,
+          start_minu: 0,
+          end_minu: 20
+        },{
+          name: "奥巴马",
+          title:"约和贝尔一起野外生存",
+          contact: "白宫见",
+          type:4,
+          start_hour: 10,
+          month:11,
+          day: 25,
+          end_hour: 10,
+          start_minu: 0,
+          end_minu: 20
+        },
+        {
+          name: "贝尔·格里尔斯",
+          title:"约亚马孙丛林生存冒险",
+          contact: "邮箱aaaa@eatevery.com",
+          type:4,
+          start_hour: 10,
+          month:11,
+          day: 25,
+          end_hour: 10,
+          start_minu: 0,
+          end_minu: 20
+        }
 			],
 			sportPoster:[
 			{
@@ -73,11 +230,73 @@
 				contact: "手机111",
 				type:3,
 				month: 12,
+        day: 20,
 				start_hour: 10,
 				end_hour: 10,
 				start_minu: 0,
 				end_minu: 20
-			}],
+			},
+        {
+          name: "kobe",
+          title: "南体约篮球",
+          contact: "手机111",
+          type:3,
+          month: 12,
+          day: 25,
+          start_hour: 10,
+          end_hour: 20,
+          start_minu: 0,
+          end_minu: 20
+        },
+        {
+          name: "张继科",
+          title: "致远约羽毛球",
+          contact: "手机123445",
+          type:3,
+          month: 12,
+          day: 25,
+          start_hour: 10,
+          end_hour: 10,
+          start_minu: 0,
+          end_minu: 20
+        },
+        {
+          name: "波尔特",
+          title: "健步道约跑步",
+          contact: "飞鸽传书",
+          type:3,
+          month: 10,
+          day: 25,
+          start_hour: 12,
+          end_hour: 12,
+          start_minu: 0,
+          end_minu: 20
+        },
+        {
+          name: "姚明",
+          title: "南体约乒乓球",
+          contact: "手机111",
+          type:3,
+          month: 12,
+          day: 25,
+          start_hour: 10,
+          end_hour: 10,
+          start_minu: 0,
+          end_minu: 20
+        },
+        {
+          name: "曹金坤",
+          title: "南体约长跑",
+          contact: "手机1111",
+          type:3,
+          month: 12,
+          day: 25,
+          start_hour: 10,
+          end_hour: 10,
+          start_minu: 0,
+          end_minu: 20
+        }
+			],
 			otherPoster:[
 			{
 					name: "李子男",
@@ -85,10 +304,71 @@
 					contact: "手机1212",
 					type:4,
 					start_hour: 10,
+        month:11,
+        day: 25,
 				end_hour: 10,
 				start_minu: 0,
 				end_minu: 20
-			}]
+			},
+        {
+          name: "李子男",
+          title:"约一餐前喂猫",
+          contact: "手机1212",
+          type:4,
+          start_hour: 10,
+          month:11,
+          day: 25,
+          end_hour: 10,
+          start_minu: 0,
+          end_minu: 20
+        },
+        {
+          name: "编不出来名字了",
+          title:"苏州金鸡湖马拉松",
+          contact: "手机1212",
+          type:4,
+          start_hour: 10,
+          month:11,
+          day: 25,
+          end_hour: 10,
+          start_minu: 0,
+          end_minu: 20
+        },{
+          name: "曹金坤",
+          title:"东极岛摄影",
+          contact: "手机1212",
+          type:4,
+          start_hour: 10,
+          month:11,
+          day: 25,
+          end_hour: 10,
+          start_minu: 0,
+          end_minu: 20
+        },{
+          name: "奥巴马",
+          title:"约和贝尔一起野外生存",
+          contact: "白宫见",
+          type:4,
+          start_hour: 10,
+          month:11,
+          day: 25,
+          end_hour: 10,
+          start_minu: 0,
+          end_minu: 20
+        },
+        {
+          name: "贝尔·格里尔斯",
+          title:"约亚马孙丛林生存冒险",
+          contact: "邮箱aaaa@eatevery.com",
+          type:4,
+          start_hour: 10,
+          month:11,
+          day: 25,
+          end_hour: 10,
+          start_minu: 0,
+          end_minu: 20
+        }
+			]
 		}
 	}
 </script>
