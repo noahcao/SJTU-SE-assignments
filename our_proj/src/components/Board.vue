@@ -1,55 +1,76 @@
-<template>  
-  <nav class="navbar navbar-default" role="navigation">  
-    <div class="container-fluid">  
-      <!-- Brand and toggle get grouped for better mobile display -->  
-      <div class="navbar-header">  
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">  
-          <span class="sr-only">Toggle navigation</span>  
-          <span class="icon-bar"></span>  
-          <span class="icon-bar"></span>  
-          <span class="icon-bar"></span>  
-        </button>  
-        <a class="navbar-brand" href="#">{{ msg }}</a>  
-      </div>  
-  
-      <!-- Collect the nav links, forms, and other content for toggling -->  
-      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">  
-        <ul class="nav navbar-nav">  
-          <li class="active"><a href="#">Link</a></li>  
-          <li><a href="#">Link</a></li>  
-          <li class="dropdown">  
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <span class="caret"></span></a>  
-            <ul class="dropdown-menu" role="menu">  
-              <li><a href="#">Action</a></li>  
-              <li><a href="#">Another action</a></li>  
-              <li><a href="#">Something else here</a></li>  
-              <li class="divider"></li>  
-              <li><a href="#">Separated link</a></li>  
-              <li class="divider"></li>  
-              <li><a href="#">One more separated link</a></li>  
-            </ul>  
-          </li>  
-        </ul>  
-        <form class="navbar-form navbar-left" role="search">  
-          <div class="form-group">  
-            <input type="text" class="form-control" placeholder="Search">  
-          </div>  
-          <button type="submit" class="btn btn-default">Submit</button>  
-        </form>  
-        <ul class="nav navbar-nav navbar-right">  
-          <li><a href="#">Link</a></li>  
-          <li class="dropdown">  
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <span class="caret"></span></a>  
-            <ul class="dropdown-menu" role="menu">  
-              <li><a href="#">Action</a></li>  
-              <li><a href="#">Another action</a></li>  
-              <li><a href="#">Something else here</a></li>  
-              <li class="divider"></li>  
-              <li><a href="#">Separated link</a></li>  
-            </ul>  
-          </li>  
-        </ul>  
-      </div><!-- /.navbar-collapse -->  
-    </div><!-- /.container-fluid -->  
-  </nav>  
-</template>  
+<template>
+
+<div class="container" id="showBoard">
+
+      <div class="row" style="background: rgba(255,255,255,0)">
+
+        <div class="col-xs-4" id="studyboard">
+          <div class="card" style="border-radius: 10px">
+            <div class="card-block" style="border-radius: 8px;">
+              <h4 class="card-title" id="studyboardtitle">约学习</h4>
+            </div>
+          </div>
+          <div class="modal-body" >
+            <div v-for="poster in Posters.studyPoster">
+              <div class="card"
+              style="border: solid orangered; border-radius: 10px;width: 100%;margin: 10px; background-color: lightsalmon"
+              v-on:mouseenter="showContent(poster.name)" v-on:mouseleave="hideContent">
+              <div class="card-block" style="border-radius: 10px">
+                <h6 class="card-title" style="background-color: lightsalmon;padding-bottom: 2px">{{poster.title}}</h6>
+                <div class="card-text" style="border-bottom-right-radius: 10px;border-bottom-left-radius: 10px">
+                  {{poster.month}}/{{poster.day}}  {{poster.start_hour}}:{{poster.start_minu}}--{{poster.end_hour}}:{{poster.end_minu}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="col-xs-4" id="sportboard">
+        <div class="card" style="border-radius: 10px;">
+          <div class="card-block" style="border-radius: 8px;">
+            <h4 class="card-title" id="sportboardtitle">约运动</h4>
+          </div>
+        </div>
+        <div class="modal-body" >
+          <div v-for="poster in Posters.sportPoster">
+            <div class="card"
+            style="border: solid cornflowerblue; border-radius: 10px;width: 100%;margin: 10px; background-color: lightcyan"
+            v-on:mouseenter="showContent(poster.name)" v-on:mouseleave="hideContent">
+            <div class="card-block" style="border-radius: 10px">
+              <h6 class="card-title" style="background-color: lightcyan;padding-bottom: 2px">{{poster.title}}</h6>
+              <div class="card-text" style="border-bottom-right-radius: 10px;border-bottom-left-radius: 10px">
+                {{poster.month}}/{{poster.day}}  {{poster.start_hour}}:{{poster.start_minu}}--{{poster.end_hour}}:{{poster.end_minu}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="col-xs-4" id="outdoorboard">
+      <div class="card" style="border-radius: 10px;">
+        <div class="card-block" style="border-radius: 8px;">
+          <h4 class="card-title" id="outdoorboardtitle">约户外</h4>
+        </div>
+      </div>
+      <div class="modal-body" >
+        <div v-for="poster in Posters.outdoorPoster">
+          <div class="card"
+          style="border: solid green; border-radius: 10px;width: 100%;margin: 10px; background-color: lightgreen"
+          v-on:mouseenter="showContent(poster.name)" v-on:mouseleave="hideContent">
+          <div class="card-block" style="border-radius: 10px">
+            <h6 class="card-title" style="background-color: lightgreen;padding-bottom: 2px">{{poster.title}}</h6>
+            <div class="card-text" style="border-bottom-right-radius: 10px;border-bottom-left-radius: 10px">
+              {{poster.month}}/{{poster.day}}  {{poster.start_hour}}:{{poster.start_minu}}--{{poster.end_hour}}:{{poster.end_minu}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+  </div>
+  </template>
