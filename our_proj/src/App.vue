@@ -1,6 +1,7 @@
 <template>
     <div id="app">
       <div id='backboard'>
+      <button @click="newPosterVisible=!newPosterVisible">dddd</button>
         <h1 style="padding-top: 2%;padding-bottom: 1%">{{title}}</h1>
         <div id="board" style="background: rgba(255,255,255,0)">
           <div id="navigator" style="background: rgba(255,255,255,0);height: 9%;width: 96%">
@@ -8,7 +9,7 @@
               <div class="container-fluid">
                <div>
                 <ul class="nav navbar-nav" style="width: 50%; align-content: center;margin-left: 30%">
-                  <li><a href="#" @click="newPosterVisible=true" >发起新活动</a></li>
+                  <li><a href="#" @click="newPosterVisible=true">发起新活动</a></li>
                   <li><a href="#">搜索活动</a></li>
                   <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -26,10 +27,10 @@
             </div>
               </div>
           </nav>
-          <div class="container" style="position: absolute;height: 420px;border:solid mediumpurple 3px; border-radius: 10px;width: 500px;margin-left: 30%;margin-right: 30%;z-index:9" v-if="newPosterVisible">
-            <div class="container" v-if="newPosterVisible"></div>
+          <div class="container" style="position: absolute;height: 430px;border:solid mediumpurple 3px; border-radius: 10px;width: 500px;margin-left: 30%;margin-right: 30%;z-index:9" v-if="newPosterVisible">
+            <div class="container"></div>
             <transition name="test">
-              <div class="dialog-content" v-if="newPosterVisible">
+              <div class="dialog-content">
                 <p class="dialog-close" @click="cancelCommitPoster">x</p>
                 <br>
                 <div id="newActTitle">
@@ -159,9 +160,9 @@
         routershow: true,
         items:[{text:'约学习',value:'约学习'},{text:'约运动',value:'约运动'},{text:'约户外',value:'约户外'},{text:'其他',value:'其他'}],
         selected:'',
-        datum: this.datum,
         newPosterVisible: false,
         selected:'' ,
+        testreal: true,
         newActivity:{
           contact: "",
           name: "",
@@ -194,6 +195,7 @@
         alert("")
       },
       commitPoster:function(){
+        alert("commit a new poster!")
         if(selected == "约学习"){
           this.newActivity.type = 1;
         }
@@ -205,6 +207,17 @@
         }
         else if(selected == "其他"){
           this.newActivity.type = 4;
+        }
+        var newPoster={
+          name: this.newActivity.name,
+          title: this.newActivity.title,
+          type: this.newActivity.type,
+          month: this.newActivity.month,
+          day: this.newActivity.day,
+          start_hour: this.newActivity.start_hour,
+          end_hour: this.newActivity.end_hour,
+          start_minu: this.newActivity.start_minu,
+          end_minu: this.newActivity.end_minu
         }
       },
       cancelCommitPoster:function(){
@@ -223,6 +236,9 @@
         this.newActivity.start_minu= ""
         this.newActivity.end_minu= ""
       }
+    },
+    computed: {
+      newPosterVisible: false
     }
   }
 </script>
