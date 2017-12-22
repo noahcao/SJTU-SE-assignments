@@ -15,3 +15,5 @@ Logs of team work:
 * 李凌荟同学： 负责网页的“搜索栏”模块的构建
 * 曹金坤同学： 负责余下工作的开展实施
 
+## Sample Shot of Project Pages
+![The home page](./supply/threeboard.png)
