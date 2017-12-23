@@ -35,117 +35,119 @@
               <div id="newActTitle">
                 <h3>发起新活动</h3><br>
               </div>
-              请输入新活动的名称：<input v-model="newActivity.title"><br><br>
-              您的姓名：<input v-model="newActivity.name">
-              <br><br>
-              联系方式：<input v-model="newActivity.contact">
-              <br><br>
-              请选择活动类型：
-              <select v-model="selected">
-                <option v-for="item in items" v-bind:value="item.value">{{item.text}}</option>
-              </select>
-              <br><br>
-              活动日期：
-              <select v-model="newActivity.month">
-                <option v-for="month in newActivity.months" v-bind:value="month">{{month}}</option>
-              </select>
-              <select v-model="selected">
-                <option v-for="day in newActivity.days" v-bind:value="day">{{day}}</option>
-              </select>
-              <br><br>
-              活动时间：
-              <input style="width:50px" v-model="newActivity.start_hour"> ：
-              <input style="width:50px" v-model="newActivity.start_minu"> --
-              <input style="width:50px" v-model="newActivity.end_hour"> ：
-              <input style="width:50px" v-model="newActivity.end_minu">
-              <br><br>
-              <button type="button" @click="commitPoster" class="btn btn-success">提交</button>
-              <button type="button" @click="cancelCommitPoster" class="btn btn-danger">取消</button>
-              <br><br>
+          </nav>
+          <div class="container" style="position: absolute;
+          height: 420px;border:solid mediumpurple 3px; border-radius: 10px;width: 500px;margin-left: 30%;margin-right: 30%;z-index:9" v-if="newPosterVisible">
+            <div class="container" v-if="newPosterVisible"></div>
+            <transition name="test">
+              <div class="dialog-content" v-if="newPosterVisible">
+                <p class="dialog-close" @click="cancelCommitPoster">x</p>
+                <br>
+                <div id="newActTitle">
+                  <h3>发起新活动</h3><br>
+                </div>
+                请输入新活动的名称：<input v-model="newActivity.title"><br><br>
+                您的姓名：<input v-model="newActivity.name">
+                <br><br>
+                联系方式：<input v-model="newActivity.contact">
+                <br><br>
+                请选择活动类型：
+                <select v-model="selected">
+                  <option v-for="item in items" v-bind:value="item.value">{{item.text}}</option>
+                </select>
+                <br><br>
+                活动日期：
+                <select v-model="newActivity.month">
+                  <option v-for="month in newActivity.months" v-bind:value="month">{{month}}</option>
+                </select>
+                <select v-model="newActivity.day">
+                  <option v-for="day in newActivity.days" v-bind:value="day">{{day}}</option>
+                </select>
+                <br><br>
+                活动时间：
+                <input style="width:50px" v-model="newActivity.start_hour"> ：
+                <input style="width:50px" v-model="newActivity.start_minu"> --
+                <input style="width:50px" v-model="newActivity.end_hour"> ：
+                <input style="width:50px" v-model="newActivity.end_minu">
+                <br><br>
+                <button type="button" @click="commitPoster" class="btn btn-success">提交</button>
+                <button type="button" @click="cancelCommitPoster" class="btn btn-danger">取消</button>
+                <br><br>
             </div>
           </transition>
         </div>
       </div>
     </div>
     <br><br><br>
+        <div class="container" id="showBoard">
+            <div class="row" style="background: rgba(255,255,255,0)">
+              <div class="col-xs-4" id="studyboard">
+                <div class="card" style="border-radius: 10px">
+                  <div class="card-block" style="border-radius: 8px;">
+                    <h4 class="card-title" id="studyboardtitle">约学习</h4>
+                  </div>
+                </div>
+                <div class="modal-body" >
+                  <div v-for="poster in Posters.studyPoster">
+                    <div class="card"
+                         style="border: solid orangered; border-radius: 10px;width: 100%;margin: 10px; background-color: lightsalmon">
+                      <div class="card-block" style="border-radius: 10px">
+                        <h6 class="card-title" style="background-color: lightsalmon;padding-bottom: 2px">{{poster.title}}</h6>
+                        <div class="card-text" style="border-bottom-right-radius: 10px;border-bottom-left-radius: 10px">
+                          {{poster.month}}/{{poster.day}}  {{poster.start_hour}}:{{poster.start_minu}}--{{poster.end_hour}}:{{poster.end_minu}}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-
-
-    <div class="container" id="showBoard">
-      <div class="row" style="background: rgba(255,255,255,0)">
-
-        <div class="col-xs-4" id="studyboard">
-          <div class="card" style="border-radius: 10px">
-            <div class="card-block" style="border-radius: 8px;">
-              <h4 class="card-title" id="studyboardtitle">约学习</h4>
-            </div>
-          </div>
-          <div class="modal-body" >
-            <div v-for="poster in Posters.studyPoster">
-              <div class="card"
-              style="border: solid orangered; border-radius: 10px;width: 100%;margin: 10px; background-color: lightsalmon"
-              >
-              <div class="card-block" style="border-radius: 10px">
-                <h6 class="card-title" style="background-color: lightsalmon;padding-bottom: 2px">{{poster.title}}</h6>
-                <div class="card-text" style="border-bottom-right-radius: 10px;border-bottom-left-radius: 10px">
-                  {{poster.month}}/{{poster.day}}  {{poster.start_hour}}:{{poster.start_minu}}--{{poster.end_hour}}:{{poster.end_minu}}
+              <div class="col-xs-4" id="sportboard">
+                <div class="card" style="border-radius: 10px;">
+                  <div class="card-block" style="border-radius: 8px;">
+                    <h4 class="card-title" id="sportboardtitle">约运动</h4>
+                  </div>
+                </div>
+                <div class="modal-body" >
+                  <div v-for="poster in Posters.sportPoster">
+                  <div class="card"
+                       style="border: solid cornflowerblue; border-radius: 10px;width: 100%;margin: 10px; background-color: lightcyan">
+                    <div class="card-block" style="border-radius: 10px">
+                      <h6 class="card-title" style="background-color: lightcyan;padding-bottom: 2px">{{poster.title}}</h6>
+                      <div class="card-text" style="border-bottom-right-radius: 10px;border-bottom-left-radius: 10px">
+                      {{poster.month}}/{{poster.day}}  {{poster.start_hour}}:{{poster.start_minu}}--{{poster.end_hour}}:{{poster.end_minu}}
+                      </div>
+                    </div>
+                  </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xs-4" id="outdoorboard">
+                <div class="card" style="border-radius: 10px;">
+                  <div class="card-block" style="border-radius: 8px;">
+                    <h4 class="card-title" id="outdoorboardtitle">约户外</h4>
+                  </div>
+                </div>
+                <div class="modal-body" >
+                  <div v-for="poster in Posters.outdoorPoster">
+                    <div class="card"
+                         style="border: solid green; border-radius: 10px;width: 100%;margin: 10px; background-color: lightgreen">
+                      <div class="card-block" style="border-radius: 10px">
+                        <h6 class="card-title" style="background-color: lightgreen;padding-bottom: 2px">{{poster.title}}</h6>
+                        <div class="card-text" style="border-bottom-right-radius: 10px;border-bottom-left-radius: 10px">
+                          {{poster.month}}/{{poster.day}}  {{poster.start_hour}}:{{poster.start_minu}}--{{poster.end_hour}}:{{poster.end_minu}}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-
-
-      <div class="col-xs-4" id="sportboard">
-        <div class="card" style="border-radius: 10px;">
-          <div class="card-block" style="border-radius: 8px;">
-            <h4 class="card-title" id="sportboardtitle">约运动</h4>
-          </div>
-        </div>
-        <div class="modal-body" >
-          <div v-for="poster in Posters.sportPoster">
-            <div class="card"
-            style="border: solid cornflowerblue; border-radius: 10px;width: 100%;margin: 10px; background-color: lightcyan"
-            >
-            <div class="card-block" style="border-radius: 10px">
-              <h6 class="card-title" style="background-color: lightcyan;padding-bottom: 2px">{{poster.title}}</h6>
-              <div class="card-text" style="border-bottom-right-radius: 10px;border-bottom-left-radius: 10px">
-                {{poster.month}}/{{poster.day}}  {{poster.start_hour}}:{{poster.start_minu}}--{{poster.end_hour}}:{{poster.end_minu}}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
-
-
-    <div class="col-xs-4" id="outdoorboard">
-      <div class="card" style="border-radius: 10px;">
-        <div class="card-block" style="border-radius: 8px;">
-          <h4 class="card-title" id="outdoorboardtitle">约户外</h4>
-        </div>
-      </div>
-      <div class="modal-body" >
-        <div v-for="poster in Posters.outdoorPoster">
-          <div class="card"
-          style="border: solid green; border-radius: 10px;width: 100%;margin: 10px; background-color: lightgreen"
-          >
-          <div class="card-block" style="border-radius: 10px">
-            <h6 class="card-title" style="background-color: lightgreen;padding-bottom: 2px">{{poster.title}}</h6>
-            <div class="card-text" style="border-bottom-right-radius: 10px;border-bottom-left-radius: 10px">
-              {{poster.month}}/{{poster.day}}  {{poster.start_hour}}:{{poster.start_minu}}--{{poster.end_hour}}:{{poster.end_minu}}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-</div>
-</div>
-</div>
 </div>
 
 </template>
@@ -158,11 +160,11 @@
     name: 'app',
     data () {
       return {
+        message: 'Hello Vue.js!',
         Posters: global_.Posters,
-        studyPoster: global_.Posters.studyPoster,
         title: '约在交大',
         name: 'Homepage',
-        fields: 'Computer Vision',
+        fields: 'Web',
         routershow: true,
         items:[{text:'约学习',value:'约学习'},{text:'约运动',value:'约运动'},{text:'约户外',value:'约户外'},{text:'其他',value:'其他'}],
         selected:'',
@@ -229,16 +231,16 @@
           end_minu: this.newActivity.end_minu
         }
         if(this.selected == "约学习"){
-          Posters.studyPoster.push(newPoster)
+          this.Posters.studyPoster.push(newPoster)
         }
         else if(this.selected == "约户外"){
-          Posters.outdoorPoster.push(newPoster)
+          this.Posters.outdoorPoster.push(newPoster)
         }
         else if(this.selected == "约运动"){
-          Posters.sportPoster.push(newPoster)
+          this.Posters.sportPoster.push(newPoster)
         }
         else if(this.selected == "其他"){
-          Posters.otherPoster.push(newPoster)
+          this.Posters.otherPoster.push(newPoster)
         }
         if((this.newActivity.title=="")||(this.newActivity.contact="")){
           alert("content cannot be empty")
@@ -250,17 +252,21 @@
         this.newPosterVisible = false
         this.initNewPoster()
       },
+      cancelCommitPoster: function(){
+        this.newPosterVisible = false;
+        this.initNewPoster()
+      },
       initNewPoster:function(){
-        this.newActivity.contact= ""
-        this.newActivity.name= ""
-        this.newActivity.type= ""
-        this.newActivity.title= "",
-        this.newActivity.month= "月份"
-        this.newActivity.day= "日期"
-        this.newActivity.start_hou= ""
-        this.newActivity.end_hour= ""
-        this.newActivity.start_minu= ""
-        this.newActivity.end_minu= ""
+        this.newActivity.contact = "";
+        this.newActivity.name = "";
+        this.newActivity.type = 0;
+        this.newActivity.title = "";
+        this.newActivity.month = 0;
+        this.newActivity.day = 0;
+        this.newActivity.start_hour= 0;
+        this.newActivity.end_hour= 0;
+        this.newActivity.start_minu= 0;
+        this.newActivity.end_minu= 0;
       }
     }
   }
