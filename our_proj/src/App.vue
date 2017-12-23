@@ -1,29 +1,39 @@
 <template>
-    <div id="app">
-      <div id='backboard'>
-        <h1 style="padding-top: 2%;padding-bottom: 1%">{{title}}</h1>
-        <div id="board" style="background: rgba(255,255,255,0)">
-          <div id="navigator" style="background: rgba(255,255,255,0);height: 9%;width: 96%">
-            <nav class="navbar navbar-default" role="navigation" style="background: rgba(255,255,255,0); border-bottom: solid lightgray">
-              <div class="container-fluid">
-               <div>
-                <ul class="nav navbar-nav" style="width: 50%; align-content: center;margin-left: 30%">
-                  <li><a href="#" @click="newPosterVisible=true" >发起新活动</a></li>
-                  <li><a href="#">搜索活动</a></li>
-                  <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                      分类查看
-                      <b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu">
-                      <li><a v-on:click="showStudy" href="#">约学习</a></li>
-                      <li><a v-on:click="showSport" href="#">约运动</a></li>
-                      <li><a v-on:click="showOutDoor" href="#">约户外</a></li>
-                      <li><a v-on:click="showOthers" href="#">约其他</a></li>
-                    </ul>
-                  </li>
-                </ul>
+  <div id="app">
+    <div id='backboard'>
+      <h1 style="padding-top: 2%;padding-bottom: 1%">{{title}}</h1>
+      <div id="board" style="background: rgba(255,255,255,0)">
+        <div id="navigator" style="background: rgba(255,255,255,0);height: 9%;width: 96%">
+          <nav class="navbar navbar-default" role="navigation" style="background: rgba(255,255,255,0); border-bottom: solid lightgray">
+            <div class="container-fluid">
+             <div>
+              <ul class="nav navbar-nav" style="width: 50%; align-content: center;margin-left: 30%">
+                <li><a href="#" @click="createPoster">发起新活动</a></li>
+                <li><a href="#">搜索活动</a></li>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    分类查看
+                    <b class="caret"></b>
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li><a v-on:click="showStudy" href="#">约学习</a></li>
+                    <li><a v-on:click="showSport" href="#">约运动</a></li>
+                    <li><a v-on:click="showOutDoor" href="#">约户外</a></li>
+                    <li><a v-on:click="showOthers" href="#">约其他</a></li>
+                  </ul>
+                </li>
+              </ul>
             </div>
+          </div>
+        </nav>
+
+        <div class="container" style="position: absolute;height: 430px;border:solid mediumpurple 3px; border-radius: 10px;width: 500px;margin-left: 30%;margin-right: 30%;z-index:9" v-show="newPosterVisible">
+          <transition name="test">
+            <div class="dialog-content">
+              <p class="dialog-close" @click="cancelCommitPoster">x</p>
+              <br>
+              <div id="newActTitle">
+                <h3>发起新活动</h3><br>
               </div>
           </nav>
           <div class="container" style="position: absolute;
@@ -63,12 +73,12 @@
                 <button type="button" @click="commitPoster" class="btn btn-success">提交</button>
                 <button type="button" @click="cancelCommitPoster" class="btn btn-danger">取消</button>
                 <br><br>
-              </div>
-            </transition>
-          </div>
+            </div>
+          </transition>
         </div>
       </div>
-        <br><br><br>
+    </div>
+    <br><br><br>
         <div class="container" id="showBoard">
             <div class="row" style="background: rgba(255,255,255,0)">
               <div class="col-xs-4" id="studyboard">
@@ -134,11 +144,12 @@
                 </div>
               </div>
             </div>
+          </div>
         </div>
+      </div>
     </div>
-  </div>
 </div>
-</div>
+
 </template>
 
 
@@ -157,9 +168,9 @@
         routershow: true,
         items:[{text:'约学习',value:'约学习'},{text:'约运动',value:'约运动'},{text:'约户外',value:'约户外'},{text:'其他',value:'其他'}],
         selected:'',
-        datum: this.datum,
         newPosterVisible: false,
         selected:'' ,
+        testreal: true,
         newActivity:{
           contact: "",
           name: "",
@@ -191,8 +202,12 @@
       showOthers: function(){
         alert("")
       },
+      createPoster: function(){
+        this.newPosterVisible = true
+        this.initNewPoster()
+      },
       commitPoster:function(){
-        if(this.selected == '约学习'){
+        if(this.selected == "约学习"){
           this.newActivity.type = 1;
         }
         else if(this.selected == "约户外"){
@@ -230,6 +245,10 @@
         if((this.newActivity.title=="")||(this.newActivity.contact="")){
           alert("content cannot be empty")
         }
+        this.newPosterVisible = false
+        initNewPoster()
+      },
+      cancelCommitPoster:function(){
         this.newPosterVisible = false
         this.initNewPoster()
       },
@@ -314,7 +333,6 @@
     padding: 0px;
     margin-left: 2.5%;
     border: solid;
-
   }
   #outdoorboard{
     width: 30%;
@@ -363,8 +381,5 @@
     width: 100%;
     padding: 0px;
     height: 360px;
-  }
-  .card .sportcard{
-    border: solid cornflowerblue;
   }
 </style>
