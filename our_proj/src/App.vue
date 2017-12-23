@@ -26,7 +26,8 @@
             </div>
               </div>
           </nav>
-          <div class="container" style="position: absolute;height: 420px;border:solid mediumpurple 3px; border-radius: 10px;width: 500px;margin-left: 30%;margin-right: 30%;z-index:9" v-if="newPosterVisible">
+          <div class="container" style="position: absolute;
+          height: 420px;border:solid mediumpurple 3px; border-radius: 10px;width: 500px;margin-left: 30%;margin-right: 30%;z-index:9" v-if="newPosterVisible">
             <div class="container" v-if="newPosterVisible"></div>
             <transition name="test">
               <div class="dialog-content" v-if="newPosterVisible">
@@ -49,7 +50,7 @@
                 <select v-model="newActivity.month">
                   <option v-for="month in newActivity.months" v-bind:value="month">{{month}}</option>
                 </select>
-                <select v-model="selected">
+                <select v-model="newActivity.day">
                   <option v-for="day in newActivity.days" v-bind:value="day">{{day}}</option>
                 </select>
                 <br><br>
@@ -79,8 +80,7 @@
                 <div class="modal-body" >
                   <div v-for="poster in Posters.studyPoster">
                     <div class="card"
-                         style="border: solid orangered; border-radius: 10px;width: 100%;margin: 10px; background-color: lightsalmon"
-                         v-on:mouseenter="showContent(poster.name)" v-on:mouseleave="hideContent">
+                         style="border: solid orangered; border-radius: 10px;width: 100%;margin: 10px; background-color: lightsalmon">
                       <div class="card-block" style="border-radius: 10px">
                         <h6 class="card-title" style="background-color: lightsalmon;padding-bottom: 2px">{{poster.title}}</h6>
                         <div class="card-text" style="border-bottom-right-radius: 10px;border-bottom-left-radius: 10px">
@@ -101,8 +101,7 @@
                 <div class="modal-body" >
                   <div v-for="poster in Posters.sportPoster">
                   <div class="card"
-                       style="border: solid cornflowerblue; border-radius: 10px;width: 100%;margin: 10px; background-color: lightcyan"
-                       v-on:mouseenter="showContent(poster.name)" v-on:mouseleave="hideContent">
+                       style="border: solid cornflowerblue; border-radius: 10px;width: 100%;margin: 10px; background-color: lightcyan">
                     <div class="card-block" style="border-radius: 10px">
                       <h6 class="card-title" style="background-color: lightcyan;padding-bottom: 2px">{{poster.title}}</h6>
                       <div class="card-text" style="border-bottom-right-radius: 10px;border-bottom-left-radius: 10px">
@@ -122,8 +121,7 @@
                 <div class="modal-body" >
                   <div v-for="poster in Posters.outdoorPoster">
                     <div class="card"
-                         style="border: solid green; border-radius: 10px;width: 100%;margin: 10px; background-color: lightgreen"
-                         v-on:mouseenter="showContent(poster.name)" v-on:mouseleave="hideContent">
+                         style="border: solid green; border-radius: 10px;width: 100%;margin: 10px; background-color: lightgreen">
                       <div class="card-block" style="border-radius: 10px">
                         <h6 class="card-title" style="background-color: lightgreen;padding-bottom: 2px">{{poster.title}}</h6>
                         <div class="card-text" style="border-bottom-right-radius: 10px;border-bottom-left-radius: 10px">
@@ -151,11 +149,11 @@
     name: 'app',
     data () {
       return {
+        message: 'Hello Vue.js!',
         Posters: global_.Posters,
-        studyPoster: global_.Posters.studyPoster,
         title: '约在交大',
         name: 'Homepage',
-        fields: 'Computer Vision',
+        fields: 'Web',
         routershow: true,
         items:[{text:'约学习',value:'约学习'},{text:'约运动',value:'约运动'},{text:'约户外',value:'约户外'},{text:'其他',value:'其他'}],
         selected:'',
@@ -194,34 +192,62 @@
         alert("")
       },
       commitPoster:function(){
-        if(selected == "约学习"){
+        if(this.selected == '约学习'){
           this.newActivity.type = 1;
         }
-        else if(selected == "约户外"){
+        else if(this.selected == "约户外"){
           this.newActivity.type = 2;
         }
-        else if(selected == "约运动"){
+        else if(this.selected == "约运动"){
           this.newActivity.type = 3;
         }
-        else if(selected == "其他"){
+        else if(this.selected == "其他"){
           this.newActivity.type = 4;
         }
-      },
-      cancelCommitPoster:function(){
+        var newPoster={
+          name: this.newActivity.name,
+          title: this.newActivity.title,
+          type: this.newActivity.type,
+          month: this.newActivity.month,
+          day: this.newActivity.day,
+          start_hour: this.newActivity.start_hour,
+          end_hour: this.newActivity.end_hour,
+          start_minu: this.newActivity.start_minu,
+          end_minu: this.newActivity.end_minu
+        }
+        if(this.selected == "约学习"){
+          this.Posters.studyPoster.push(newPoster)
+        }
+        else if(this.selected == "约户外"){
+          this.Posters.outdoorPoster.push(newPoster)
+        }
+        else if(this.selected == "约运动"){
+          this.Posters.sportPoster.push(newPoster)
+        }
+        else if(this.selected == "其他"){
+          this.Posters.otherPoster.push(newPoster)
+        }
+        if((this.newActivity.title=="")||(this.newActivity.contact="")){
+          alert("content cannot be empty")
+        }
         this.newPosterVisible = false
         this.initNewPoster()
       },
+      cancelCommitPoster: function(){
+        this.newPosterVisible = false;
+        this.initNewPoster()
+      },
       initNewPoster:function(){
-        this.newActivity.contact= ""
-        this.newActivity.name= ""
-        this.newActivity.type= ""
-        this.newActivity.title= "",
-        this.newActivity.month= "月份"
-        this.newActivity.day= "日期"
-        this.newActivity.start_hou= ""
-        this.newActivity.end_hour= ""
-        this.newActivity.start_minu= ""
-        this.newActivity.end_minu= ""
+        this.newActivity.contact = "";
+        this.newActivity.name = "";
+        this.newActivity.type = 0;
+        this.newActivity.title = "";
+        this.newActivity.month = 0;
+        this.newActivity.day = 0;
+        this.newActivity.start_hour= 0;
+        this.newActivity.end_hour= 0;
+        this.newActivity.start_minu= 0;
+        this.newActivity.end_minu= 0;
       }
     }
   }
