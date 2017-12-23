@@ -17,3 +17,10 @@ Logs of team work:
 
 ## Sample Shot of Project Pages
 ![The home page](./supply/threeboard.png)
+<center>*网站主页*</center>
+
+![Create new poster](./supply/commitNewPoster.png)
+<center>*创建新poster*</center>
+
+![Show details](./supply/detailShown.png)
+<center>*展示poster详情*</center>
