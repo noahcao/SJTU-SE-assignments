@@ -246,13 +246,11 @@
     data () {
       return {
         searchString: "",
-        counter: 0,
         Posters: global_.Posters,
         title: '约在交大',
         routershow: true,
         items:[{text:'约学习',value:'约学习'},{text:'约运动',value:'约运动'},{text:'约户外',value:'约户外'},{text:'其他',value:'其他'}],
         selected:'',
-        datum: this.datum,
         newPosterVisible: false,
         selected:'' ,
         newActivity:{
@@ -272,20 +270,6 @@
       }
     },
     methods:{
-      showContent: function(content){
-      },
-      showOutDoor: function () {
-        alert("dddd")
-      },
-      showStudy: function(){
-        alert("study posters")
-      },
-      showSport: function(){
-        alert("show sport posters!")
-      },
-      showOthers: function(){
-        alert("")
-      },
       commitPoster:function(){
         if(this.selected == '约学习'){
           this.newActivity.type = 1;
