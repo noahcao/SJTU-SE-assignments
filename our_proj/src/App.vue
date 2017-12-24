@@ -76,7 +76,7 @@
                 <p class="dialog-close" @click="poster.searchShown=false">x</p>
                 <br>
                 <h4>相关活动</h4>
-                类型：<strong>约运动</strong>
+                类型：<strong>约学习</strong>
                 <br>
                 活动名称: <strong>{{poster.title}}</strong>
                 <br>
@@ -118,7 +118,7 @@
                 <p class="dialog-close" @click="poster.searchShown=false">x</p>
                 <br>
                 <h4>相关活动</h4>
-                类型：<strong>约运动</strong>
+                类型：<strong>约户外</strong>
                 <br>
                 活动名称: <strong>{{poster.title}}</strong>
                 <br>
