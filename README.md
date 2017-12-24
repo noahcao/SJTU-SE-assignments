@@ -15,12 +15,16 @@ Logs of team work:
 * 李凌荟同学： 负责网页的“搜索栏”模块的构建
 * 曹金坤同学： 负责余下工作的开展实施
 
-## Sample Shot of Project Pages
+## 页面部分效果图
+
+#### 主页效果
 ![The home page](./supply/threeboard.png)
-<center>*网站主页*</center>
 
+#### 创建新的活动信息
 ![Create new poster](./supply/commitNewPoster.png)
-<center>*创建新poster*</center>
 
+#### 展示活动详情
 ![Show details](./supply/detailShown.png)
-<center>*展示poster详情*</center>
+
+#### 搜索相关活动
+![Search posters](./supply/searchPoster.png)

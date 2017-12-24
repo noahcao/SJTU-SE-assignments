@@ -69,21 +69,34 @@
           </div>
 
           <div class="container" v-for="poster in Posters.studyPoster" style="position: absolute;
-          height: 300px;border:solid red 5px; border-radius: 8px;width: 300px; margin-left: 435px;margin-top: 5%;
-          z-index:99" v-if="poster.searchShown">
-            <div style="border: solid yellow;width: 90%;height: 90%;margin: 5%">
-            {{poster. name}}
-            <button @click="poster.searchShown=false" style="right: 0px;margin-top: 0px">x</button>
-          </div>
+          height: 300px;border:solid 5px; border-radius: 8px;width: 300px; margin-left: 60px;margin-top: 5%;
+          z-index:99;background-color: lightsalmon" v-if="poster.searchShown">
+            <transition style="width: 95%;height: 95%;margin: 2.5%;line-height: 40px;background-color: lightsalmon">
+              <div class="dialog-content" v-if="poster.searchShown" style="background-color: lightsalmon;line-height: 30px">
+                <p class="dialog-close" @click="poster.searchShown=false">x</p>
+                <br>
+                <h4>相关活动</h4>
+                类型：<strong>约运动</strong>
+                <br>
+                活动名称: <strong>{{poster.title}}</strong>
+                <br>
+                发起人姓名: <strong>{{poster.name}}</strong>
+                <br>
+                联系方式: <strong>{{poster.contact}}</strong>
+                <br>
+                活动时间: <strong>{{poster.month}}/{{poster.day}} {{poster.start_hour}}:{{poster.start_minu}} -- {{poster.end_hour}}:{{poster.end_minu}}</strong>
+              </div>
+            </transition>
           </div>
 
           <div class="container" v-for="poster in Posters.sportPoster" style="position: absolute;
-          height: 300px;border:solid 5px; border-radius: 8px;width: 300px; margin-left: 435px;margin-top: 5%;
+          height: 300px;border:solid 5px; border-radius: 8px;width: 300px; margin-left: 440px;margin-top: 5%;
           z-index:99;background-color: lightskyblue" v-if="poster.searchShown">
-            <div style="width: 95%;height: 95%;margin: 2.5%;line-height: 40px;background-color: lightskyblue">
-              <strong>相关活动</strong>
-              <button @click="poster.searchShown=false" style="margin-left: 0px;position: relative">x</button>
-              <br>
+            <transition style="width: 95%;height: 95%;margin: 2.5%;line-height: 40px;background-color: lightskyblue">
+              <div class="dialog-content" v-if="poster.searchShown" style="background-color: lightskyblue;line-height: 30px">
+                <p class="dialog-close" @click="poster.searchShown=false">x</p>
+                <br>
+                <h4>相关活动</h4>
               类型：<strong>约运动</strong>
               <br>
               活动名称: <strong>{{poster.title}}</strong>
@@ -93,16 +106,29 @@
               联系方式: <strong>{{poster.contact}}</strong>
               <br>
               活动时间: <strong>{{poster.month}}/{{poster.day}} {{poster.start_hour}}:{{poster.start_minu}} -- {{poster.end_hour}}:{{poster.end_minu}}</strong>
-            </div>
+              </div>
+            </transition>
           </div>
 
           <div class="container" v-for="poster in Posters.outdoorPoster" style="position: absolute;
-          height: 300px;border:solid green 5px; border-radius: 8px;width: 300px; margin-left: 435px;margin-top: 5%;
-          z-index:99" v-if="poster.searchShown">
-            <div style="border: solid yellow;width: 90%;height: 90%;margin: 5%">
-              {{poster. name}}
-              <button @click="poster.searchShown=false" style="right: 0px;margin-top: 0px">x</button>
-            </div>
+          height: 300px;border:solid 5px; border-radius: 8px;width: 300px; margin-left: 815px;margin-top: 5%;
+          z-index:99;background-color: lightgreen" v-if="poster.searchShown">
+            <transition style="width: 95%;height: 95%;margin: 2.5%;line-height: 40px;background-color: lightgreen">
+              <div class="dialog-content" v-if="poster.searchShown" style="background-color: lightgreen;line-height: 30px">
+                <p class="dialog-close" @click="poster.searchShown=false">x</p>
+                <br>
+                <h4>相关活动</h4>
+                类型：<strong>约运动</strong>
+                <br>
+                活动名称: <strong>{{poster.title}}</strong>
+                <br>
+                发起人姓名: <strong>{{poster.name}}</strong>
+                <br>
+                联系方式: <strong>{{poster.contact}}</strong>
+                <br>
+                活动时间: <strong>{{poster.month}}/{{poster.day}} {{poster.start_hour}}:{{poster.start_minu}} -- {{poster.end_hour}}:{{poster.end_minu}}</strong>
+              </div>
+            </transition>
           </div>
 
           </div>
@@ -281,6 +307,7 @@
           type: this.newActivity.type,
           month: this.newActivity.month,
           day: this.newActivity.day,
+          contact: this.newActivity.contact,
           start_hour: this.newActivity.start_hour,
           end_hour: this.newActivity.end_hour,
           start_minu: this.newActivity.start_minu,
