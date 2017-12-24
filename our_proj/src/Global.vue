@@ -16,7 +16,8 @@
           end_hour: 19,
           start_minu: 0,
           end_minu: 2,
-          cardShown: false
+          cardShown: false,
+          searchShown: false
         },
         {
           name: "李凌荟",
@@ -29,7 +30,8 @@
           end_hour: 17,
           start_minu: 30,
           end_minu: 30,
-          cardShown: false
+          cardShown: false,
+          searchShown: false
 
         },
         {
@@ -43,7 +45,8 @@
           end_hour: 19,
           start_minu: 0,
           end_minu: 2,
-          cardShown: false
+          cardShown: false,
+          searchShown: false
         },
         {
           name: "曹金坤",
@@ -56,7 +59,8 @@
           end_hour: 19,
           start_minu: 0,
           end_minu: 2,
-          cardShown: false
+          cardShown: false,
+          searchShown: false
         },
         {
           name: "拉格朗日",
@@ -69,7 +73,8 @@
           end_hour: 19,
           start_minu: 0,
           end_minu: 2,
-          cardShown: false
+          cardShown: false,
+          searchShown: false
         },
         {
           name: "曹金坤",
@@ -82,7 +87,8 @@
           end_hour: 19,
           start_minu: 0,
           end_minu: 2,
-          cardShown: false
+          cardShown: false,
+          searchShown: false
         },
         {
           name: "陈榕",
@@ -95,7 +101,8 @@
           end_hour: 19,
           start_minu: 0,
           end_minu: 2,
-          cardShown: false
+          cardShown: false,
+          searchShown: false
         },
         {
           name: "西蒙哪·波伏娃",
@@ -108,7 +115,8 @@
           end_hour: 19,
           start_minu: 0,
           end_minu: 2,
-          cardShown: false
+          cardShown: false,
+          searchShown: false
         },
         {
           name: "爱因斯坦",
@@ -121,7 +129,8 @@
           end_hour: 19,
           start_minu: 0,
           end_minu: 20,
-          cardShown: false
+          cardShown: false,
+          searchShown: false
         },
         {
           name : "任锐老师",
@@ -134,7 +143,8 @@
           end_hour: 19,
           start_minu: 0,
           end_minu: 25,
-          cardShown: false
+          cardShown: false,
+          searchShown: false
         }
       ],
       outdoorPoster:[
@@ -149,7 +159,8 @@
           end_hour: 19,
           start_minu: 0,
           end_minu: 20,
-          cardShown: false
+          cardShown: false,
+          searchShown: false
         },
         {
           name:"李凌荟",
@@ -162,7 +173,8 @@
           end_hour: 10,
           start_minu: 0,
           end_minu: 20,
-          cardShown: false
+          cardShown: false,
+          searchShown: false
         },
         {
           name: "李子男",
@@ -175,7 +187,8 @@
           end_hour: 10,
           start_minu: 0,
           end_minu: 20,
-          cardShown: false
+          cardShown: false,
+          searchShown: false
         },
         {
           name: "李子男",
@@ -188,7 +201,8 @@
           end_hour: 10,
           start_minu: 0,
           end_minu: 20,
-          cardShown: false
+          cardShown: false,
+          searchShown: false
         },
         {
           name: "编不出来名字了",
@@ -201,7 +215,8 @@
           end_hour: 10,
           start_minu: 0,
           end_minu: 20,
-          cardShown: false
+          cardShown: false,
+          searchShown: false
         },{
           name: "曹金坤",
           title:"东极岛摄影",
@@ -213,7 +228,8 @@
           end_hour: 10,
           start_minu: 0,
           end_minu: 20,
-          cardShown: false
+          cardShown: false,
+          searchShown: false
         },{
           name: "奥巴马",
           title:"约和贝尔一起野外生存",
@@ -225,7 +241,8 @@
           end_hour: 10,
           start_minu: 0,
           end_minu: 20,
-          cardShown: false
+          cardShown: false,
+          searchShown: false
         },
         {
           name: "贝尔·格里尔斯",
@@ -238,7 +255,8 @@
           end_hour: 10,
           start_minu: 0,
           end_minu: 20,
-          cardShown: false
+          cardShown: false,
+          searchShown: false
         }
       ],
       sportPoster:[
@@ -253,7 +271,8 @@
           end_hour: 10,
           start_minu: 0,
           end_minu: 20,
-          cardShown: false
+          cardShown: false,
+          searchShown: false
         },
         {
           name: "kobe",
@@ -266,7 +285,8 @@
           end_hour: 20,
           start_minu: 0,
           end_minu: 20,
-          cardShown: false
+          cardShown: false,
+          searchShown: false
         },
         {
           name: "张继科",
@@ -279,7 +299,8 @@
           end_hour: 10,
           start_minu: 0,
           end_minu: 20,
-          cardShown: false
+          cardShown: false,
+          searchShown: false
         },
         {
           name: "波尔特",
@@ -292,7 +313,8 @@
           end_hour: 12,
           start_minu: 0,
           end_minu: 20,
-          cardShown: false
+          cardShown: false,
+          searchShown: false
         },
         {
           name: "姚明",
@@ -305,7 +327,8 @@
           end_hour: 10,
           start_minu: 0,
           end_minu: 20,
-          cardShown: false
+          cardShown: false,
+          searchShown: false
         },
         {
           name: "曹金坤",
@@ -318,7 +341,8 @@
           end_hour: 10,
           start_minu: 0,
           end_minu: 20,
-          cardShown: false
+          cardShown: false,
+          searchShown: false
         }
       ],
       otherPoster:[
@@ -333,7 +357,8 @@
           end_hour: 10,
           start_minu: 0,
           end_minu: 20,
-          cardShown: false
+          cardShown: false,
+          searchShown: false
         },
         {
           name: "李子男",
@@ -346,7 +371,8 @@
           end_hour: 10,
           start_minu: 0,
           end_minu: 20,
-          cardShown: false
+          cardShown: false,
+          searchShown: false
         },
         {
           name: "编不出来名字了",
@@ -359,7 +385,8 @@
           end_hour: 10,
           start_minu: 0,
           end_minu: 20,
-          cardShown: false
+          cardShown: false,
+          searchShown: false
         },{
           name: "曹金坤",
           title:"东极岛摄影",
@@ -371,7 +398,8 @@
           end_hour: 10,
           start_minu: 0,
           end_minu: 20,
-          cardShown: false
+          cardShown: false,
+          searchShown: false
         },{
           name: "奥巴马",
           title:"约和贝尔一起野外生存",
@@ -383,7 +411,8 @@
           end_hour: 10,
           start_minu: 0,
           end_minu: 20,
-          cardShown: false
+          cardShown: false,
+          searchShown: false
         },
         {
           name: "贝尔·格里尔斯",
@@ -396,7 +425,8 @@
           end_hour: 10,
           start_minu: 0,
           end_minu: 20,
-          cardShown: false
+          cardShown: false,
+          searchShown: false
         }
       ]
     }
