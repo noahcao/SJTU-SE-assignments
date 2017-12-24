@@ -4,21 +4,34 @@
 import App from '@/App'
 import Vue from 'vue'
 import Router from 'vue-router'
-import Det from '@/components/Det'
-import Seg from '@/components/Seg'
-import General from '@/components/General'
-import Pose from '@/components/Pose'
-import Track from '@/components/Track'
-import Video from '@/components/Video'
+
 
 describe('App.vue',() => {
-  describe('Template', () => {
-    it('should render a component', () => {
-      Vue.use(Router)
-      const vm = new Vue(App).$mount()
-      expect(vm.title).toBe('Intelligent Vision')
-      expect(vm.name).toBe('Homepage')
-      expect(vm.fields).toBe('Computer Vision')
-    })
+  it('test the data variables', () => {
+    // test
+    const app = new Vue(App).$mount()
+    expect(app.title).toBe('约在交大')
+    expect(typeof app.title).toBe('string')
+    expect(typeof app.commitPoster).toBe('function')
+    expect(typeof app.cancelCommitPoster).toBe('function')
+    expect(typeof app.initNewPoster).toBe('function')
+    expect(typeof app.searchPoster).toBe('function')
+    for(var item in app.items){
+    	expect(item.text).toBe(item.value)
+    }
+    expect(app.newActivity.months.length).toBe(12)
+    expect(app.newActivity.days.length).toBe(31)
+  })
+
+  const Constructor = Vue.extend(App);
+
+  // 挂载组件
+  const App = new Constructor().$mount();
+  
+  it('test the modules', () => {
+    App.input = 'test input'
+  	App._watcher.run()
+  	expect(App.$el.textContent).toContain('test input')
   })
 })
+

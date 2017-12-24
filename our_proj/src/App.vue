@@ -249,8 +249,6 @@
         counter: 0,
         Posters: global_.Posters,
         title: '约在交大',
-        name: 'Homepage',
-        fields: 'Web',
         routershow: true,
         items:[{text:'约学习',value:'约学习'},{text:'约运动',value:'约运动'},{text:'约户外',value:'约户外'},{text:'其他',value:'其他'}],
         selected:'',
@@ -436,7 +434,6 @@
     padding: 0px;
     margin-left: 2.5%;
     border: solid;
-
   }
   #outdoorboard{
     width: 30%;
