@@ -32,3 +32,7 @@ Logs of team work:
 
 #### 搜索相关活动
 ![Search posters](./supply/searchPoster.png)
+
+## 附: 文件调查数据统计
+
+![questionaire](./supply/questionaire.png)
