@@ -239,7 +239,7 @@
 
 
 <script>
-  import global_ from './Global'
+  import global_ from './assets/Global'
   import Vue from 'vue'
   export default {
     name: 'app',
