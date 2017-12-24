@@ -111,7 +111,7 @@
           </div>
 
           <div class="container" v-for="poster in Posters.outdoorPoster" style="position: absolute;
-          height: 300px;border:solid 5px; border-radius: 8px;width: 300px; margin-left: 815px;margin-top: 5%;
+          height: 300px;border:solid 5px; border-radius: 8px;width: 300px; margin-left: 840px;margin-top: 5%;
           z-index:99;background-color: lightgreen" v-if="poster.searchShown">
             <transition style="width: 95%;height: 95%;margin: 2.5%;line-height: 40px;background-color: lightgreen">
               <div class="dialog-content" v-if="poster.searchShown" style="background-color: lightgreen;line-height: 30px">
@@ -246,11 +246,13 @@
     data () {
       return {
         searchString: "",
+        counter: 0,
         Posters: global_.Posters,
         title: '约在交大',
         routershow: true,
         items:[{text:'约学习',value:'约学习'},{text:'约运动',value:'约运动'},{text:'约户外',value:'约户外'},{text:'其他',value:'其他'}],
         selected:'',
+        datum: this.datum,
         newPosterVisible: false,
         selected:'' ,
         newActivity:{
@@ -270,6 +272,20 @@
       }
     },
     methods:{
+      showContent: function(content){
+      },
+      showOutDoor: function () {
+        alert("dddd")
+      },
+      showStudy: function(){
+        alert("study posters")
+      },
+      showSport: function(){
+        alert("show sport posters!")
+      },
+      showOthers: function(){
+        alert("")
+      },
       commitPoster:function(){
         if(this.selected == '约学习'){
           this.newActivity.type = 1;
@@ -333,24 +349,31 @@
       },
       searchPoster: function(){
         var search_str = this.searchString
+        var findPoster = false
         this.Posters.studyPoster.forEach(function(poster){
           var str = poster.title;
           if(str.indexOf(search_str) >= 0){
               poster.searchShown = true
+              findPoster = true
           }
         })
         this.Posters.outdoorPoster.forEach(function(poster){
           var str = poster.title;
           if(str.indexOf(search_str) >= 0){
             poster.searchShown = true
+            findPoster = true
           }
         })
         this.Posters.sportPoster.forEach(function(poster){
           var str = poster.title;
           if(str.indexOf(search_str) >= 0){
             poster.searchShown = true
+            findPoster = true
           }
         })
+        if (!findPoster){
+          alert("Not found any corresponding activity!")
+        }
         this.searchString = ""
       }
     }
