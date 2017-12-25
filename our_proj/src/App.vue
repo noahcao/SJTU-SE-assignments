@@ -68,6 +68,7 @@
             </transition>
           </div>
 
+          <div id="CardBoard">
           <div class="container" v-for="poster in Posters.studyPoster" style="position: absolute;
           height: 300px;border:solid 5px; border-radius: 8px;width: 300px; margin-left: 60px;margin-top: 5%;
           z-index:99;background-color: lightsalmon" v-if="poster.searchShown">
@@ -129,6 +130,7 @@
                 活动时间: <strong>{{poster.month}}/{{poster.day}} {{poster.start_hour}}:{{poster.start_minu}} -- {{poster.end_hour}}:{{poster.end_minu}}</strong>
               </div>
             </transition>
+          </div>
           </div>
 
           </div>
