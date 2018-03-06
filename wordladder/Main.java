@@ -30,11 +30,12 @@ public class Main {
         System.out.print("Enter end word of word ladder:");;
         String end = sc.nextLine();
         sc.close();
-        WordLadder(start, end, dict);
-        System.out.println(ladderLength(start, end, dict));
+        int ladderLen = WordLadder(start, end, dict);
+        System.out.print("Len of the word ladder is: ");
+        System.out.println(ladderLen);
     }
 
-    public static  void WordLadder(String start, String end, HashSet<String> dict){
+    public static int WordLadder(String start, String end, HashSet<String> dict){
         HashSet<String> usedWord = new HashSet<String>();
         Queue<Stack<String>> path = new LinkedList<Stack<String>>();
         Stack<String> wordStack = new Stack<String>();
@@ -42,10 +43,8 @@ public class Main {
         wordStack.push(start);
         path.offer(wordStack);
         while(!path.isEmpty()){
-            System.out.println("a stack in path");
             Stack<String> topStack = path.poll();
             if(!topStack.isEmpty()){
-                System.out.println("a word in stack");
                 String topWord = topStack.peek();
                 int wordSize = topWord.length();
                 for(int i = 0; i < wordSize; i++){
@@ -57,13 +56,19 @@ public class Main {
                             tempWordArr[i] = c;
                             String tempWord = new String(tempWordArr);
                             if(tempWord.equals(end)){
+                                Stack<String> outStack = new Stack<String>();
                                 topStack.push(tempWord);
+                                int ladderLen = topStack.size();
                                 while(!topStack.isEmpty()){
                                     String currWord = topStack.pop();
-                                    System.out.print(currWord + ' ');
+                                    outStack.push(currWord);
+                                }
+                                while(!outStack.isEmpty()) {
+                                    String outWord = outStack.pop();
+                                    System.out.print(outWord + ' ');
                                 }
                                 System.out.println("");
-                                return;
+                                return ladderLen;
                             }
                             else{
                                 if(dict.contains(tempWord)){
@@ -81,6 +86,7 @@ public class Main {
             }
         }
         System.out.println("finish");
+        return 0;
     }
 
     public static int ladderLength(String start, String end, HashSet<String> dict){
