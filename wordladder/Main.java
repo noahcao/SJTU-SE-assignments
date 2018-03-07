@@ -18,6 +18,7 @@ public class Main {
     static HashSet<String> usedWord = new HashSet<String>();
     static Queue<Stack<String>> path = new LinkedList<Stack<String>>();
     static Stack<String> topStack = new Stack<String>();
+
     public static void main(String[] args) throws IOException{
         //HashSet<String> dict  = new HashSet<String>();
         Scanner sc = new Scanner(System.in);
@@ -32,6 +33,7 @@ public class Main {
         while(true){
             usedWord = new HashSet<String>();
             path = new LinkedList<Stack<String>>();
+            topStack = new Stack<String>();
             System.out.print("Enter start word of word ladder (print Enter to quit):");
             String start = sc.nextLine();
             if(start.equals("")) break;
@@ -84,7 +86,7 @@ public class Main {
                 }
             }
         }
-        System.out.println("finish without a word ladder found");
+        System.out.println("finish without finding a word ladder");
     }
 
     public static void printLadder(Stack<String> topStack){
