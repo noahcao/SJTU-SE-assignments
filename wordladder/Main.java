@@ -39,12 +39,12 @@ public class Main {
             if(start.equals("")) break;
             System.out.print("Enter end word of word ladder:");
             String end = sc.nextLine();
-            WordLadder(end, start, dict);
+            WordLadder(end, start);
         }
         sc.close();
     }
 
-    public static  void WordLadder(String start, String end, HashSet<String> dict){
+    public static  void WordLadder(String start, String end){
         //HashSet<String> usedWord = new HashSet<String>();
         //Queue<Stack<String>> path = new LinkedList<Stack<String>>();
         Stack<String> wordStack = new Stack<String>();
@@ -60,13 +60,13 @@ public class Main {
                     String tempWord;
                     boolean finish = false;
                     //char[] wordArray = topWord.toCharArray();
+                    // 1. delete a character
+                    if(wordSize > 1){
+                        tempWord = topWord.substring(0,i) + topWord.substring(i+1,wordSize);
+                        finish = checkWord(tempWord, topStack, end);
+                        if(finish) return;
+                    }
                     for(char c = 'a'; c <= 'z'; c++){
-                        // 1. delete a character
-                        if(wordSize > 1){
-                            tempWord = topWord.substring(0,i) + topWord.substring(i+1,wordSize);
-                            finish = checkWord(tempWord, topStack, end);
-                            if(finish) return;
-                        }
                         // 2. add a character
                         if(i == wordSize - 1){
                             tempWord = topWord.substring(0, wordSize) + c;
@@ -74,7 +74,7 @@ public class Main {
                             if(finish) return;
                         }
                         else{
-                            tempWord = topWord.substring(0,i) + c + topWord.substring(i+1, wordSize);
+                            tempWord = topWord.substring(0,i) + c + topWord.substring(i, wordSize);
                             finish = checkWord(tempWord, topStack, end);
                             if(finish) return;
                         }
