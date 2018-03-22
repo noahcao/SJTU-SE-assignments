@@ -1,5 +1,6 @@
 <template>
   <div id="mainPage">
+
     <!-- Part1: The top navigator bar -->
     <nav class="navbar navbar-default">
       <div class="container-fluid">
@@ -40,11 +41,26 @@
             <button type="submit" class="btn btn-default">Search</button>
           </form>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="#">购物车</a></li>
+            <button type="submit" class="btn btn-info" style="margin-top: 6px" @click="showCart=!showCart">Shopping Cart</button>
           </ul>
         </div><!-- /.navbar-collapse -->
       </div><!-- /.container-fluid -->
     </nav>
+
+    <!-- Part0: scope of shopping cart-->
+    <div class="container" v-if="showCart" id="shoppingCart">
+      <div id="cartHeader">
+        购物车
+      </div>
+      <transition name="shop">
+          <div class="dialog-content" v-for="book in cart" style="background-color: lightsalmon;line-height: 30px">
+            <div>
+              {{book.name}}
+            </div>
+          </div>
+        <button class="modal-close">ddasdsada</button>
+      </transition>
+    </div>
 
 
     <!-- Part2: Header Block -->
@@ -95,7 +111,7 @@
         </thead>
       </table>
     </div>
-  </div>
+
   </div>
 
 </template>
@@ -108,6 +124,24 @@
   #header{
     margin: 10px;
     padding: 5px;
+  }
+  #shoppingCart{
+    height: 350px;
+    border: solid;
+    width: 40%;
+    margin-top: 10%;
+    margin-left: 30%;
+    position: absolute;
+    border-radius: 8px;
+    background-color: whitesmoke;
+    padding: 0;
+  }
+  #cartHeader{
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    background-color: orange;
+    width: 100%;
+    margin: 0;
   }
 </style>
 
@@ -136,7 +170,8 @@
         newRow:{},
         checkAll: false,
         checkedNum: 0,
-        cart: []
+        cart: [],
+        showCart:false
       }
     },
     methods:{
