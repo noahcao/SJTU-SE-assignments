@@ -1,6 +1,6 @@
 # onlinebookshop
 
-> a online book shop project for SE228 course
+> a vue.js project for a online book shop
 
 ## Build Setup
 

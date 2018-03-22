@@ -1,8 +1,8 @@
 {
   "name": "onlinebookshop",
   "version": "1.0.0",
-  "description": "a online book shop project for SE228 course",
-  "author": "noahcao <herodan1023@gmail.com>",
+  "description": "a vue.js project for a online book shop",
+  "author": "noahcao",
   "private": true,
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
@@ -29,7 +29,7 @@
     "babel-preset-env": "^1.3.2",
     "babel-preset-stage-2": "^6.22.0",
     "babel-register": "^6.22.0",
-    "bootstrap": "^3.3.0",
+    "bootstrap": "^4.0.0",
     "chai": "^4.1.2",
     "chalk": "^2.0.1",
     "chromedriver": "^2.27.2",
@@ -42,6 +42,7 @@
     "friendly-errors-webpack-plugin": "^1.6.1",
     "html-webpack-plugin": "^2.30.1",
     "inject-loader": "^3.0.0",
+    "jquery": "^2.2.4",
     "karma": "^1.4.1",
     "karma-coverage": "^1.1.1",
     "karma-mocha": "^1.3.0",

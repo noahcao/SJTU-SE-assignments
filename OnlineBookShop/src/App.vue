@@ -1,179 +1,189 @@
-  <template>
-    <div id="main">
-      <div class="row mx-auto w-75" id="topBlock">
+<template>
+  <div id="mainPage">
+    <!-- Part1: The top navigator bar -->
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#topNav" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">OnlineBookShop</a>
+        </div>
 
-        <div class="col-6">
-          <div class="btn-group">
-            <button type="button" class="btn btn-primary" >Search</button>
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">新增</button>
-            <button type="button" class="btn btn-primary" @click="saveRows">保存</button>
-            <button type="button" class="btn btn-primary" @click="delRows">删除</button>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="topNav">
+          <ul class="nav navbar-nav">
+            <li style="font-weight: bold"><a href="#">Sign in<span class="sr-only">(current)</span></a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">图书类型<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="#">人文社科</a></li>
+                <li><a href="#">教辅教材</a></li>
+                <li><a href="#">文学小说</a></li>
+                <li><a href="#">科学前沿</a></li>
+                <li><a href="#">儿童图书</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="#">特价图书</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="#">需求提交</a></li>
+              </ul>
+            </li>
+          </ul>
+          <form class="navbar-form navbar-left">
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="图书信息">
+            </div>
+            <button type="submit" class="btn btn-default">Search</button>
+          </form>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#">购物车</a></li>
+          </ul>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
+
+
+    <!-- Part2: Header Block -->
+
+    <div id="header">
+      <div id="toolbar">
+          <button type="button" class="btn btn-primary">Refresh</button>
+          <button type="button" class="btn btn-primary" @click="addToCart">Add to cart</button>
+          <div class="btn-group" style="float: right">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+              Export
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+              <li><a href="#">.JSON</a></li>
+              <li><a href="#">.XML</a></li>
+              <li><a href="#">.CSV</a></li>
+              <li><a href="#">.PDF</a></li>
+              <li><a href="#">.TXT</a></li>
+              <li><a href="#">.SQL</a></li>
+            </ul>
           </div>
-        </div>
-
-        <div class="col-6">
-          <div class="input-group">
-            <input type="text" class="form-control input-group-sm" placeholder="输入设备编号进行搜索">
-            <span class="input-group-btn">
-              <button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
-            </span>
-
-          </div>
-        </div>
-
       </div>
-
-      <div class="row mx-auto w-75" id="mainTable">
-        <div class="col-12">
-          <table class="table table-hover table-success">
-            <thead class="thead-default">
-            <tr>
-              <th><input type="checkbox"></th>
-              <th>序号</th>
-              <th>设备编号</th>
-              <th>设备名称</th>
-              <th>设备状态</th>
-              <th>采购日期</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-for="data in datas">
-              <td><input type="checkbox" :value="index" v-model="checkedRows"></td>
-              <td>{{data.code}}</td>
-              <td>{{data.name}}</td>
-              <td>{{data.states}}</td>
-              <td>{{data.data}}</td>
-              <td>{{data.admin}}</td>
-            </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-
-      <v-table
-        :width="800"
-        :columns="columns"
-        :table-data="tableData"
-        :show-vertical-border="true"
-      ></v-table>
-
-
     </div>
 
-  </template>
 
-  <script>
-    import Vue from 'vue'
-    export default{
-        name: 'homapage',
-        data (){
-            return {
-                datas : [
-                  {
-                    code: "A2017-001",
-                    name: "3800充电器",
-                    states: "正常",
-                    date: "2017-01-21",
-                    admin: "andy"
-                  },
-                  {
-                    code: "A2017-002",
-                    name: "Lenovo Type-c转接器",
-                    states: "正常",
-                    date: "2017-01-21",
-                    admin: "zero"
-                  }
-                ],
-              tableData: [
-                {"name":"赵伟","tel":"156*****1987","hobby":"钢琴、书法、唱歌","address":"东17楼"},
-                {"name":"李伟","tel":"182*****1538","hobby":"钢琴、书法、唱歌","address":"西2楼"},
-                {"name":"孙伟","tel":"161*****0097","hobby":"钢琴、书法、唱歌","address":"八一路739号"},
-                {"name":"周伟","tel":"197*****1123","hobby":"钢琴、书法、唱歌","address":"章浜路24号"},
-                {"name":"吴伟","tel":"183*****6678","hobby":"钢琴、书法、唱歌","address":"东1号楼"}
-              ],
-              columns: [
-                {field: 'name', title:'姓名', width: 100, titleAlign: 'center',columnAlign:'center'},
-                {field: 'tel', title: '手机号码', width: 260, titleAlign: 'center',columnAlign:'center'},
-                {field: 'hobby', title: '爱好', width: 330, titleAlign: 'center',columnAlign:'center'},
-                {field: 'address', title: '地址', titleAlign: 'center',columnAlign:'left'}
-              ]
+    <!-- Part3: Table-->
+    <div id="Table" >
+      <table data-toggle="table" class="table table-bordered" style="margin: 1.5%;
+         width:97%;align-self: center">
+        <thead>
+        <tr>
+          <th><input type="checkbox" v-model="checkAll"></th>
+          <th>Book</th>
+          <th>Author</th>
+          <th v-on:click="sortBy('price')">Price</th>
+          <th>Press</th>
+          <th v-on:click="sortBy('sales')">Sales</th>
+        </tr>
+        <tr v-for="book in books">
+          <td><input type="checkbox" v-model="book.checked"></td>
+          <td>{{book.name}}</td>
+          <td>{{book.author}}</td>
+          <td>{{book.price}}</td>
+          <td>{{book.press}}</td>
+          <td>{{book.sales}}</td>
+        </tr>
+        </thead>
+      </table>
+    </div>
+  </div>
+  </div>
 
+</template>
 
-            }
-        },
-      methods:{
-        customCompFunc(params){
+<style>
+  .cell-edit-color{
+    color:#2db7f5;
+    font-weight: bold;
+  }
+  #header{
+    margin: 10px;
+    padding: 5px;
+  }
+</style>
 
-          console.log(params);
+<script>
 
-          if (params.type === 'delete'){ // do delete operation
+  export default{
+    data() {
+      return {
+        books: [
+          {"name":"赵伟","author":"156*****1987","price":"钢琴、书法、唱歌","press":"华夏出版社","sales":1000,"checked":false},
+          {"name":"李伟","author":"182*****1538","price":"钢琴、书法、唱歌","press":"华夏出版社","sales":1000,"checked":false},
+          {"name":"孙伟","author":"161*****0097","price":"钢琴、书法、唱歌","press":"华夏出版社","sales":1000,"checked":false},
+          {"name":"周伟","author":"197*****1123","price":"钢琴、书法、唱歌","press":"华夏出版社","sales":1000,"checked":false},
+          {"name":"吴伟","author":"183*****6678","price":"钢琴、书法、唱歌","press":"华夏出版社","sales":1000,"checked":false},
+          {"name":"赵伟","author":"156*****1987","price":"钢琴、书法、唱歌","press":"华夏出版社","sales":1000,"checked":false},
+          {"name":"李伟","author":"182*****1538","price":"钢琴、书法、唱歌","press":"华夏出版社","sales":1000,"checked":false},
+          {"name":"孙伟","author":"161*****0097","price":"钢琴、书法、唱歌","press":"华夏出版社","sales":1000,"checked":false},
+          {"name":"周伟","author":"197*****1123","price":"钢琴、书法、唱歌","press":"华夏出版社","sales":1000,"checked":false},
+          {"name":"吴伟","author":"183*****6678","price":"钢琴、书法、唱歌","press":"华夏出版社","sales":1000,"checked":false}
+        ],
 
-            this.$delete(this.tableData,params.index);
-
-          }else if (params.type === 'edit'){ // do edit operation
-
-            alert(`行号：${params.index} 姓名：${params.rowData['name']}`)
-          }
-
-        }
+        sorttype:1,
+        sortparam:"",
+        arrayData:[],
+        arrayDataAll:[],
+        newRow:{},
+        checkAll: false,
+        checkedNum: 0,
+        cart: []
       }
-    }
+    },
+    methods:{
 
+      // 单元格编辑回调
+      cellEditDone(newValue,oldValue,rowIndex,rowData,field){
 
-    Vue.component('table-operation',{
-      template:`<span>
-        <a href="" @click.stop.prevent="update(rowData,index)">编辑</a>&nbsp;
-        <a href="" @click.stop.prevent="deleteRow(rowData,index)">删除</a>
-        </span>`,
-      props:{
-        rowData:{
-          type:Object
-        },
-        field:{
-          type:String
-        },
-        index:{
-          type:Number
+        this.tableData[rowIndex][field] = newValue;
+
+        // 接下来处理你的业务逻辑，数据持久化等...
+      },
+
+      sortChange(params){
+        console.log(params)
+      },
+      sortBy: function(sortparam){
+          this.sortparam = sortparam;
+          this.sorttype = this.sorttype == -1 ? 1: -1;
+      },
+      check(book){
+        if(book.checked){
+            book.checked = !book.checked;
+            this.checkedNum -= 1;
+        }
+        else{
+            book.checked = !book.checked;
+            this.checkedNum += 1;
         }
       },
-      methods:{
-        update(){
-
-          // 参数根据业务场景随意构造
-          let params = {type:'edit',index:this.index,rowData:this.rowData};
-          this.$emit('on-custom-comp',params);
-        },
-
-        deleteRow(){
-
-          // 参数根据业务场景随意构造
-          let params = {type:'delete',index:this.index};
-          this.$emit('on-custom-comp',params);
-
+      addToCart(){
+        if(this.checkAll){
+            for(var i = 0; i < this.books.length; i++){
+                this.cart.push(this.books[i]);
+            }
+        }
+        else{
+            for(var i = 0; i < this.books.length; i++){
+                if(this.books[i]["checked"]){
+                    this.cart.push(this.books[i]);
+                }
+            }
+        }
+        this.checkAll = false;
+        for(var i = 0; i < this.books.length; i++){
+            this.books[i]["checked"] = false;
         }
       }
-    })
-  </script>
-
-  <style>
-    #main {
-      padding: 10px;
-      background-color: lightcyan;
-      margin: 10px;
-      height: 1000px;
     }
-
-    .btn-primary{
-      margin: 10px;
-      height: 30px;
-      width: 60px;
-    }
-    #topBlock{
-      height: 100px;
-      width: 95%;
-    }
-    #mainTable{
-      width: 1000px;
-    }
-  </style>
+  }
+</script>
