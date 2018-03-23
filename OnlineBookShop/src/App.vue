@@ -50,14 +50,14 @@
     <!-- Part0: scope of shopping cart-->
     <div class="container" v-if="showCart" id="shoppingCart">
       <div id="cartHeader">
-        购物车
+        <div style="vertical-align: middle">Shopping Cart</div>
       </div>
       <transition name="shop">
-          <div class="dialog-content" v-for="book in cart" style="background-color: lightsalmon;line-height: 30px">
-            <div>
-              {{book.name}}
-            </div>
+        <div class="dialog-content" v-for="book in cart" style="background-color: lightsalmon;line-height: 30px">
+          <div>
+            {{book.name}}
           </div>
+        </div>
         <button class="modal-close">ddasdsada</button>
       </transition>
     </div>
@@ -67,46 +67,53 @@
 
     <div id="header">
       <div id="toolbar">
-          <button type="button" class="btn btn-primary">Refresh</button>
-          <button type="button" class="btn btn-primary" @click="addToCart">Add to cart</button>
-          <div class="btn-group" style="float: right">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-              Export
-              <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu">
-              <li><a href="#">.JSON</a></li>
-              <li><a href="#">.XML</a></li>
-              <li><a href="#">.CSV</a></li>
-              <li><a href="#">.PDF</a></li>
-              <li><a href="#">.TXT</a></li>
-              <li><a href="#">.SQL</a></li>
-            </ul>
-          </div>
+        <button type="button" class="btn btn-primary">Refresh</button>
+        <button type="button" class="btn btn-primary">Filter</button>
+        <button type="button" class="btn btn-primary" @click="addToCart">Add to cart</button>
+        <div class="btn-group" style="float: right">
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+            Export
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
+            <li><a href="#">.JSON</a></li>
+            <li><a href="#">.XML</a></li>
+            <li><a href="#">.CSV</a></li>
+            <li><a href="#">.PDF</a></li>
+            <li><a href="#">.TXT</a></li>
+            <li><a href="#">.SQL</a></li>
+          </ul>
+        </div>
       </div>
     </div>
 
 
-    <!-- Part3: Table-->
     <div id="Table" >
-      <table data-toggle="table" class="table table-bordered" style="margin: 1.5%;
+      <table data-toggle="table" data-sort-order="desc" class="table table-bordered" style="margin: 1.5%;
          width:97%;align-self: center">
         <thead>
         <tr>
           <th><input type="checkbox" v-model="checkAll"></th>
           <th>Book</th>
           <th>Author</th>
-          <th v-on:click="sortBy('price')">Price</th>
+          <th data-sortable="true">
+            Price
+              <div class="btn glyphicon glyphicon-chevron-up arrowButton" @click="sortBy('price', true)"></div>
+              <div class='btn glyphicon glyphicon-chevron-down arrowButton' @click="sortBy('price', false)"></div>
+          </th>
           <th>Press</th>
-          <th v-on:click="sortBy('sales')">Sales</th>
+          <th data-sortable="true">Sales
+            <div class="btn glyphicon glyphicon-chevron-up arrowButton" @click="sortBy('sales', true)"></div>
+            <div class='btn glyphicon glyphicon-chevron-down arrowButton' @click="sortBy('sales', false)"></div>
+          </th>
         </tr>
         <tr v-for="book in books">
           <td><input type="checkbox" v-model="book.checked"></td>
-          <td>{{book.name}}</td>
-          <td>{{book.author}}</td>
-          <td>{{book.price}}</td>
-          <td>{{book.press}}</td>
-          <td>{{book.sales}}</td>
+          <td contentEditable="true" v-model="book.name">{{book.name}}</td>
+          <td contentEditable="true" v-model="book.author">{{book.author}}</td>
+          <td contentEditable="true" v-model="book.price">{{book.price}}</td>
+          <td contentEditable="true" v-model="book.press">{{book.press}}</td>
+          <td contentEditable="true" v-model="book.sales">{{book.sales}}</td>
         </tr>
         </thead>
       </table>
@@ -117,10 +124,6 @@
 </template>
 
 <style>
-  .cell-edit-color{
-    color:#2db7f5;
-    font-weight: bold;
-  }
   #header{
     margin: 10px;
     padding: 5px;
@@ -139,30 +142,34 @@
   #cartHeader{
     border-top-right-radius: 5px;
     border-top-left-radius: 5px;
-    background-color: orange;
+    background-color: cornflowerblue;
+    height: 10%;
     width: 100%;
     margin: 0;
+    font-family:"Times New Roman",Georgia,Serif;
+    text-align: center;
+    vertical-align: middle;
+    font-weight: bold;
+    color: white;
+  }
+  .arrowButton{
+    border: solid;
+    width:20%;
+    padding: 0;
+    height: 30px;
+    align-items: center;
   }
 </style>
 
 <script>
+  import global_ from './assets/books'
 
   export default{
+    name: 'sort-by-multiple-columns',
     data() {
       return {
-        books: [
-          {"name":"赵伟","author":"156*****1987","price":"钢琴、书法、唱歌","press":"华夏出版社","sales":1000,"checked":false},
-          {"name":"李伟","author":"182*****1538","price":"钢琴、书法、唱歌","press":"华夏出版社","sales":1000,"checked":false},
-          {"name":"孙伟","author":"161*****0097","price":"钢琴、书法、唱歌","press":"华夏出版社","sales":1000,"checked":false},
-          {"name":"周伟","author":"197*****1123","price":"钢琴、书法、唱歌","press":"华夏出版社","sales":1000,"checked":false},
-          {"name":"吴伟","author":"183*****6678","price":"钢琴、书法、唱歌","press":"华夏出版社","sales":1000,"checked":false},
-          {"name":"赵伟","author":"156*****1987","price":"钢琴、书法、唱歌","press":"华夏出版社","sales":1000,"checked":false},
-          {"name":"李伟","author":"182*****1538","price":"钢琴、书法、唱歌","press":"华夏出版社","sales":1000,"checked":false},
-          {"name":"孙伟","author":"161*****0097","price":"钢琴、书法、唱歌","press":"华夏出版社","sales":1000,"checked":false},
-          {"name":"周伟","author":"197*****1123","price":"钢琴、书法、唱歌","press":"华夏出版社","sales":1000,"checked":false},
-          {"name":"吴伟","author":"183*****6678","price":"钢琴、书法、唱歌","press":"华夏出版社","sales":1000,"checked":false}
-        ],
-
+        allBooks: global_.books,
+        books: global_.books,
         sorttype:1,
         sortparam:"",
         arrayData:[],
@@ -183,42 +190,51 @@
 
         // 接下来处理你的业务逻辑，数据持久化等...
       },
-
       sortChange(params){
         console.log(params)
       },
-      sortBy: function(sortparam){
-          this.sortparam = sortparam;
-          this.sorttype = this.sorttype == -1 ? 1: -1;
+      comparePrice(obj1, obj2){
+          return obj1["price"] - obj2["price"];
+      },
+      compareSales(obj1, obj2){
+          return obj1["sales"] - obj2["sales"];
+      },
+      sortBy(item, isInc){
+        let newBookList = this.books;
+        if(item == "price") newBookList.sort(this.comparePrice);
+        if(item == "sales") newBookList.sort(this.compareSales);
+        if(!isInc) newBookList.reverse();
+        this.books = newBookList;
       },
       check(book){
         if(book.checked){
-            book.checked = !book.checked;
-            this.checkedNum -= 1;
+          book.checked = !book.checked;
+          this.checkedNum -= 1;
         }
         else{
-            book.checked = !book.checked;
-            this.checkedNum += 1;
+          book.checked = !book.checked;
+          this.checkedNum += 1;
         }
       },
       addToCart(){
         if(this.checkAll){
-            for(var i = 0; i < this.books.length; i++){
-                this.cart.push(this.books[i]);
-            }
+          for(var i = 0; i < this.books.length; i++){
+            this.cart.push(this.books[i]);
+          }
         }
         else{
-            for(var i = 0; i < this.books.length; i++){
-                if(this.books[i]["checked"]){
-                    this.cart.push(this.books[i]);
-                }
+          for(var i = 0; i < this.books.length; i++){
+            if(this.books[i]["checked"]){
+              this.cart.push(this.books[i]);
             }
+          }
         }
         this.checkAll = false;
         for(var i = 0; i < this.books.length; i++){
-            this.books[i]["checked"] = false;
+          this.books[i]["checked"] = false;
         }
-      }
+      },
+
     }
   }
 </script>
