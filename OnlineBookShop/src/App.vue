@@ -36,12 +36,12 @@
           </ul>
           <form class="navbar-form navbar-left">
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="图书信息">
+              <input type="text" class="form-control" placeholder="图书信息" v-model="searchInfo">
             </div>
             <button type="submit" class="btn btn-default">Search</button>
           </form>
           <ul class="nav navbar-nav navbar-right">
-            <button type="submit" class="btn btn-info" style="margin-top: 6px" @click="showCart=!showCart">Shopping Cart</button>
+            <button type="submit" class="btn btn-info" style="margin-top: 6px" @click="showCart=!showCart">Shopping Cart ({{bookInCart}})</button>
           </ul>
         </div><!-- /.navbar-collapse -->
       </div><!-- /.container-fluid -->
@@ -58,7 +58,38 @@
             {{book.name}}
           </div>
         </div>
-        <button class="modal-close">ddasdsada</button>
+      </transition>
+    </div>
+
+    <div class="container" id="addNewBook"  v-if="newBook">
+      <transition name="test">
+        <div class="dialog-content" v-if="newBook">
+          <p class="dialog-close" style="background-color: #42b983">
+            <button class="bth btn-danger" @click="newBook=!newBook" style="font-size: xx-small;float: right">
+              x </button>
+          </p>
+          <div style="text-align: center"><h3>New Book</h3></div><br>
+          <div id="newBookReg" style="text-align: center">
+            <div style="display: inline" class="newBookCol">
+              Name: <input id="newBookName" v-model="newBookInfo['name']">
+            </div>
+            <br><br>
+            <div style="display: inline" class="newBookCol">
+              Author: <input id="newBookAuthor" v-model="newBookInfo['author']">
+            </div>
+            <br><br>
+            <div style="display: inline" class="newBookCol">
+              Press: <input id="newBookPress" v-model="newBookInfo['press']">
+            </div>
+            <br><br>
+            <div style="display: inline" class="newBookCol">
+              Price: <input id="newBookPrice" v-model="newBookInfo['price']">
+            </div>
+          </div><br>
+          <p style="text-align: center">
+            <button class="btn btn-success" style="margin: auto" @click="submitNewBook">Submit</button>
+          </p>
+        </div>
       </transition>
     </div>
 
@@ -67,9 +98,15 @@
 
     <div id="header">
       <div id="toolbar">
-        <button type="button" class="btn btn-primary">Refresh</button>
-        <button type="button" class="btn btn-primary">Filter</button>
-        <button type="button" class="btn btn-primary" @click="addToCart">Add to cart</button>
+        <button type="button" class="btn btn-primary" @click="addBook">Add</button>
+        <button type="button" class="btn btn-warning" @click="deleteBooks">Delete</button>
+        <button type="button" class="btn btn-primary" @click="addToCart">Purchase</button>
+        <div style="display: inline;margin-left: 20%">
+          <input v-model="bottomPrice" placeholder="lowest" style="width: 10%">-
+          <input v-model="topPrice" placeholder="highest" style="width: 10%">
+        </div>
+        <button type="button" class="btn btn-primary" @click="filterByPrice">Filter</button>
+        <a style="margin-left: 5%">In stock: <input type="checkbox" v-model="showInStock"></a>
         <div class="btn-group" style="float: right">
           <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
             Export
@@ -107,7 +144,7 @@
             <div class='btn glyphicon glyphicon-chevron-down arrowButton' @click="sortBy('sales', false)"></div>
           </th>
         </tr>
-        <tr v-for="book in books">
+        <tr v-for="book in displayBooks">
           <td><input type="checkbox" v-model="book.checked"></td>
           <td contentEditable="true" v-model="book.name">{{book.name}}</td>
           <td contentEditable="true" v-model="book.author">{{book.author}}</td>
@@ -159,6 +196,22 @@
     height: 30px;
     align-items: center;
   }
+  #addNewBook{
+    position: absolute;
+    height: 320px;
+    border:solid lightblue 3px;
+    border-radius: 10px;
+    width: 30%;
+    margin-left: 40%;
+    margin-right: 40%;
+    margin-top: 10%;
+    z-index:9;
+    background-color: white;
+  }
+  .newBookCol{
+    margin-top: 20px;
+    padding: 1px;
+  }
 </style>
 
 <script>
@@ -168,8 +221,21 @@
     name: 'sort-by-multiple-columns',
     data() {
       return {
+        newBookInfo:{
+            "name": "",
+            "price": "",
+            "press": "",
+            "author": "",
+            "sales": 0,
+            "checked": false
+        },
+        newBook: false,
+        showInStock:false,
+        bottomPrice: "",
+        topPrice: "",
         allBooks: global_.books,
         books: global_.books,
+        displayBooks: global_.books,
         sorttype:1,
         sortparam:"",
         arrayData:[],
@@ -178,7 +244,9 @@
         checkAll: false,
         checkedNum: 0,
         cart: [],
-        showCart:false
+        showCart:false,
+        searchInfo: "",
+        bookInCart: 0
       }
     },
     methods:{
@@ -189,9 +257,6 @@
         this.tableData[rowIndex][field] = newValue;
 
         // 接下来处理你的业务逻辑，数据持久化等...
-      },
-      sortChange(params){
-        console.log(params)
       },
       comparePrice(obj1, obj2){
           return obj1["price"] - obj2["price"];
@@ -204,7 +269,7 @@
         if(item == "price") newBookList.sort(this.comparePrice);
         if(item == "sales") newBookList.sort(this.compareSales);
         if(!isInc) newBookList.reverse();
-        this.books = newBookList;
+        this.displayBooks = newBookList;
       },
       check(book){
         if(book.checked){
@@ -234,7 +299,52 @@
           this.books[i]["checked"] = false;
         }
       },
+      deleteBooks(){
+          var newBooks = [];
+          for(var i = 0; i < this.books.length; i++){
+              if(!this.books[i]["checked"]) newBooks.push(this.books[i]);
+          }
+          this.books = newBooks;
+          this.displayBooks = this.books;
+      },
+      search(query){
 
+      },
+      addBook(){
+        this.newBook = !this.newBook;
+      },
+      filterByPrice(){
+          var bottomPrice = this.bottomPrice;
+          var topPrice = this.topPrice;
+          var newBookList = [];
+          for(var i = 0; i < this.books.length; i++){
+              if((this.books[i]["price"] >= bottomPrice)&&(this.books[i]["price"]
+                  <= topPrice)){
+                  newBookList.push(this.books[i])
+              }
+          }
+          this.displayBooks = newBookList;
+          this.bottomPrice = "";
+          this.topPrice = "";
+      },
+      showInStock(){
+
+      },
+      submitNewBook(){
+          if((this.newBookInfo["name"]!="")&&(this.newBookInfo["press"]!=0)&&
+            (this.newBookInfo["price"]>0)&&(this.newBookInfo["author"]!="")){
+              this.books.push(this.newBookInfo);
+          }
+          this.newBookInfo = {
+            "name": "",
+            "price": "",
+            "press": "",
+            "author": "",
+            "sales": 0,
+            "checked": false
+          };
+          this.newBook = false;
+      }
     }
   }
 </script>
