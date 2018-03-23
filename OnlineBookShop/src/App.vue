@@ -38,7 +38,7 @@
             <div class="form-group">
               <input type="text" class="form-control" placeholder="图书信息" v-model="searchInfo">
             </div>
-            <button type="submit" class="btn btn-default">Search</button>
+            <button type="submit" class="btn btn-default" @click="searchBook">Search</button>
           </form>
           <ul class="nav navbar-nav navbar-right">
             <button type="submit" class="btn btn-info" style="margin-top: 6px" @click="showCart=!showCart">Shopping Cart ({{bookInCart}})</button>
@@ -200,6 +200,7 @@
     position: absolute;
     height: 320px;
     border:solid lightblue 3px;
+    padding-top: 0px;
     border-radius: 10px;
     width: 30%;
     margin-left: 40%;
@@ -344,6 +345,17 @@
             "checked": false
           };
           this.newBook = false;
+      },
+      searchBook(){
+          var newDisplayBooks = [];
+          for(var i = 1; i < this.books.length; i++){
+              var book = this.books[i];
+              if(((book["name"].search(this.searchInfo) != -1) || (book["press"].search(this.searchInfo) != -1)
+                  || (book["author"].search(this.searchInfo) != -1))){
+                  newDisplayBooks.push(book);
+              }
+          }
+          this.displayBooks = newDisplayBooks;
       }
     }
   }
