@@ -178,8 +178,9 @@
 
 <script>
   import global_ from '../assets/books'
+  import logo from './../assets/logo.png'
   export default{
-    name: 'sort-by-multiple-columns',
+    name: 'booTable',
     data() {
       return {
         newBookInfo:{
@@ -190,6 +191,7 @@
           "sales": 0,
           "checked": false
         },
+        logo: '../assets/logo.png',
         newBook: false,
         showInStock:false,
         bottomPrice: "",
@@ -211,14 +213,6 @@
       }
     },
     methods:{
-
-      // 单元格编辑回调
-      cellEditDone(newValue,oldValue,rowIndex,rowData,field){
-
-        this.tableData[rowIndex][field] = newValue;
-
-        // 接下来处理你的业务逻辑，数据持久化等...
-      },
       comparePrice(obj1, obj2){
         return obj1["price"] - obj2["price"];
       },

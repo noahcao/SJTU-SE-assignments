@@ -1,21 +1,21 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
 import homePage from '@/components/homePage'
+import bookTable from '@/components/bookTable'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
     {
-      path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld
+      path: '/homePage',
+      name: 'homePage',
+      component: homePage
     },
     {
-      path: '/',
-      name: 'homepage',
-      component: homePage
+      path: '/bookTable',
+      name: 'bookTable',
+      component: bookTable
     }
   ]
 })

@@ -21,7 +21,8 @@
     "vue-datatable": "^1.0.4",
     "vue-router": "^3.0.1",
     "vue2-datatable-component": "^2.2.2",
-    "vuetable": "^1.5.12"
+    "vuetable": "^1.5.12",
+    "vuex": "^3.0.1"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

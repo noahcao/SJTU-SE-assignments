@@ -1,5 +1,6 @@
 <template>
-  <nav class="navbar navbar-default">
+  <div id="header">
+  <nav class="navbar navbar-default" id="topNav">
     <div class="container-fluid">
       <!-- Brand and toggle get grouped for better mobile display -->
       <div class="navbar-header">
@@ -9,19 +10,23 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="#">
-          OnlineBookShop
+        <a class="navbar-brand" href="#" style="padding: 0px">
+          <router-link to="/homePage">
+            <img src="./../assets/logo_big.png" id="logoPic">
+          </router-link>
         </a>
       </div>
 
       <!-- Collect the nav links, forms, and other content for toggling -->
-      <div class="collapse navbar-collapse" id="topNav">
+      <div class="collapse navbar-collapse">
         <ul class="nav navbar-nav">
-          <li style="font-weight: bold"><a href="#">Sign in<span class="sr-only">(current)</span></a></li>
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-              图书类型<span class="caret"></span></a>
+          <li style="font-weight: bold;border: solid;float: left"><a href="#">
+            Sign in
+            <span class="sr-only">(current)</span></a></li>
+          <li class="dropdown" style="float: right">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">图书<span class="caret"></span></a>
             <ul class="dropdown-menu">
+              <li><router-link to="/bookTable">全部类目</router-link></li>
               <li><a href="#">人文社科</a></li>
               <li><a href="#">教辅教材</a></li>
               <li><a href="#">文学小说</a></li>
@@ -46,23 +51,41 @@
       </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
   </nav>
-
+  </div>
 </template>
 
 <script>
+  import bookTable from '@/components/bookTable.vue'
+  import homePage from '@/components/homePage.vue'
   export default{
       data(){
           return{
             searchInfo: "",
             showCart: false,
-            bookInCart: 0
+            bookInCart: 0,
           }
       },
-    methods:{
+      methods:{
           searchBook(){
               alert("search a book");
           }
-    }
+      },
+      components:{
+          bookTable, homePage
+      }
   }
 
 </script>
+
+<style>
+  #header{
+    z-index: 99;
+    padding: 0px;
+  }
+  #topNav{
+    margin: 0px;
+  }
+  #logoPic{
+    height: 90%;
+  }
+</style>
