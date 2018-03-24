@@ -11,7 +11,8 @@ export default{
     {"name":"Head First设计模式","author":"Freemen","price":56.70,"press":"人民邮电出版社","sales":16000,"checked":false},
     {"name":"深入浅出node.js","author":"朴灵","price":34.29,"press":"人民邮电出版社","sales":1000,"checked":false},
     {"name":"利用Python进行数据分析","author":"Mckinney","price":80.10,"press":"机械工业出版社","sales":15000,"checked":false},
-    {"name":"Javascript高级程序设计","author":"Nicolas Zakas","price":83.20,"press":"人民邮电出版社","sales":10090,"checked":false}
+    {"name":"Javascript高级程序设计","author":"Nicolas Zakas","price":83.20,"press":"人民邮电出版社","sales":10090,"checked":false},
+       {"name":"Java程序设计","author":"Nicolas","price":83.20,"press":"人民邮电出版社","sales":1000,"checked":false}
   ]
 }
 
