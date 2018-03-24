@@ -48,15 +48,22 @@
     </nav>
 
     <!-- Part0: scope of shopping cart-->
-    <div class="container" v-if="showCart" id="shoppingCart">
-      <div id="cartHeader">
-        <div style="vertical-align: middle">Shopping Cart</div>
-      </div>
-      <transition name="shop">
-        <div class="dialog-content" v-for="book in cart" style="background-color: lightsalmon;line-height: 30px">
-          <div>
-            {{book.name}}
-          </div>
+    <div class="container" id="shoppingCart"  v-if="showCart">
+      <transition name="test">
+        <div class="dialog-content" v-if="showCart">
+          <p class="dialog-close" style="background-color: #42b983">
+            <button class="bth btn-danger" @click="showCart=!showCart" style="font-size: xx-small;float: right">
+              x </button>
+          </p>
+          <div style="text-align: center"><h3>Books in Cart</h3></div><br>
+          <div  style="text-align: center">
+            <div v-for="book in cart">
+              {{book["name"]}}
+            </div>
+          </div><br>
+          <p style="text-align: center">
+            <button class="btn btn-success" style="margin: auto">Pay</button>
+          </p>
         </div>
       </transition>
     </div>
@@ -113,7 +120,7 @@
             <span class="caret"></span>
           </button>
           <ul class="dropdown-menu">
-            <li><a href="#">.JSON</a></li>
+            <li><a href="#" @click="jsonDownload">.JSON</a></li>
             <li><a href="#">.XML</a></li>
             <li><a href="#">.CSV</a></li>
             <li><a href="#">.PDF</a></li>
@@ -217,7 +224,7 @@
 
 <script>
   import global_ from './assets/books'
-
+  import homePage from '@/components/homePage.vue'
   export default{
     name: 'sort-by-multiple-columns',
     data() {
@@ -250,6 +257,9 @@
         bookInCart: 0
       }
     },
+    components:{
+        homePage
+    },
     methods:{
 
       // 单元格编辑回调
@@ -266,7 +276,7 @@
           return obj1["sales"] - obj2["sales"];
       },
       sortBy(item, isInc){
-        let newBookList = this.books;
+        let newBookList = this.displayBooks;
         if(item == "price") newBookList.sort(this.comparePrice);
         if(item == "sales") newBookList.sort(this.compareSales);
         if(!isInc) newBookList.reverse();
@@ -292,6 +302,7 @@
           for(var i = 0; i < this.books.length; i++){
             if(this.books[i]["checked"]){
               this.cart.push(this.books[i]);
+              this.bookInCart += 1;
             }
           }
         }
@@ -318,6 +329,10 @@
           var bottomPrice = this.bottomPrice;
           var topPrice = this.topPrice;
           var newBookList = [];
+          if((this.bottomPrice=="")&&(this.topPrice=="")){
+            this.displayBooks = this.books;
+            return true;
+          }
           for(var i = 0; i < this.books.length; i++){
               if((this.books[i]["price"] >= bottomPrice)&&(this.books[i]["price"]
                   <= topPrice)){
@@ -356,6 +371,20 @@
               }
           }
           this.displayBooks = newDisplayBooks;
+      },
+      funDownload (content, filename) {
+        var eleLink = document.createElement('a')
+        eleLink.download = filename
+        eleLink.style.display = 'none'
+        var blob = new Blob([content])
+        eleLink.href = URL.createObjectURL(blob)
+        document.body.appendChild(eleLink)
+        eleLink.click()
+        document.body.removeChild(eleLink)
+      },
+      jsonDownload () {
+        var json = JSON.stringify(this.books)
+        this.funDownload(json, 'books.json')
       }
     }
   }
