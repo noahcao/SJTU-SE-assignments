@@ -16,6 +16,16 @@ const mutations={
   }
 }
 
+const registor={
+  users:[
+    {"ID": 515260910022, "username": "Caojinkun", "password": "thisisthepass"},
+    {"ID": 13162096831, "username": "MyPhone", "password": "515260910022"}
+  ],
+  type:[
+    'Manager', 'Client'
+  ]
+}
+
 export default new Vuex.Store({
-  state, mutations
+  state, mutations, registor
 })

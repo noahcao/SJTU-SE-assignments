@@ -121,7 +121,7 @@
 
 </template>
 
-<style>
+<style scoped>
   #header{
     margin: 10px;
     padding: 5px;
@@ -151,7 +151,6 @@
     color: white;
   }
   .arrowButton{
-    border: solid;
     width:20%;
     padding: 0;
     height: 30px;

@@ -7,13 +7,14 @@
         <li v-for="(list,index) in slideList" :key="index" v-show="index===currentIndex"
             @mouseenter="stop" @mouseleave="go" style="margin-left: -40px">
           <a :href="list.clickUrl">
-            <img :src="list.image" :alt="list.desc">
+            <img :src="list.image" :alt="list.desc" class="swrapImg">
           </a>
         </li>
       </transition-group>
 
       <div class="carousel-items">
-        <span v-for="(item,index) in slideList.length" :class="{'active':index===currentIndex}" @mouseover="change(index)"></span>
+        <span v-for="(item,index) in slideList.length" :class="{'active':index===currentIndex}"
+              @mouseover="change(index)"></span>
       </div>
     </div>
 
@@ -22,6 +23,7 @@
 </template>
 
 <script>
+  import logo from "./../assets/logo.png"
   export default{
       data(){
           return{
@@ -29,17 +31,17 @@
                 {
                   "clickUrl": "#",
                   "desc": "nhwc",
-                  "image": "../assets/logo.png"
+                  "image": "../../static/ad1.jpeg"
                 },
                 {
                   "clickUrl": "#",
                   "desc": "hxrj",
-                  "image": "http://dummyimage.com/1745x492/40b7ea"
+                  "image": "../../static/ad2.jpeg"
                 },
                 {
                   "clickUrl": "#",
                   "desc": "rsdh",
-                  "image": "http://dummyimage.com/1745x492/e3c933"
+                  "image": "../../static/ad3.jpeg"
                 }
               ],
             currentIndex: 0,
@@ -78,10 +80,16 @@
 
 </script>
 
-<style>
+<style scoped>
+  .swrapImg{
+    width: 100%;
+  }
+  #homepage{
+    margin-top:50px;
+  }
   .carousel-wrap {
     position: relative;
-    height: 453px;
+    height: 400px;
     width: 80%;
     margin-left: 10%;
     overflow: hidden;
@@ -97,7 +105,6 @@
     height: 100%;
   }
   img {
-    width: 100%;
     height: 100%;
   }
   .carousel-items {

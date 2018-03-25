@@ -19,13 +19,14 @@
 
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse">
-        <ul class="nav navbar-nav">
-          <li style="font-weight: bold;border: solid;float: left"><a href="#">
-            Sign in
+        <ul class="nav navbar-nav" style="width: 30%">
+          <li style="font-weight: bold;width: 50%"><a href="#">
+            My Account
             <span class="sr-only">(current)</span></a></li>
-          <li class="dropdown" style="float: right">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">图书<span class="caret"></span></a>
-            <ul class="dropdown-menu">
+          <li class="dropdown" style="width: 30%">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+               aria-expanded="false">Books<span class="caret"></span></a>
+            <ul class="dropdown-menu" id="bookTypes">
               <li><router-link to="/bookTable">全部类目</router-link></li>
               <li><a href="#">人文社科</a></li>
               <li><a href="#">教辅教材</a></li>
@@ -39,14 +40,14 @@
             </ul>
           </li>
         </ul>
-        <form class="navbar-form navbar-left">
-          <div class="form-group">
-            <input type="text" class="form-control" placeholder="图书信息" v-model="searchInfo">
+        <form class="navbar-form navbar-left" style="width: 30%;padding: 0px">
+          <div class="form-group" style="width: 60%;float: left">
+            <input type="text" class="form-control" placeholder="Describe book" v-model="searchInfo" style="width: 100%">
           </div>
-          <button type="submit" class="btn btn-default" @click="searchBook">Search</button>
+          <button type="submit" class="btn btn-default" @click="searchBook" style="float: right">Search</button>
         </form>
         <ul class="nav navbar-nav navbar-right">
-          <button type="submit" class="btn btn-info" style="margin-top: 6px" @click="showCart=!showCart">Shopping Cart ({{bookInCart}})</button>
+          <button type="submit" class="btn btn-info" style="margin-top: 8px" @click="showCart=!showCart">Shopping Cart ({{bookInCart}})</button>
         </ul>
       </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -78,6 +79,7 @@
 </script>
 
 <style>
+
   #header{
     z-index: 99;
     padding: 0px;
