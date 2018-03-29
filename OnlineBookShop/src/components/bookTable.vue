@@ -2,19 +2,35 @@
   <div id="booktable">
     <!-- Part1: The top navigator bar -->
     <!-- Part0: scope of shopping cart-->
-    <div class="container" id="shoppingCart"  v-if="showCart">
+    <div class="container" id="shoppingCart"  v-if="$store.state.showCart">
       <transition name="test">
-        <div class="dialog-content" v-if="showCart">
-          <p class="dialog-close" style="background-color: #42b983">
-            <button class="bth btn-danger" @click="showCart=!showCart" style="font-size: xx-small;float: right">
+        <div class="dialog-content" v-if="$store.state.showCart">
+          <p class="dialog-close">
+            <button class="bth btn-danger" @click="$store.state.showCart=!$store.state.showCart" style="font-size: xx-small;float: right">
               x </button>
           </p>
-          <div style="text-align: center"><h3>Books in Cart</h3></div><br>
-          <div  style="text-align: center">
-            <div v-for="book in cart">
-              {{book["name"]}}
-            </div>
-          </div><br>
+          <div style="text-align: center;">
+            <h4 >Books in Cart</h4>
+          </div>
+
+              <div class="modal-body" id="bookListInCart">
+                <div v-for="book in $store.state.bookInfoInCart" style="width: 100%;">
+                  <div class="card">
+                    <div class="card-block">
+                      <div class="card-text">
+                        <strong>{{book["name"]}}</strong>
+                        <button style="float: right" @click="deleteBookInCart(book)">x</button>
+                      </div>
+                      <p v-if="$store.state.showCart" id="bookDescribe" style="margin-top: 5px">
+                        <strong>author</strong>:  {{book["author"]}}
+                        <br>
+                        <strong>price</strong>:  {{book["price"]}}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
           <p style="text-align: center">
             <button class="btn btn-success" style="margin: auto">Pay</button>
           </p>
@@ -122,6 +138,34 @@
 </template>
 
 <style scoped>
+  #bookListInCart{
+    width: 100%;
+    height: 230px;
+    overflow: scroll;
+    padding: 0px;
+    text-align: center;
+    margin: 30px 0px 10px 0px;
+  }
+  .card{
+    width: 100%;
+    background-color: lightskyblue;
+    border-top: solid deepskyblue;
+  }
+  #booksInCart{
+    border:solid 5px;
+    border-radius: 8px;
+    height: 20%;
+    width: 80%;
+    z-index:99;
+    background-color: lightsalmon
+  }
+  #bookDescribe{
+    background-color: whitesmoke;
+    font-size: smaller;
+    line-height:22px;
+    padding: 2px;
+    margin-bottom: 0px;
+  }
   #header{
     margin: 10px;
     padding: 5px;
@@ -208,7 +252,7 @@
         cart: [],
         showCart:false,
         searchInfo: "",
-        bookInCart: 0
+        bookInCart: this.$store.state.bookInCart,
       }
     },
     methods:{
@@ -238,14 +282,15 @@
       addToCart(){
         if(this.checkAll){
           for(var i = 0; i < this.books.length; i++){
-            this.cart.push(this.books[i]);
+            this.$store.state.bookInfoInCart.push(this.books[i]);
+            this.$store.state.bookInCart += 1;
           }
         }
         else{
           for(var i = 0; i < this.books.length; i++){
             if(this.books[i]["checked"]){
-              this.cart.push(this.books[i]);
-              this.bookInCart += 1;
+              this.$store.state.bookInfoInCart.push(this.books[i]);
+              this.$store.state.bookInCart += 1;
             }
           }
         }
@@ -325,6 +370,16 @@
       jsonDownload () {
         var json = JSON.stringify(this.books)
         this.funDownload(json, 'books.json')
+      },
+      deleteBookInCart(book){
+        let newListInCart = [];
+
+        for(var i = 0; i < this.$store.state.bookInfoInCart.length; i++){
+            if(this.$store.state.bookInfoInCart[i]["name"] != book["name"]){
+                newListInCart.push(book);
+            }
+        }
+        this.$store.commit('newBooksInCart', newListInCart);
       }
     }
   }

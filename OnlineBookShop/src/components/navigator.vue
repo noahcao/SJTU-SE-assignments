@@ -21,9 +21,9 @@
       <div class="collapse navbar-collapse">
         <ul class="nav navbar-nav" style="width: 30%">
           <li style="font-weight: bold;width: 50%"><a href="#">
-            My Account
+            <router-link to="/admin">My Account</router-link>
             <span class="sr-only">(current)</span></a></li>
-          <li class="dropdown" style="width: 30%">
+          <li class="dropdown" style="width: 35%">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                aria-expanded="false">Books<span class="caret"></span></a>
             <ul class="dropdown-menu" id="bookTypes">
@@ -47,7 +47,7 @@
           <button type="submit" class="btn btn-default" @click="searchBook" style="float: right">Search</button>
         </form>
         <ul class="nav navbar-nav navbar-right">
-          <button type="submit" class="btn btn-info" style="margin-top: 8px" @click="showCart=!showCart">Shopping Cart ({{bookInCart}})</button>
+          <button type="submit" class="btn btn-info" style="margin-top: 8px" @click="$store.state.showCart=!$store.state.showCart">Shopping Cart ({{$store.state.bookInCart}})</button>
         </ul>
       </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -58,6 +58,7 @@
 <script>
   import bookTable from '@/components/bookTable.vue'
   import homePage from '@/components/homePage.vue'
+  import admin from '@/components/admin.vue'
   export default{
       data(){
           return{
@@ -72,7 +73,7 @@
           }
       },
       components:{
-          bookTable, homePage
+          bookTable, homePage, admin
       }
   }
 

@@ -4,17 +4,20 @@ import Vuex from 'vuex'
 Vue.use(Vuex);
 
 const state={
-  count: 1
+  count: 1,
+  bookInCart: 0,
+  bookInfoInCart: [],
+  showCart: false
 }
 
 const mutations={
-  add(state){
-    state.count +=1;
+  newBooksInCart(state, newList){
+    state.bookInfoInCart = newList;
+    state.bookInCart = newList.length;
   },
-  reduce(state){
-    state.count +=1;
-  }
 }
+
+
 
 const registor={
   users:[
