@@ -80,15 +80,5 @@
 </script>
 
 <style>
-
-  #header{
-    z-index: 99;
-    padding: 0px;
-  }
-  #topNav{
-    margin: 0px;
-  }
-  #logoPic{
-    height: 90%;
-  }
+  @import "./../css/navigator.css";
 </style>

@@ -1,30 +1,32 @@
 <template>
 
   <div id="homepage">
+      <img src="@/../static/background/9.jpg" id="titleImg"></img>
 
-      <div class="carousel-wrap" id="carousel">
-
-          <transition-group tag="ul" class='slide-ul' name="list">
-            <li v-for="(list,index) in slideList" :key="index" v-show="index===currentIndex"
-              @mouseenter="stop" @mouseleave="go" style="margin-left: -40px">
-              <a :href="list.clickUrl">
-                <img :src="list.image" :alt="list.desc" class="swrapImg">
-              </a>
-            </li>
-          </transition-group>
-
-          <div class="carousel-items">
-            <span v-for="(item,index) in slideList.length" :class="{'active':index===currentIndex}"
-              @mouseover="change(index)"></span>
-          </div>
-
-        </div>
 
         <div id="partition">
           <img src="../../static/partition_long.png" style="width: 100%">
         </div>
 
-      <div class="carousel-wrap" id="recommader">
+    <div class="carousel-wrap" id="carousel">
+
+      <transition-group tag="ul" class='slide-ul' name="list">
+        <li v-for="(list,index) in slideList" :key="index" v-show="index===currentIndex"
+            @mouseenter="stop" @mouseleave="go" style="margin-left: -40px">
+          <a :href="list.clickUrl">
+            <img :src="list.image" :alt="list.desc" class="swrapImg">
+          </a>
+        </li>
+      </transition-group>
+
+      <div class="carousel-items">
+            <span v-for="(item,index) in slideList.length" :class="{'active':index===currentIndex}"
+                  @mouseover="change(index)"></span>
+      </div>
+
+    </div>
+
+    <div class="carousel-wrap" id="recommader">
 
     </div>
 
@@ -114,90 +116,5 @@
 </script>
 
 <style scoped>
-  #carousel{
-    width: 90%;
-    margin-left: 5%;
-  }
-  #partition{
-    width: 100%;
-    height: 30px;
-    background-color: red;
-    margin: 20px 0px 20px 0px;
-  }
-  #recommader{
-    height: 100px;
-    margin-top: 20px;
-    width: 40%;
-    margin-left: 30%;
-    margin-right: 30%;
-  }
-  .swrapImg{
-    width: 100%;
-
-  }
-  .swrapImg_4{
-    width: 50%;
-    height: 100%;
-  }
-  #homepage{
-    padding-top: 20px;
-    height: 800px;
-  }
-  .carousel-wrap {
-    position: relative;
-    height: 400px;
-    width: 80%;
-    margin-left: 10%;
-    overflow: hidden;
-    background-color: #fff;
-  }
-  .slide-ul {
-    width: 100%;
-    height: 100%;
-  }
-  li {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-  }
-  img {
-    height: 100%;
-  }
-  .carousel-items {
-    position: absolute;
-    z-index: 10;
-    top: 380px;
-    width: 100%;
-    margin: 0 auto;
-    text-align: center;
-    font-size: 0;
-  }
-  span {
-    display: inline-block;
-    height: 6px;
-    width: 30px;
-    margin: 0 3px;
-    background-color: #b2b2b2;
-    cursor: pointer;
-  }
-  .list-enter-to {
-    transition: all 1s ease;
-    transform: translateX(0);
-  }
-
-  .list-leave-active {
-    transition: all 1s ease;
-    transform: translateX(-100%)
-  }
-
-  .list-enter {
-    transform: translateX(100%)
-  }
-
-  .list-leave {
-    transform: translateX(0)
-  }
-
-
-
+  @import "./../css/homePage.css";
 </style>

@@ -1,26 +1,30 @@
 <template>
 
 <div id="adminPage">
-
-  <div id="adminWindow">
-    <img src="../../static/ad1.jpeg">
-  </div>
-
+  <profile v-if="$store.state.signedIn"></profile>
+  <sign v-if="!$store.state.signedIn"></sign>
 </div>
 
 </template>
 
 <script>
+  import profile from "@/components/profile.vue"
+  import sign from "@/components/sign.vue"
+export default{
+    data(){
+        return{
+            signedIn: this.$store.state.signedIn
+        }
+    },
+    components:{
+        profile, sign
+    }
+}
+
 
 </script>
 
 <style>
-  #adminPage{
-    background-color: whitesmoke;
-    height: 800px;
-    padding: 10px;
-  }
-  #adminWindow{
-    margin-top: 10px;
-  }
+  @import "./../css/admin.css";
+
 </style>
