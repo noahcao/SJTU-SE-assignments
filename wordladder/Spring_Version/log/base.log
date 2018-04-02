@@ -1,0 +1,5 @@
+2018-04-02 11:29:14,005 INFO (StartupInfoLogger.java:50)- Starting BackendApplication on Lordinateur-de-NoahCao.local with PID 84111 (started by noahcao in /Users/noahcao/SJTU/17-18_2/后端课程/SJTU_SE_Backend/wordladder/Spring_Version)
+2018-04-02 11:29:14,008 DEBUG (StartupInfoLogger.java:53)- Running with Spring Boot v2.0.0.RELEASE, Spring v5.0.4.RELEASE
+2018-04-02 11:29:14,010 INFO (SpringApplication.java:652)- No active profile set, falling back to default profiles: default
+2018-04-02 11:29:15,762 INFO (StartupInfoLogger.java:59)- Started BackendApplication in 22.075 seconds (JVM running for 27.823)
+2018-04-02 11:29:27,916 DEBUG (Controller.java:53)- Wordladder:Path=apple ample amble able abye bye bee beep keep 
