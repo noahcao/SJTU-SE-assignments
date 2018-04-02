@@ -1,4 +1,5 @@
 <template>
+  <div id="profilePage">
   <div class="container" id="pageContainer">
     <div class="row">
       　　
@@ -64,7 +65,7 @@
       </div>
     </div>
   </div>
-
+  </div>
 </template>
 
 <script>

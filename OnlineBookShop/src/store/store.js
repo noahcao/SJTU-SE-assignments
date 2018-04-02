@@ -11,6 +11,10 @@ const state={
   signedIn: false,
   username: "",
   password: "",
+  users:[
+    {"ID": 515260910022, "username": "Caojinkun", "password": "thisisthepass"},
+    {"ID": 13162096831, "username": "MyPhone", "password": "515260910022"}
+  ],
   Orders:[
     {"name": "刺杀骑士团长", "price": 88.2, "author": "Xie TianYi",
       "press": "SJTU Press", "img": "@/../static/books/book1.png", "date": "2018/1/1", "tag":"order"},

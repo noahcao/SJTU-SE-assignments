@@ -47,7 +47,8 @@
           <button type="submit" class="btn btn-default" @click="searchBook" style="float: right">Search</button>
         </form>
         <ul class="nav navbar-nav navbar-right">
-          <button type="submit" class="btn btn-info" style="margin-top: 8px" @click="$store.state.showCart=!$store.state.showCart">Shopping Cart ({{$store.state.bookInCart}})</button>
+          <button type="submit" class="btn btn-info" style="margin-top: 8px" @click="$store.state.showCart=!$store.state.showCart">
+            Shopping Cart ({{$store.state.bookInCart}})</button>
         </ul>
       </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->

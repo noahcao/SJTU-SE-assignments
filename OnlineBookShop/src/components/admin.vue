@@ -1,8 +1,8 @@
 <template>
 
-<div id="adminPage">
+<div id="adminPage" style="padding: 0px">
   <profile v-if="$store.state.signedIn"></profile>
-  <sign v-if="!$store.state.signedIn"></sign>
+  <homePage v-if="!$store.state.signedIn"></homePage>
 </div>
 
 </template>
@@ -10,6 +10,7 @@
 <script>
   import profile from "@/components/profile.vue"
   import sign from "@/components/sign.vue"
+  import homePage from "@/components/homePage.vue"
 export default{
     data(){
         return{
@@ -17,7 +18,7 @@ export default{
         }
     },
     components:{
-        profile, sign
+        profile, sign, homePage
     }
 }
 
