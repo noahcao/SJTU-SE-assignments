@@ -11,6 +11,7 @@ const state={
   signedIn: false,
   username: "",
   password: "",
+  searchInfo: "",
   users:[
     {"ID": 515260910022, "username": "Caojinkun", "password": "thisisthepass"},
     {"ID": 13162096831, "username": "MyPhone", "password": "515260910022"}

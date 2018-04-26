@@ -24,7 +24,7 @@
               <span class="label label-success labelInput">Password</span>
             </div>
             <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="padding: 0">
-              <input v-model="password" class="input" style="width: 100%">
+              <input type="password" v-model="password" class="input" style="width: 100%">
             </div>
           </div>
         </div>
@@ -128,6 +128,13 @@
           }
       },
     methods:{
+      getdata(){
+        this.$ajax({
+          url: 'axiosPath',
+          method: 'get',
+          withCredentials: true
+        })
+      },
       created(){
         this.$nextTick(() => {
           this.timer = setInterval(() => {

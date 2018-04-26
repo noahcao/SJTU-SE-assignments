@@ -114,6 +114,13 @@
          data-slide="next"><span _ngcontent-c3="" aria-hidden="true" class="glyphicon glyphicon-chevron-right"></span></a>
     </div>
 
+    <div style="height: 50px;margin: 10px;padding-left:20px;padding-right: 20px">
+      <div class="form-group" style="width: 60%;float: left">
+        <input type="text" class="form-control" placeholder="Describe book" v-model="$store.state.searchInfo"
+               style="width: 50%;margin-left: 40%">
+      </div>
+      <button type="submit" class="btn btn-default" @click="searchBook">Search</button>
+    </div>
 
 
     <div id="header">
@@ -185,7 +192,6 @@
         </thead>
       </table>
     </div>
-
   </div>
 
 </template>
@@ -222,7 +228,6 @@
         checkedNum: 0,
         cart: [],
         showCart:false,
-        searchInfo: "",
         bookInCart: this.$store.state.bookInCart,
       }
     },
@@ -385,8 +390,9 @@
         var newDisplayBooks = [];
         for(var i = 1; i < this.books.length; i++){
           var book = this.books[i];
-          if(((book["name"].search(this.searchInfo) != -1) || (book["press"].search(this.searchInfo) != -1)
-            || (book["author"].search(this.searchInfo) != -1))){
+          if(((book["name"].search(this.$store.state.searchInfo) != -1) ||
+            (book["press"].search(this.$store.state.searchInfo) != -1)
+            || (book["author"].search(this.$store.state.searchInfo) != -1))){
             newDisplayBooks.push(book);
           }
         }
@@ -411,7 +417,7 @@
 
         for(var i = 0; i < this.$store.state.bookInfoInCart.length; i++){
             if(this.$store.state.bookInfoInCart[i]["name"] != book["name"]){
-                newListInCart.push(book);
+                newListInCart.push(this.$store.state.bookInfoInCart[i]);
             }
             else{
                 if(book["number"]>1){

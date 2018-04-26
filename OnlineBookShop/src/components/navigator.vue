@@ -41,10 +41,6 @@
           </li>
         </ul>
         <form class="navbar-form navbar-left" style="width: 30%;padding: 0px">
-          <div class="form-group" style="width: 60%;float: left">
-            <input type="text" class="form-control" placeholder="Describe book" v-model="searchInfo" style="width: 100%">
-          </div>
-          <button type="submit" class="btn btn-default" @click="searchBook" style="float: right">Search</button>
         </form>
         <ul class="nav navbar-nav navbar-right">
           <button type="submit" class="btn btn-info" style="margin-top: 8px" @click="$store.state.showCart=!$store.state.showCart">

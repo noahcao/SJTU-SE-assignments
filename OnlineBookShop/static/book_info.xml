@@ -1,0 +1,15 @@
+<?xml version="1.0" standalone="yes"?>
+<RECORDS>
+	<RECORD>
+		<id>0</id>
+		<name>深入理解计算机系统</name>
+		<price>2490</price>
+		<publish>2000</publish>
+		<stock>1111</stock>
+		<author>Bryant</author>
+		<category>计算机</category>
+		<img_path>&apos;@/../static/books/book13.png</img_path>
+		<press>机械工业出版社</press>
+	</RECORD>
+</RECORDS>
+
