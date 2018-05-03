@@ -19,7 +19,12 @@ export default{
     },
     components:{
         profile, sign, homePage
-    }
+    },
+    mounted(){
+      this.$store.state.signedIn = (window.localStorage.getItem("signedin") == "signed");
+      this.$store.state.userid = window.localStorage.getItem("userid");
+      this.$store.state.username = window.localStorage.getItem("username");
+  }
 }
 
 

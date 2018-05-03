@@ -76,7 +76,17 @@
         Orders: this.$store.state.Orders,
         Message: this.$store.state.Message,
         detailPic: "../../static/white.png",
+        userid: 1
       }
+    },
+    mounted(){
+      this.$http.post('/getorders', {userid: this.userid})
+        .then((response) => {
+          console.log(response.data);
+        });
+      this.$store.state.signedIn = (window.localStorage.getItem("signedin") == "signed");
+      this.$store.state.userid = window.localStorage.getItem("userid");
+      this.$store.state.username = window.localStorage.getItem("username");
     },
     methods:{
       showDetails(detail){
@@ -84,6 +94,7 @@
       },
       logOut(){
         this.$store.commit("logOut");
+        window.localStorage.setItem("signedin", "unsigned");
       }
     }
   }

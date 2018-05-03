@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.entity">
+    <class name="Book" table="book">
+        <id name="id" column="id">
+            <generator class="increment"/>
+        </id>
+        <property name="name"/>
+        <property name="author"/>
+        <property name="price"/>
+        <property name="year"/>
+        <property name="press"/>
+        <property name="stock"/>
+        <property name="sales"/>
+        <property name="img"/>
+    </class>
+
+    <class name="UserAdmin" table="user">
+        <id name="id" column="id">
+            <generator class="increment"/>
+        </id>
+        <property name="password"/>
+        <property name="username"/>
+        <property name="img"/>
+    </class>
+
+    <class name="Order" table="orders">
+        <id name="orderid" column="orderid">
+            <generator class="increment"/>
+        </id>
+        <property name="userid"/>
+        <property name="bookid"/>
+        <property name="price"/>
+        <property name="time"/>
+    </class>
+
+    <class name="Cart" table="cart">
+        <id name="userid" column="userid">
+            <generator class="native"/>
+        </id>
+        <property name="userid"/>
+        <property name="Cart"/>
+    </class>
+
+</hibernate-mapping>

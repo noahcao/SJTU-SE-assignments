@@ -42,7 +42,7 @@
         </ul>
         <form class="navbar-form navbar-left" style="width: 30%;padding: 0px">
         </form>
-        <ul class="nav navbar-nav navbar-right">
+        <ul class="nav navbar-nav navbar-right" v-if="$store.state.signedIn">
           <button type="submit" class="btn btn-info" style="margin-top: 8px" @click="$store.state.showCart=!$store.state.showCart">
             Shopping Cart ({{$store.state.bookInCart}})</button>
         </ul>
@@ -71,7 +71,13 @@
       },
       components:{
           bookTable, homePage, admin
-      }
+      },
+      mounted(){
+          this.$store.state.signedIn = (window.localStorage.getItem("signedin") == "signed");
+          this.$store.state.userid = window.localStorage.getItem("userid");
+          this.$store.state.username = window.localStorage.getItem("username");
+    },
+
   }
 
 </script>

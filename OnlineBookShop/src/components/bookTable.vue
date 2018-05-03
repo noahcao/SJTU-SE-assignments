@@ -32,8 +32,9 @@
                               <br>
                               <strong>price</strong>:  {{book["price"]}}
                               <br>
-                              <strong>number</strong>:  {{book["number"]}} <a class="glyphicon glyphicon-plus"
-                                                                              @click="buyOneMore(book)"></a>
+                              <strong>number</strong>:  {{book["number"]}}
+                              <a class="glyphicon glyphicon-plus"
+                                 @click="buyOneMore(book)"></a>
                               <a class="glyphicon glyphicon-minus"
                                  @click="buyOneLess(book)"></a>
                               <br>
@@ -47,8 +48,10 @@
                 </div>
               </div>
 
+
+          <p style="text-align: center">Total Price: {{totalPriceInCart}}</p>
           <p style="text-align: center">
-            <button class="btn btn-success" style="margin: auto">Pay</button>
+            <button class="btn btn-success" style="margin: auto" @click="pay">Pay</button>
           </p>
         </div>
       </transition>
@@ -170,6 +173,9 @@
             <div class='btn glyphicon glyphicon-chevron-down arrowButton' @click="sortBy('sales', false)"></div>
           </th>
         </tr>
+
+
+
         <tr v-for="book in displayBooks" style="text-align: center">
           <td><input type="checkbox" v-model="book.checked"></td>
           <td contentEditable="true" v-model="book.name">
@@ -189,6 +195,29 @@
           <td contentEditable="true" v-model="book.press">{{book.press}}</td>
           <td contentEditable="true" v-model="book.sales">{{book.sales}}</td>
         </tr>
+
+<!--
+        <tr v-for="book in displayBooks" style="text-align: center">
+          <td><input type="checkbox" v-model="book.checked"></td>
+          <td contentEditable="true" v-model="book.name">
+            <div class="container" style="width:100%">
+              <div class="row">
+                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="padding:0px">
+                  <img :src="book.img" id="bookImg">
+                </div>
+                <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10" style="padding:0px">
+                  {{book.name}}
+                </div>
+              </div>
+            </div>
+          </td>
+          <td contentEditable="true" v-model="book.author">{{book.author}}</td>
+          <td contentEditable="true" v-model="book.price">{{book.price}}</td>
+          <td contentEditable="true" v-model="book.press">{{book.press}}</td>
+          <td contentEditable="true" v-model="book.sales">{{book.sales}}</td>
+        </tr>
+-->
+
         </thead>
       </table>
     </div>
@@ -198,7 +227,6 @@
 
 <script>
   import global_ from '../assets/books'
-  import logo from './../assets/logo.png'
   export default{
     name: 'booTable',
     data() {
@@ -229,6 +257,31 @@
         cart: [],
         showCart:false,
         bookInCart: this.$store.state.bookInCart,
+        bookList: [],
+      }
+    },
+    mounted(){
+      this.$http.post('/getbooks')
+      .then((response) => {
+        console.log(response.data.books);
+        this.books = response.data.books;
+        for(var i = 0; i < this.books.length; i++){
+          this.books["checked"] = false;
+        }
+        this.displayBooks = this.books;
+      });
+      this.$store.state.signedIn = (window.localStorage.getItem("signedin") == "signed");
+      this.$store.state.userid = window.localStorage.getItem("userid");
+      this.$store.state.username = window.localStorage.getItem("username");
+    },
+    computed:{
+      totalPriceInCart: function(){
+        var price = 0;
+        for(var i = 0;  i < this.$store.state.bookInfoInCart.length; i++){
+          var book = this.$store.state.bookInfoInCart[i];
+          price += book["price"] * book["number"];
+        }
+        return price;
       }
     },
     methods:{
@@ -292,8 +345,25 @@
           }
       },
       buyOneMore(book){
-        book["checked"] = true;
-        this.addToCart();
+        //book["checked"] = true;
+        //this.addToCart();
+        for(var i = 0; i < this.$store.state.bookInfoInCart.length; i++){
+          if(this.$store.state.bookInfoInCart[i]["name"] == book["name"]){
+              var newList = [];
+              for(var j = 0; j < this.$store.state.bookInfoInCart.length; j++){
+                if(i != j){
+                  newList.push(this.$store.state.bookInfoInCart[j]);
+                }
+                else{
+                  this.$store.state.bookInfoInCart[j]["number"] += 1;
+                  newList.push(this.$store.state.bookInfoInCart[j]);
+                }
+              }
+              this.$store.state.bookInfoInCart = newList;
+              return;
+            }
+        }
+
       },
       buyOneLess(book){
         for(var i = 0; i < this.$store.state.bookInfoInCart.length; i++){
@@ -319,6 +389,9 @@
             }
         }
       },
+      pay(){
+
+      },
       addToCart(){
         if(this.checkAll){
           for(var i = 0; i < this.books.length; i++){
@@ -339,6 +412,8 @@
           this.books[i]["checked"] = false;
         }
       },
+
+
       deleteBooks(){
         var newBooks = [];
         for(var i = 0; i < this.books.length; i++){
@@ -388,7 +463,7 @@
       },
       searchBook(){
         var newDisplayBooks = [];
-        for(var i = 1; i < this.books.length; i++){
+        for(var i = 0; i < this.books.length; i++){
           var book = this.books[i];
           if(((book["name"].search(this.$store.state.searchInfo) != -1) ||
             (book["press"].search(this.$store.state.searchInfo) != -1)

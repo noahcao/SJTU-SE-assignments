@@ -1,8 +1,6 @@
 <template>
 
   <div id="homepage">
-
-
       <div class="container" id="logBlock" v-if="!$store.state.signedIn">
         <div id="welcome">
           <h2 style="text-align: center">Welcome to BookBar</h2>
@@ -44,33 +42,6 @@
           </div>
         </div>
       </div>
-
-    <!-- <div id="partition">
-      <img src="../../static/partition_long.png" style="width: 100%">
-    </div>
-
-<div class="carousel-wrap" id="carousel">
-
-  <transition-group tag="ul" class='slide-ul' name="list">
-    <li v-for="(list,index) in slideList" :key="index" v-show="index===currentIndex"
-        @mouseenter="stop" @mouseleave="go" style="margin-left: -40px">
-      <a :href="list.clickUrl">
-        <img :src="list.image" :alt="list.desc" class="swrapImg">
-      </a>
-    </li>
-  </transition-group>
-
-  <div class="carousel-items">
-        <span v-for="(item,index) in slideList.length" :class="{'active':index===currentIndex}"
-              @mouseover="change(index)"></span>
-  </div>
-
-</div>
-
-<div class="carousel-wrap" id="recommader">
-
-</div> -->
-
   </div>
 
 </template>
@@ -124,9 +95,15 @@
               timer: '',
               logo:'./../assets/logo.png',
               username: "",
-              password: ""
+              password: "",
+              UsersInRecord: []
           }
       },
+    mounted(){
+        this.$store.state.signedIn = (window.localStorage.getItem("signedin") == "signed");
+        this.$store.state.userid = window.localStorage.getItem("userid");
+        this.$store.state.username = window.localStorage.getItem("username");
+    },
     methods:{
       getdata(){
         this.$ajax({
@@ -161,33 +138,29 @@
         }
       },
       signIn(){
-          for(var i = 0; i < this.$store.state.users.length; i++){
-            if(this.$store.state.users[i]["username"] == this.username){
-                if(this.$store.state.users[i]["password"] == this.password){
-                    alert("Welcome to Book Bar! " + this.username);
-                    this.$store.state.signedIn = true;
-                    this.username = "";
-                    this.password = "";
-                    return;
-                }
-                else{
-                    alert("Incorrect password received!");
-                    this.username = "";
-                    this.password = "";
-                    return;
-                }
+          this.$http.post('/getuser', {"username": this.username})
+          .then((response) => {
+            var user = response.data;
+            if(user.password  == this.password){
+              alert("Welcome to Book Bar! " + this.username);
+              this.$store.state.signedIn = true;
+              this.$store.state.userid = this.userid;
+              this.$store.state.username = this.username;
+              window.localStorage.setItem("username", this.username);
+              window.localStorage.setItem("signedin", "signed");
+              window.localStorage.setItem("userid", this.userid);
             }
-          }
-          this.username = "";
-          this.password = "";
-          alert("No corresponding user exists!");
+            else{
+              alert("No corresponding user exists!");
+            }
+            this.username = "";
+            this.password = "";
+          });
       },
       signOn(){
-          var newUser = {};
-          newUser["username"] = this.username;
-          newUser["password"] = this.password;
-          this.$store.state.users.push(newUser);
           alert("You've created a new account! Welcome, "+ this.username);
+          this.$http.post('/signon', {username: this.username,
+            password: this.password, img: null})
           this.username = "";
           this.password = "";
       }
