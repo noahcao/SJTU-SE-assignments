@@ -43,7 +43,8 @@
         <form class="navbar-form navbar-left" style="width: 30%;padding: 0px">
         </form>
         <ul class="nav navbar-nav navbar-right" v-if="$store.state.signedIn">
-          <button type="submit" class="btn btn-info" style="margin-top: 8px" @click="$store.state.showCart=!$store.state.showCart">
+          <button type="submit" class="btn btn-info" style="margin-top: 8px"
+                  @click="this.getOrders">
             Shopping Cart ({{$store.state.bookInCart}})</button>
         </ul>
       </div><!-- /.navbar-collapse -->
@@ -77,6 +78,17 @@
           this.$store.state.userid = window.localStorage.getItem("userid");
           this.$store.state.username = window.localStorage.getItem("username");
     },
+    methods:{
+        getOrders(){
+          this.$store.state.showCart = !this.$store.state.showCart;
+          if(this.$store.state.signedIn){
+              this.$http.post("/getorders", {userid: 1})
+              .then((response) => {
+                console.log(response.data);
+              });
+          }
+        }
+    }
 
   }
 

@@ -32,13 +32,13 @@
                               <br>
                               <strong>price</strong>:  {{book["price"]}}
                               <br>
-                              <strong>number</strong>:  {{book["number"]}}
+                              <strong>number</strong>:  {{book["stock"]}}
                               <a class="glyphicon glyphicon-plus"
                                  @click="buyOneMore(book)"></a>
                               <a class="glyphicon glyphicon-minus"
                                  @click="buyOneLess(book)"></a>
                               <br>
-                              <strong>total price:</strong>:  {{mul(book["number"], book["price"])}}
+                              <strong>total price:</strong>: {{mul(book["stock"], book["price"])}}
                             </div>
                           </div>
                        </div>
@@ -256,6 +256,7 @@
         checkedNum: 0,
         cart: [],
         showCart:false,
+        bookidInCart: [],
         bookInCart: this.$store.state.bookInCart,
         bookList: [],
       }
@@ -263,28 +264,54 @@
     mounted(){
       this.$http.post('/getbooks')
       .then((response) => {
-        console.log(response.data.books);
         this.books = response.data.books;
         for(var i = 0; i < this.books.length; i++){
           this.books["checked"] = false;
         }
         this.displayBooks = this.books;
+        this.$store.state.signedIn = (window.localStorage.getItem("signedin") == "signed");
+        this.$store.state.userid = window.localStorage.getItem("userid");
+        this.$store.state.username = window.localStorage.getItem("username");
+        console.log("already get books info!");
+        if(this.$store.state.signedIn){
+          // get cart list for the logged-in user
+          this.$http.post('/getcart', {"userid": this.$store.state.userid})
+          .then((response) => {
+              this.bookidInCart = response.data;
+              console.log(response.data.booksInCart);
+              this.$store.state.bookInfoInCart = response.data.booksInCart;
+              console.log(this.$store.state.bookInfoInCart);
+              this.$store.state.bookInCart = this.$store.state.bookInfoInCart.length;
+          })
+        }
       });
-      this.$store.state.signedIn = (window.localStorage.getItem("signedin") == "signed");
-      this.$store.state.userid = window.localStorage.getItem("userid");
-      this.$store.state.username = window.localStorage.getItem("username");
     },
     computed:{
       totalPriceInCart: function(){
         var price = 0;
         for(var i = 0;  i < this.$store.state.bookInfoInCart.length; i++){
           var book = this.$store.state.bookInfoInCart[i];
-          price += book["price"] * book["number"];
+          price += book["price"] * book["stock"];
         }
         return price;
       }
     },
     methods:{
+      setBooksInCart(bookidList){
+        console.log("ffff");
+        console.log(bookidList);
+        // function to padding the book_name, book_price, author and other details of books in
+        // cart to update the this.$store.state.bookInfoInCart
+        var bookDetailInfo = [];
+        for(var i = 0; i < bookidList.length; i++){
+          var bookInfo = bookidList[i];
+          var oneBookInfo = {};
+          this.$http.post("/getbook", {"id": bookInfo.bookid})
+            .then((response) => {
+              console.log(response.data);
+            })
+        }
+      },
       comparePrice(obj1, obj2){
         return obj1["price"] - obj2["price"];
       },
@@ -404,6 +431,13 @@
             if(this.books[i]["checked"]){
               this.addNumberToCart(1, this.books[i], this.$store.state.bookInfoInCart);
               this.$store.state.bookInCart += 1;
+              this.$store.state.bookInfoInCart.push(this.books[i]);
+              var bookid = this.books[i]["id"];
+              var userid = this.$store.state.userid;
+              this.$http.post('/addcart', {userid: userid, bookid: bookid, number: 1})
+                .then((response) => {
+                  console.log(response.data);
+                });
             }
           }
         }
@@ -412,8 +446,6 @@
           this.books[i]["checked"] = false;
         }
       },
-
-
       deleteBooks(){
         var newBooks = [];
         for(var i = 0; i < this.books.length; i++){
@@ -421,9 +453,6 @@
         }
         this.books = newBooks;
         this.displayBooks = this.books;
-      },
-      search(query){
-
       },
       addBook(){
         this.newBook = !this.newBook;
@@ -488,6 +517,13 @@
         this.funDownload(json, 'books.json')
       },
       deleteBookInCart(book){
+        var userid = window.localStorage.getItem("userid");
+        var bookid = book["id"];
+        this.$http.post('delcart', {"userid": userid, "bookid": bookid})
+          .then((response) => {
+            console.log(response.data);
+            console.log("delete a book from cart!");
+          });
         let newListInCart = [];
 
         for(var i = 0; i < this.$store.state.bookInfoInCart.length; i++){
@@ -498,6 +534,7 @@
                 if(book["number"]>1){
                     book["number"] -= 1;
                     newListInCart.push(book);
+
                 }
             }
         }

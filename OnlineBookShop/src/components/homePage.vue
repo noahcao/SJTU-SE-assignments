@@ -144,8 +144,9 @@
             if(user.password  == this.password){
               alert("Welcome to Book Bar! " + this.username);
               this.$store.state.signedIn = true;
-              this.$store.state.userid = this.userid;
+              this.$store.state.userid = user.id;
               this.$store.state.username = this.username;
+              this.userid = user.id;
               window.localStorage.setItem("username", this.username);
               window.localStorage.setItem("signedin", "signed");
               window.localStorage.setItem("userid", this.userid);
