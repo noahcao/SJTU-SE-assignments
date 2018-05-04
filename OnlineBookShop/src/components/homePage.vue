@@ -150,20 +150,33 @@
               window.localStorage.setItem("username", this.username);
               window.localStorage.setItem("signedin", "signed");
               window.localStorage.setItem("userid", this.userid);
+              console.log(user);
+              window.localStorage.setItem("admin", user.admin);
             }
             else{
-              alert("No corresponding user exists!");
+              alert("Invalid username or password!");
             }
             this.username = "";
             this.password = "";
           });
       },
       signOn(){
-          alert("You've created a new account! Welcome, "+ this.username);
+        if(this.username!="" && this.password!=""){
           this.$http.post('/signon', {username: this.username,
             password: this.password, img: null})
-          this.username = "";
-          this.password = "";
+            .then((response) => {
+              console.log(response.data);
+              if(response.data.id != -1){
+                alert(this.username + " , you've created a new account!");
+              }else{
+                alert("Already a duplicated username exists!");
+              }
+              this.username = "";
+              this.password = "";
+            });
+        }else{
+          alert("Please input valid username and password!");
+        }
       }
     }
   }

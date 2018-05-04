@@ -23,11 +23,19 @@
             <result type="json"/>
             <interceptor-ref name="demostack"/>
         </action>
-        <action name="getusers" class="com.entity.UserList" method="queryUserList">
+        <action name="getbook" class="com.entity.Book" method="queryBook">
             <result type="json"/>
             <interceptor-ref name="demostack"/>
         </action>
-        <action name="signon" class="com.entity.UserAdmin" method="signOn">
+        <action name="delbook" class="com.entity.Book" method="delBook">
+            <result type="json"/>
+            <interceptor-ref name="demostack"/>
+        </action>
+        <action name="addbook" class="com.entity.Book" method="addBook">
+            <result type="json"/>
+            <interceptor-ref name="demostack"/>
+        </action>
+        <action name="getusers" class="com.entity.UserList" method="queryUserList">
             <result type="json"/>
             <interceptor-ref name="demostack"/>
         </action>
@@ -35,7 +43,15 @@
             <result type="json"/>
             <interceptor-ref name="demostack"/>
         </action>
+        <action name="signon" class="com.entity.UserAdmin" method="signOn">
+            <result type="json"/>
+            <interceptor-ref name="demostack"/>
+        </action>
         <action name="getorders" class="com.entity.OrderList" method="queryOrderList">
+            <result type="json"/>
+            <interceptor-ref name="demostack"/>
+        </action>
+        <action name="pay" class="com.entity.Order" method="addOrder">
             <result type="json"/>
             <interceptor-ref name="demostack"/>
         </action>
@@ -43,7 +59,27 @@
             <result type="json"/>
             <interceptor-ref name="demostack"/>
         </action>
-        <action name="getcard" class="com.entity.Cart" method="queryCart">
+        <action name="getcart" class="com.entity.Cart" method="queryCart">
+            <result type="json"/>
+            <interceptor-ref name="demostack"/>
+        </action>
+        <action name="addcart" class="com.entity.CartItem" method="addCartItem">
+            <result type="json"/>
+            <interceptor-ref name="demostack"/>
+        </action>
+        <action name="onemorecart" class="com.entity.CartItem" method="addOneCartItem">
+            <result type="json"/>
+            <interceptor-ref name="demostack"/>
+        </action>
+        <action name="onelesscart" class="com.entity.CartItem" method="subOneCartItem">
+            <result type="json"/>
+            <interceptor-ref name="demostack"/>
+        </action>
+        <action name="delcart" class="com.entity.CartItem" method="deleteCartItem">
+            <result type="json"/>
+            <interceptor-ref name="demostack"/>
+        </action>
+        <action name="querycartitem" class="com.entity.CartItem" method="queryCartItem">
             <result type="json"/>
             <interceptor-ref name="demostack"/>
         </action>

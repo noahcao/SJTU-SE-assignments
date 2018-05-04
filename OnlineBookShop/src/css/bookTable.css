@@ -39,6 +39,7 @@
   position: absolute;
   border-radius: 8px;
   background-color: whitesmoke;
+  z-index: 999;
   padding: 0;
 }
 #cartHeader{
@@ -62,7 +63,7 @@
 }
 #addNewBook{
   position: absolute;
-  height: 320px;
+  height: 480px;
   border:solid lightblue 3px;
   padding-top: 0px;
   border-radius: 10px;

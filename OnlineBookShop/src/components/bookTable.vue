@@ -32,13 +32,13 @@
                               <br>
                               <strong>price</strong>:  {{book["price"]}}
                               <br>
-                              <strong>number</strong>:  {{book["stock"]}}
+                              <strong>number</strong>:  {{book["number"]}}
                               <a class="glyphicon glyphicon-plus"
                                  @click="buyOneMore(book)"></a>
                               <a class="glyphicon glyphicon-minus"
                                  @click="buyOneLess(book)"></a>
                               <br>
-                              <strong>total price:</strong>: {{mul(book["stock"], book["price"])}}
+                              <strong>total price:</strong>: {{mul(book["number"], book["price"])}}
                             </div>
                           </div>
                        </div>
@@ -67,19 +67,25 @@
           <div style="text-align: center"><h3>New Book</h3></div><br>
           <div id="newBookReg" style="text-align: center">
             <div style="display: inline" class="newBookCol">
-              Name: <input id="newBookName" v-model="newBookInfo['name']">
+              Name: <input v-model="newBookInfo['name']">
             </div>
             <br><br>
             <div style="display: inline" class="newBookCol">
-              Author: <input id="newBookAuthor" v-model="newBookInfo['author']">
+              Author: <input v-model="newBookInfo['author']">
             </div>
             <br><br>
             <div style="display: inline" class="newBookCol">
-              Press: <input id="newBookPress" v-model="newBookInfo['press']">
+              Press: <input v-model="newBookInfo['press']">
             </div>
             <br><br>
             <div style="display: inline" class="newBookCol">
-              Price: <input id="newBookPrice" v-model="newBookInfo['price']">
+              Price: <input v-model="newBookInfo['price']">
+            </div><br><br>
+            <div style="display: inline" class="newBookCol">
+              Number: <input v-model="newBookInfo['number']">
+            </div><br><br>
+            <div style="display: inline" class="newBookCol">
+              Year: <input v-model="newBookInfo['year']">
             </div>
           </div><br>
           <p style="text-align: center">
@@ -128,8 +134,8 @@
 
     <div id="header">
       <div id="toolbar">
-        <button type="button" class="btn btn-primary" @click="addBook">Add</button>
-        <button type="button" class="btn btn-warning" @click="deleteBooks">Delete</button>
+        <button type="button" class="btn btn-primary" @click="newBook=!newBook" v-if="this.$store.state.isadmin">Add</button>
+        <button type="button" class="btn btn-warning" @click="deleteBooks" v-if="this.$store.state.isadmin">Delete</button>
         <button type="button" class="btn btn-primary" @click="addToCart">Purchase</button>
         <div style="display: inline;margin-left: 20%">
           <input v-model="bottomPrice" placeholder="lowest" style="width: 10%">-
@@ -195,29 +201,6 @@
           <td contentEditable="true" v-model="book.press">{{book.press}}</td>
           <td contentEditable="true" v-model="book.sales">{{book.sales}}</td>
         </tr>
-
-<!--
-        <tr v-for="book in displayBooks" style="text-align: center">
-          <td><input type="checkbox" v-model="book.checked"></td>
-          <td contentEditable="true" v-model="book.name">
-            <div class="container" style="width:100%">
-              <div class="row">
-                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="padding:0px">
-                  <img :src="book.img" id="bookImg">
-                </div>
-                <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10" style="padding:0px">
-                  {{book.name}}
-                </div>
-              </div>
-            </div>
-          </td>
-          <td contentEditable="true" v-model="book.author">{{book.author}}</td>
-          <td contentEditable="true" v-model="book.price">{{book.price}}</td>
-          <td contentEditable="true" v-model="book.press">{{book.press}}</td>
-          <td contentEditable="true" v-model="book.sales">{{book.sales}}</td>
-        </tr>
--->
-
         </thead>
       </table>
     </div>
@@ -236,8 +219,9 @@
           "price": "",
           "press": "",
           "author": "",
+          "number": "",
           "sales": 0,
-          "checked": false
+          "year": ""
         },
         logo: '../assets/logo.png',
         newBook: false,
@@ -262,55 +246,42 @@
       }
     },
     mounted(){
-      this.$http.post('/getbooks')
-      .then((response) => {
-        this.books = response.data.books;
-        for(var i = 0; i < this.books.length; i++){
-          this.books["checked"] = false;
-        }
-        this.displayBooks = this.books;
-        this.$store.state.signedIn = (window.localStorage.getItem("signedin") == "signed");
-        this.$store.state.userid = window.localStorage.getItem("userid");
-        this.$store.state.username = window.localStorage.getItem("username");
-        console.log("already get books info!");
-        if(this.$store.state.signedIn){
-          // get cart list for the logged-in user
-          this.$http.post('/getcart', {"userid": this.$store.state.userid})
-          .then((response) => {
-              this.bookidInCart = response.data;
-              console.log(response.data.booksInCart);
-              this.$store.state.bookInfoInCart = response.data.booksInCart;
-              console.log(this.$store.state.bookInfoInCart);
-              this.$store.state.bookInCart = this.$store.state.bookInfoInCart.length;
-          })
-        }
-      });
+      this.freshCart();
+      this.$store.state.isadmin = (window.localStorage.getItem("admin") == 1);
     },
     computed:{
       totalPriceInCart: function(){
         var price = 0;
         for(var i = 0;  i < this.$store.state.bookInfoInCart.length; i++){
           var book = this.$store.state.bookInfoInCart[i];
-          price += book["price"] * book["stock"];
+          price += book["price"] * book["number"];
         }
         return price;
       }
     },
     methods:{
-      setBooksInCart(bookidList){
-        console.log("ffff");
-        console.log(bookidList);
-        // function to padding the book_name, book_price, author and other details of books in
-        // cart to update the this.$store.state.bookInfoInCart
-        var bookDetailInfo = [];
-        for(var i = 0; i < bookidList.length; i++){
-          var bookInfo = bookidList[i];
-          var oneBookInfo = {};
-          this.$http.post("/getbook", {"id": bookInfo.bookid})
-            .then((response) => {
-              console.log(response.data);
-            })
-        }
+      freshCart(){
+        this.$http.post('/getbooks')
+          .then((response) => {
+            this.books = response.data.books;
+            for(var i = 0; i < this.books.length; i++){
+              this.books["checked"] = false;
+            }
+            this.displayBooks = this.books;
+            this.$store.state.signedIn = (window.localStorage.getItem("signedin") == "signed");
+            this.$store.state.userid = window.localStorage.getItem("userid");
+            this.$store.state.username = window.localStorage.getItem("username");
+            console.log("already get books info!");
+            if(this.$store.state.signedIn){
+              // get cart list for the logged-in user
+              this.$http.post('/getcart', {"userid": this.$store.state.userid})
+                .then((response) => {
+                  this.bookidInCart = response.data;
+                  this.$store.state.bookInfoInCart = response.data.booksInCart;
+                  this.$store.state.bookInCart = this.$store.state.bookInfoInCart.length;
+                })
+            }
+          });
       },
       comparePrice(obj1, obj2){
         return obj1["price"] - obj2["price"];
@@ -372,8 +343,13 @@
           }
       },
       buyOneMore(book){
-        //book["checked"] = true;
-        //this.addToCart();
+        var userid = window.localStorage.getItem("userid");
+        var bookid = book["id"];
+        this.$http.post("/onemorecart", {"userid": userid, "bookid": bookid})
+          .then((response) => {
+            console.log(response.data);
+            console.log("add a book to cart");
+          });
         for(var i = 0; i < this.$store.state.bookInfoInCart.length; i++){
           if(this.$store.state.bookInfoInCart[i]["name"] == book["name"]){
               var newList = [];
@@ -393,6 +369,12 @@
 
       },
       buyOneLess(book){
+        var userid = window.localStorage.getItem("userid");
+        var bookid = book["id"];
+        this.$http.post("/onelesscart", {"userid": userid, "bookid": bookid})
+          .then((response) => {
+            console.log("delete a book to cart");
+          });
         for(var i = 0; i < this.$store.state.bookInfoInCart.length; i++){
             if(this.$store.state.bookInfoInCart[i]["name"] == book["name"]){
                 if(this.$store.state.bookInfoInCart[i]["number"] == 1){
@@ -417,31 +399,27 @@
         }
       },
       pay(){
-
+        var userid = window.localStorage.getItem("userid");
+        this.$http.post('/pay', {"userid": userid})
+          .then((response) => {
+            this.$store.state.bookInfoInCart = [];
+            this.$store.state.bookInCart = 0;
+            this.freshCart();
+          });
       },
       addToCart(){
-        if(this.checkAll){
-          for(var i = 0; i < this.books.length; i++){
-            this.addNumberToCart(1, this.books[i], this.$store.state.bookInfoInCart);
-            this.$store.state.bookInCart += 1;
-          }
-        }
-        else{
           for(var i = 0; i < this.books.length; i++){
             if(this.books[i]["checked"]){
               this.addNumberToCart(1, this.books[i], this.$store.state.bookInfoInCart);
               this.$store.state.bookInCart += 1;
-              this.$store.state.bookInfoInCart.push(this.books[i]);
               var bookid = this.books[i]["id"];
               var userid = this.$store.state.userid;
               this.$http.post('/addcart', {userid: userid, bookid: bookid, number: 1})
                 .then((response) => {
-                  console.log(response.data);
+                  this.freshCart();
                 });
             }
           }
-        }
-        this.checkAll = false;
         for(var i = 0; i < this.books.length; i++){
           this.books[i]["checked"] = false;
         }
@@ -450,12 +428,17 @@
         var newBooks = [];
         for(var i = 0; i < this.books.length; i++){
           if(!this.books[i]["checked"]) newBooks.push(this.books[i]);
+          else{
+            console.log(this.books[i]);
+            console.log(this.books[i]["id"]);
+            this.$http.post('/delbook', {"id": this.books[i]["id"]})
+              .then((response) => {
+                this.freshCart();
+              });
+          }
         }
         this.books = newBooks;
         this.displayBooks = this.books;
-      },
-      addBook(){
-        this.newBook = !this.newBook;
       },
       filterByPrice(){
         var bottomPrice = this.bottomPrice;
@@ -476,6 +459,14 @@
         this.topPrice = "";
       },
       submitNewBook(){
+        this.$http.post('addbook', {"name": this.newBookInfo["name"],
+          "author": this.newBookInfo["author"], "price": this.newBookInfo["price"],
+        "number": this.newBookInfo["number"], "year": this.newBookInfo["year"],
+        "press": this.newBookInfo["press"], "sales": this.newBookInfo["sales"]})
+          .then((response) => {
+            console.log("add a new book into booklist.");
+          });
+
         if((this.newBookInfo["name"]!="")&&(this.newBookInfo["press"]!=0)&&
           (this.newBookInfo["price"]>0)&&(this.newBookInfo["author"]!="")){
           this.books.push(this.newBookInfo);
@@ -521,7 +512,6 @@
         var bookid = book["id"];
         this.$http.post('delcart', {"userid": userid, "bookid": bookid})
           .then((response) => {
-            console.log(response.data);
             console.log("delete a book from cart!");
           });
         let newListInCart = [];

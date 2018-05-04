@@ -2,7 +2,6 @@ package com.entity;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.hibernate.Session;
-import org.hibernate.query.Query;
 
 import java.util.List;
 

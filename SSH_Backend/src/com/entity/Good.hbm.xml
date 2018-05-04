@@ -13,7 +13,7 @@
         <property name="price"/>
         <property name="year"/>
         <property name="press"/>
-        <property name="stock"/>
+        <property name="number"/>
         <property name="sales"/>
         <property name="img"/>
     </class>
@@ -25,6 +25,7 @@
         <property name="password"/>
         <property name="username"/>
         <property name="img"/>
+        <property name="admin"/>
     </class>
 
     <class name="Order" table="orders">
@@ -35,14 +36,17 @@
         <property name="bookid"/>
         <property name="price"/>
         <property name="time"/>
+        <property name="bookname"/>
+        <property name="number"/>
     </class>
 
-    <class name="Cart" table="cart">
-        <id name="userid" column="userid">
+    <class name="CartItem" table="cart">
+        <id name="id" column="id">
             <generator class="native"/>
         </id>
         <property name="userid"/>
-        <property name="Cart"/>
+        <property name="bookid"/>
+        <property name="number"/>
     </class>
 
 </hibernate-mapping>

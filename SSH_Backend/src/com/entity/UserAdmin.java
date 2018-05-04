@@ -9,6 +9,15 @@ public class UserAdmin {
     private String password;
     private String img;
     private Integer id;
+    private int admin;
+
+    public int getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(int admin) {
+        this.admin = admin;
+    }
 
     public String getImg() {
         return img;
@@ -45,9 +54,18 @@ public class UserAdmin {
     public String signOn() throws Exception {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         session.beginTransaction();
-        session.save(this);
-        session.getTransaction().commit();
-        session.close();
+        UserAdmin user = (UserAdmin) session.createQuery("from UserAdmin where username = :username")
+                .setParameter("username", username).uniqueResult();
+        if(user!=null){
+            session.getTransaction().commit();
+            session.close();
+            this.setId(-1);
+        }else{
+            this.setAdmin(0);
+            session.save(this);
+            session.getTransaction().commit();
+            session.close();
+        }
         return "success";
     }
 
@@ -57,6 +75,7 @@ public class UserAdmin {
         List<UserAdmin> result = session.createQuery("from UserAdmin where username = :username")
                 .setParameter("username", username).list();
         UserAdmin item = result.get(0);
+        setAdmin(item.getAdmin());
         setId(item.getId());
         setImg(item.getImg());
         setPassword(item.getPassword());
