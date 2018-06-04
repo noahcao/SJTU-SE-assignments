@@ -248,6 +248,7 @@
     mounted(){
       this.freshCart();
       this.$store.state.isadmin = (window.localStorage.getItem("admin") == 1);
+      console.log("is administrator: ", this.$store.state.isadmin);
     },
     computed:{
       totalPriceInCart: function(){
@@ -345,7 +346,7 @@
       buyOneMore(book){
         var userid = window.localStorage.getItem("userid");
         var bookid = book["id"];
-        this.$http.post("/onemorecart", {"userid": userid, "bookid": bookid})
+        this.$http.post("/addcart", {"userid": userid, "bookid": bookid, "number":1})
           .then((response) => {
             console.log(response.data);
             console.log("add a book to cart");
@@ -371,7 +372,7 @@
       buyOneLess(book){
         var userid = window.localStorage.getItem("userid");
         var bookid = book["id"];
-        this.$http.post("/onelesscart", {"userid": userid, "bookid": bookid})
+        this.$http.post("/addcart", {"userid": userid, "bookid": bookid, "number": 1})
           .then((response) => {
             console.log("delete a book to cart");
           });
@@ -471,6 +472,8 @@
           (this.newBookInfo["price"]>0)&&(this.newBookInfo["author"]!="")){
           this.books.push(this.newBookInfo);
         }
+        this.freshCart();
+        alert("Add a new Book into BookList");
         this.newBookInfo = {
           "name": "",
           "price": "",

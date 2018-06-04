@@ -141,6 +141,12 @@
           this.$http.post('/getuser', {"username": this.username})
           .then((response) => {
             var user = response.data;
+            if(user.admin == -1){
+              alert("No such a user registed!");
+              this.username = "";
+              this.password = "";
+              return;
+            }
             if(user.password  == this.password){
               alert("Welcome to Book Bar! " + this.username);
               this.$store.state.signedIn = true;

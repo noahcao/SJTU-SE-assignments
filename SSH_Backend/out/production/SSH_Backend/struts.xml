@@ -15,73 +15,153 @@
                 <interceptor-ref name="json"/>
             </interceptor-stack>
         </interceptors>
-        <action name="vprocesslogin" class="com.entity.vLoginAction" method="vprocesslogin">
+
+        <!--
+        <action name="vprocesslogin" class="model.vLoginAction" method="vprocesslogin">
             <result type="json"/>
             <interceptor-ref name="demostack"/>
         </action>
-        <action name="getbooks" class="com.entity.BookList" method="queryBookList">
+        <action name="getbooks" class="model.BookList" method="queryBookList">
             <result type="json"/>
             <interceptor-ref name="demostack"/>
         </action>
-        <action name="getbook" class="com.entity.Book" method="queryBook">
+        <action name="getbook" class="model.Book" method="queryBook">
             <result type="json"/>
             <interceptor-ref name="demostack"/>
         </action>
-        <action name="delbook" class="com.entity.Book" method="delBook">
+        <action name="delbook" class="model.Book" method="delBook">
             <result type="json"/>
             <interceptor-ref name="demostack"/>
         </action>
-        <action name="addbook" class="com.entity.Book" method="addBook">
+        <action name="addbook" class="model.Book" method="addBook">
             <result type="json"/>
             <interceptor-ref name="demostack"/>
         </action>
-        <action name="getusers" class="com.entity.UserList" method="queryUserList">
+
+        <action name="getusers" class="model.UserList" method="queryUserList">
             <result type="json"/>
             <interceptor-ref name="demostack"/>
         </action>
-        <action name="getuser" class="com.entity.UserAdmin" method="queryUser">
+
+        <action name="getuser" class="model.User" method="queryUser">
             <result type="json"/>
             <interceptor-ref name="demostack"/>
         </action>
-        <action name="signon" class="com.entity.UserAdmin" method="signOn">
+
+
+        <action name="signon" class="model.User" method="signOn">
             <result type="json"/>
             <interceptor-ref name="demostack"/>
         </action>
-        <action name="getorders" class="com.entity.OrderList" method="queryOrderList">
+
+
+        <action name="getorders" class="model.OrderList" method="queryOrderList">
             <result type="json"/>
             <interceptor-ref name="demostack"/>
         </action>
-        <action name="pay" class="com.entity.Order" method="addOrder">
+
+
+        <action name="pay" class="model.Order" method="addOrder">
             <result type="json"/>
             <interceptor-ref name="demostack"/>
         </action>
-        <action name="getorder" class="com.entity.Order" method="queryOrder">
+
+        <action name="getorder" class="model.Order" method="queryOrder">
             <result type="json"/>
             <interceptor-ref name="demostack"/>
         </action>
-        <action name="getcart" class="com.entity.Cart" method="queryCart">
+
+
+        <action name="getcart" class="model.Cart" method="queryCart">
             <result type="json"/>
             <interceptor-ref name="demostack"/>
         </action>
-        <action name="addcart" class="com.entity.CartItem" method="addCartItem">
+
+        <action name="addcart" class="model.CartItem" method="addCartItem">
             <result type="json"/>
             <interceptor-ref name="demostack"/>
         </action>
-        <action name="onemorecart" class="com.entity.CartItem" method="addOneCartItem">
+
+        <action name="onemorecart" class="model.CartItem" method="addOneCartItem">
             <result type="json"/>
             <interceptor-ref name="demostack"/>
         </action>
-        <action name="onelesscart" class="com.entity.CartItem" method="subOneCartItem">
+        <action name="onelesscart" class="model.CartItem" method="subOneCartItem">
             <result type="json"/>
             <interceptor-ref name="demostack"/>
         </action>
-        <action name="delcart" class="com.entity.CartItem" method="deleteCartItem">
+
+        <action name="delcart" class="model.CartItem" method="deleteCartItem">
             <result type="json"/>
             <interceptor-ref name="demostack"/>
         </action>
-        <action name="querycartitem" class="com.entity.CartItem" method="queryCartItem">
+
+        <action name="querycartitem" class="model.CartItem" method="queryCartItem">
             <result type="json"/>
             <interceptor-ref name="demostack"/>
         </action>
+        -->
+
+
+
+
+
+
+
+
+
+        <action name="getbooks" class="action.AllBookAction">
+            <result type="json"/>
+            <interceptor-ref name="demostack"/>
+        </action>
+        <action name="getbook" class="action.UpdateBookAction" method="queryBook">
+            <result type="json"/>
+            <interceptor-ref name="demostack"/>
+        </action>
+        <action name="getuser" class="action.UpdateUserAction" method="queryUser">
+            <result type="json"/>
+            <interceptor-ref name="demostack"/>
+        </action>
+
+        <action name="signon" class="action.UpdateUserAction" method="signOn">
+            <result type="json"/>
+            <interceptor-ref name="demostack"/>
+        </action>
+
+        <action name="getorders" class="action.QueryOrderListAction" method="queryOrders">
+            <result type="json"/>
+            <interceptor-ref name="demostack"/>
+        </action>
+        <action name="delbook" class="action.UpdateBookAction" method="delBook">
+            <result type="json"/>
+            <interceptor-ref name="demostack"/>
+        </action>
+        <action name="addbook" class="action.UpdateBookAction" method="addBook">
+            <result type="json"/>
+            <interceptor-ref name="demostack"/>
+        </action>
+
+        <action name="pay" class="action.UpdateOrderAction" method="addOrder">
+            <result type="json"/>
+            <interceptor-ref name="demostack"/>
+        </action>
+        <action name="getorder" class="model.Order" method="queryOrder">
+            <result type="json"/>
+            <interceptor-ref name="demostack"/>
+        </action>
+        <action name="getcart" class="action.QueryCartAction" method="queryCart">
+            <result type="json"/>
+            <interceptor-ref name="demostack"/>
+        </action>
+
+        <action name="addcart" class="action.UpdateCartItemAction" method="updateCartItem">
+            <result type="json"/>
+            <interceptor-ref name="demostack"/>
+        </action>
+        <action name="delcart" class="action.UpdateCartItemAction" method="deleteCartItem">
+            <result type="json"/>
+            <interceptor-ref name="demostack"/>
+        </action>
+
     </package>
 </struts>
