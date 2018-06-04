@@ -523,13 +523,14 @@
             if(this.$store.state.bookInfoInCart[i]["name"] != book["name"]){
                 newListInCart.push(this.$store.state.bookInfoInCart[i]);
             }
+            /*
             else{
                 if(book["number"]>1){
                     book["number"] -= 1;
                     newListInCart.push(book);
 
                 }
-            }
+            }*/
         }
         this.$store.commit('newBooksInCart', newListInCart);
       }
