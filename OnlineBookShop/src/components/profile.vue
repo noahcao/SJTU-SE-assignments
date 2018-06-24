@@ -10,10 +10,12 @@
         </div>
 
         <ul class="nav nav-tabs nav-stacked" id="leftList">
-          <li class="leftCard" @click="DetailCards=Orders" style="background-color: lightcyan">
+          <li class="leftCard" @click="showOrderDetails"
+              style="background-color: lightcyan">
             <a href='#'>Orders</a></li>
-          <li class="leftCard"><a href='#'>Profile</a></li>
-          <li class="leftCard" style="background-color: lightcyan"><a href='#'>Stars</a></li>
+          <li class="leftCard" @click="showProfilePanel">
+            <a href='#'>Profile</a></li>
+          <li class="leftCard" style="background-color: lightcyan" @click="showManagePanel"><a href='#'>Manage</a></li>
           <li class="leftCard" @click="DetailCards=Message">
             <a href='#'>MessageBox</a></li>
           <li class="btn btn-danger" style="height: 115px;width: 100%;padding-top: 30px"
@@ -29,7 +31,7 @@
         </div>
 
         <ul class="nav nav-tabs nav-stacked" style="overflow: scroll;height:650px;
-            background-color: snow">
+            background-color: snow" v-if="showOrders">
           <li v-for="detail in this.orderlist" class="midCard">
             <div class="container" style="height: 100%;width: 100%;padding: 0px">
               <div class="row" style="height: 100%;width: 100%;margin: 0px">
@@ -48,6 +50,41 @@
             </div>
           </li>
         </ul>
+
+        <div id="userprofile" v-if="showProfile">
+          <div class="form-group" style="align-content: center;margin: 20px">
+            <label class="col-md-2 control-label">头像</label>
+            <img v-bind:src="usericon" alt="140x1400"
+                 style="width:200px;height:200px;" class="img-circle" />
+            <input style="margin-top: 30px;margin-left: 40px" accept="image/*" type="file" class="inline"
+                   id="icon" @change="triggerFile($event)">
+            <div style="padding: 40px;margin-left: 50px">
+              <button @click="insertUserImg">上传</button>
+              <button @click="getUserImg" style="margin-left: 20px">更新</button>
+            </div>
+
+            <div>
+              <input v-model="newpassword">
+              <button @click="modifyPassword">修改密码</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="managepanel" v-if="showManage" style="text-align: center;">
+            <button @click="getUserList">get user list</button>
+          <ul style="text-align: center;overflow: scroll;height: 600px;margin-top: 20px" v-if="showUserList">
+            <li  v-for="user in userList" style="margin-top: 10px;border: solid">
+              <span>用户id：{{user["id"]}}</span><br>
+              <span>用户状态：{{user["admin"]}}</span><br>
+              <span>用户名：{{user["username"]}}</span><br>
+              <span>用户密码：{{user["password"]}}</span><br>
+              <button @click="ban(user['id'])">封禁</button>
+              <button @click="free(user['id'])">解禁</button>
+              <br>
+              <p></p>
+            </li>
+          </ul>
+        </div>
 
 
 
@@ -79,10 +116,19 @@
         userid: 1,
         orderlist: {},
         detailbooklist: [],
+        showOrders: false,
+        showProfile: false,
+        iconUpload: null,
+        usericon: null,
+        showManage: false,
+        userList: [],
+        showUserList: false,
+        newpassword: ""
       }
     },
     mounted(){
       this.freshOrder();
+      this.usericon = this.$store.state.usericon;
       this.$store.state.signedIn = (window.localStorage.getItem("signedin") == "signed");
       this.$store.state.userid = window.localStorage.getItem("userid");
       this.$store.state.username = window.localStorage.getItem("username");
@@ -94,6 +140,29 @@
           price += orderlist[i]["price"];
         }
         return price;
+      },
+      showOrderDetails(){
+        this.showOrders = true;
+        this.DetailCards = this.Orders;
+        this.showProfile = false;
+        this.showManage = false;
+      },
+      showProfilePanel(){
+        this.showProfile = true;
+        this.showOrders = false;
+        this.showManage = false;
+      },
+      showManagePanel(){
+        if(window.localStorage.getItem("admin") == 1){
+          this.showManage = true;
+        }
+        this.showProfile = false;
+        this.showOrders = false;
+      },
+      triggerFile(event){
+        alert("select a icon");
+        this.iconUpload = event.target.files;
+        console.log(this.iconUpload);
       },
       freshOrder(){
         var userid = window.localStorage.getItem("userid");
@@ -139,6 +208,73 @@
       logOut(){
         this.$store.commit("logOut");
         window.localStorage.setItem("signedin", "unsigned");
+      },
+      insertUserImg(){
+        alert("add a icon!");
+        if(this.iconUpload == null){
+          alert("No img selected to be uploaded!");
+          return;
+        }
+        var userid = window.localStorage.getItem("userid");
+        var res = new FileReader();
+        console.log(this.iconUpload[0]);
+        res.readAsDataURL(this.iconUpload[0]);
+        res.onload=()=>{
+          this.$http.post('/inserticon', {
+            userid: userid,
+            img: res.result
+          }).then((response) => {
+            this.$store.state.usericon = response.img;
+          })
+        }
+      },
+      getUserImg(){
+        var userid = window.localStorage.getItem("userid");
+        this.$http.post('/queryicon', {"userid": userid})
+          .then((response) => {
+            this.$store.state.usericon = response.img;
+            console.log(response.data);
+            this.$store.state.usericon = response.data.img;
+          })
+        this.usericon = this.$store.state.usericon;
+      },
+      getUserList(){
+        var userListGot = [];
+        this.userList= [];
+        this.$http.post('/getuserlist')
+          .then((response) => {
+            console.log(response.data.userList);
+            userListGot = response.data.userList;
+            for(var i = 0; i < userListGot.length; i++){
+              if(userListGot[i]["admin"] != 1){
+                this.userList.push(userListGot[i]);
+              }
+            }
+          })
+        this.showUserList = true;
+      },
+      modifyPassword(){
+        alert(this.newpassword);
+        var userid = window.localStorage.getItem("userid");
+        this.$http.post('/changepw', {"id": userid, "password": this.newpassword})
+          .then((response) => {
+            alert("change the pw!");
+          })
+        this.newpassword="";
+      },
+      ban(userid){
+        this.$http.post('/banfree', {"id": userid, "admin": -1})
+          .then((response) => {
+            alert("BAN!");
+            this.getUserList();
+          })
+      },
+      free(userid){
+        this.$http.post('/banfree', {"id": userid, "admin": 0})
+          .then((response) => {
+            alert("FREE!");
+            this.getUserList();
+          })
       }
     }
   }

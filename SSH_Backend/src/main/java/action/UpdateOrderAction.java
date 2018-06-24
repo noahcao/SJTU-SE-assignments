@@ -87,10 +87,6 @@ public class UpdateOrderAction extends ActionSupport{
         Timestamp time = new Timestamp(new Date().getTime());
 
         User result = appService.getUserById(this.userid);
-        System.out.println(".........................................1");
-        System.out.println(result);
-        System.out.println(this.userid);
-        System.out.println(".........................................1");
         if (result == null) {
             return "error";
         }
@@ -114,11 +110,12 @@ public class UpdateOrderAction extends ActionSupport{
                 neworder.setBookid(book.getId());
                 appService.addOrder(neworder);
                 appService.deleteCartItem(item);
+
+                book.setNumber(book.getNumber() - neworder.getNumber());
+                book.setSales(book.getSales() + neworder.getNumber());
+                appService.updateBook(book);
             }
         }
-        System.out.println(".........................................2");
-        System.out.println(booksInCart);
-        System.out.println(".........................................2");
         return "success";
     }
 }

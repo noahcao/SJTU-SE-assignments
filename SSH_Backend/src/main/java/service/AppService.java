@@ -7,6 +7,7 @@ import model.CartItem;
 import model.Order;
 import model.User;
 import model.Cart;
+import Icon.model.IconEntity;
 
 
 /**
@@ -78,5 +79,12 @@ public interface AppService {
     public List<User> getAllUsers();
 
     public User queryUser(String username, String password);
+
+    /* icon */
+    public void insertImg(IconEntity icon);
+
+    public IconEntity getImg(int userid);
+
+    public void updateImg(IconEntity icon);
 
 }

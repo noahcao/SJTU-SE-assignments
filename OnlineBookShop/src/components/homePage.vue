@@ -142,7 +142,7 @@
           .then((response) => {
             var user = response.data;
             if(user.admin == -1){
-              alert("No such a user registed!");
+              alert("No such a user registed Or You're Banned!");
               this.username = "";
               this.password = "";
               return;

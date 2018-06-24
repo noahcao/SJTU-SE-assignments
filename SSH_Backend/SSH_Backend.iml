@@ -27,6 +27,7 @@
             <file>jar://$MODULE_DIR$/lib/struts2-core.jar!/struts-default.xml</file>
             <file>jar://$MODULE_DIR$/lib/struts2-json-plugin-2.3.8.jar!/struts-plugin.xml</file>
             <file>jar://$MODULE_DIR$/lib/struts2-spring-plugin-2.0.6.jar!/struts-plugin.xml</file>
+            <file>file://$MODULE_DIR$/src/main/resources/struts.xml</file>
           </fileset>
           <propertiesKeys disabled="false" />
         </configuration>
@@ -34,7 +35,9 @@
     </facet>
     <facet type="Spring" name="Spring">
       <configuration>
-        <fileset id="fileset" name="Bean" removed="false" />
+        <fileset id="fileset" name="Bean" removed="false">
+          <file>file://$MODULE_DIR$/src/main/resources/mongo.xml</file>
+        </fileset>
         <fileset id="fileset2" name="Spring Application Context" removed="false">
           <file>file://$MODULE_DIR$/src/main/java/bean.xml</file>
           <file>file://$MODULE_DIR$/src/main/resources/bean.xml</file>
@@ -42,7 +45,7 @@
       </configuration>
     </facet>
   </component>
-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_5">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
     <output url="file://$MODULE_DIR$/target/classes" />
     <output-test url="file://$MODULE_DIR$/target/test-classes" />
     <content url="file://$MODULE_DIR$">
@@ -57,5 +60,11 @@
     <orderEntry type="library" name="Struts 2-2.5.14.1" level="project" />
     <orderEntry type="library" name="Spring-4.3.16.RELEASE" level="project" />
     <orderEntry type="library" name="mysql-connector-java-5.1.29-bin" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.data:spring-data-commons:1.10.0.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-core:4.0.9.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-beans:4.0.9.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.10" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.slf4j:jcl-over-slf4j:1.7.10" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.data:spring-data-commons-core:1.4.1.RELEASE" level="project" />
   </component>
 </module>

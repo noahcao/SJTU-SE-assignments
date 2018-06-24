@@ -9,13 +9,22 @@ import org.hibernate.Hibernate;
 import service.AppService;
 
 import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 public class UpdateUserAction {
     private int id;
     private String password;
     private String username;
     private int admin;
+    private List<User> userList;
+
+    public List<User> getUserList() {
+        return userList;
+    }
+
+    public void setUserList(List<User> userList) {
+        this.userList = userList;
+    }
 
     public int getAdmin() {
         return admin;
@@ -63,9 +72,7 @@ public class UpdateUserAction {
     }
 
     public String queryUser() throws Exception{
-        System.out.println("----------------------------------------------");
         System.out.println(this.username);
-        System.out.println("----------------------------------------------");
         User result = appService.getUserByName(this.username);
         if(result != null){
             setUserInfo(result);
@@ -76,11 +83,28 @@ public class UpdateUserAction {
         return "success";
     }
 
+    public String queryUserList() throws Exception{
+        List<User> userlist = appService.getAllUsers();
+        setUserList(userlist);
+        return "success";
+    }
+
     public String update() throws Exception{
         User result = appService.getUserById(id);
+        System.out.println("fdsfsdsfas");
+        System.out.println(result);
         if(result != null){
-            result.setUsername(username);
             result.setPassword(password);
+            appService.updateUser(result);
+            return "success";
+        }
+        return "error";
+    }
+
+    public String banfree() throws Exception{
+        User result = appService.getUserById(id);
+        if(result != null){
+            result.setAdmin(admin);
             appService.updateUser(result);
             return "success";
         }

@@ -9,6 +9,15 @@ import java.util.List;
 public class Cart {
     private List<Book> BooksInCart;
     private int userid;
+    private List<CartItem> BookCarts;
+
+    public List<CartItem> getBookCarts() {
+        return BookCarts;
+    }
+
+    public void setBookCarts(List<CartItem> bookCarts) {
+        BookCarts = bookCarts;
+    }
 
     public List<Book> getBooksInCart() {
         return BooksInCart;
@@ -31,6 +40,7 @@ public class Cart {
         session.beginTransaction();
         List<CartItem> result = session.createQuery("from CartItem where userid = :userid")
                 .setParameter("userid", userid).list();
+        setBookCarts(result);
         List<Book> bookList = new ArrayList<Book>();
         for(int i = 0; i < result.size(); i++){
             System.out.println(result.get(i));

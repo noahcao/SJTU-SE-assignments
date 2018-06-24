@@ -2,13 +2,14 @@ package service.impl;
 
 import java.util.List;
 
+import Icon.model.IconEntity;
 import model.*;
-import org.springframework.transaction.annotation.Transactional;
 import service.AppService;
 import dao.BookDao;
 import dao.OrderDao;
 import dao.UserDao;
 import dao.CartDao;
+import Icon.dao.IconDao;
 
 public class AppServiceImpl implements AppService{
 
@@ -16,10 +17,23 @@ public class AppServiceImpl implements AppService{
     private OrderDao orderDao;
     private UserDao userDao;
     private CartDao cartDao;
+    private IconDao iconDao;
 
     public CartDao getCartDao() {
         return cartDao;
     }
+
+    public void setIconDao(IconDao iconDao) {
+        this.iconDao = iconDao;
+    }
+
+    public void insertImg(IconEntity icon){
+        iconDao.insert(icon);
+    }
+
+    public void updateImg(IconEntity icon){iconDao.insert(icon);}
+
+    public IconEntity getImg(int userid){return iconDao.findOne(userid);}
 
     public void setCartDao(CartDao cartDao) {
         this.cartDao = cartDao;

@@ -14,6 +14,7 @@ const state={
   userid: -1,
   searchInfo: "",
   isadmin: false,
+  usericon: null,
   users:[
     {"ID": 515260910022, "username": "Caojinkun", "password": "thisisthepass"},
     {"ID": 13162096831, "username": "MyPhone", "password": "515260910022"}

@@ -178,6 +178,7 @@
             <div class="btn glyphicon glyphicon-chevron-up arrowButton" @click="sortBy('sales', true)"></div>
             <div class='btn glyphicon glyphicon-chevron-down arrowButton' @click="sortBy('sales', false)"></div>
           </th>
+          <th style="text-align: center">In Stock</th>
         </tr>
 
 
@@ -200,6 +201,7 @@
           <td contentEditable="true" v-model="book.price">{{book.price}}</td>
           <td contentEditable="true" v-model="book.press">{{book.press}}</td>
           <td contentEditable="true" v-model="book.sales">{{book.sales}}</td>
+          <td contentEditable="true" v-model="book.number">{{book.number}}</td>
         </tr>
         </thead>
       </table>
@@ -277,12 +279,17 @@
               // get cart list for the logged-in user
               this.$http.post('/getcart', {"userid": this.$store.state.userid})
                 .then((response) => {
+                  console.log("cart is: " + response.data);
                   this.bookidInCart = response.data;
                   this.$store.state.bookInfoInCart = response.data.booksInCart;
+                  for(var i = 0; i < response.data.booksInCart.length; i++){
+                    this.$store.state.bookInfoInCart[i]["number"] = response.data.carts[i]["number"];
+                  }
                   this.$store.state.bookInCart = this.$store.state.bookInfoInCart.length;
                 })
             }
           });
+
       },
       comparePrice(obj1, obj2){
         return obj1["price"] - obj2["price"];
@@ -411,14 +418,16 @@
       addToCart(){
           for(var i = 0; i < this.books.length; i++){
             if(this.books[i]["checked"]){
-              this.addNumberToCart(1, this.books[i], this.$store.state.bookInfoInCart);
-              this.$store.state.bookInCart += 1;
-              var bookid = this.books[i]["id"];
-              var userid = this.$store.state.userid;
-              this.$http.post('/addcart', {userid: userid, bookid: bookid, number: 1})
-                .then((response) => {
-                  this.freshCart();
-                });
+              if(this.books[i]["number"] > 0){
+                this.addNumberToCart(1, this.books[i], this.$store.state.bookInfoInCart);
+                this.$store.state.bookInCart += 1;
+                var bookid = this.books[i]["id"];
+                var userid = this.$store.state.userid;
+                this.$http.post('/addcart', {userid: userid, bookid: bookid, number: 1})
+                  .then((response) => {
+                    this.freshCart();
+                  });
+              }
             }
           }
         for(var i = 0; i < this.books.length; i++){

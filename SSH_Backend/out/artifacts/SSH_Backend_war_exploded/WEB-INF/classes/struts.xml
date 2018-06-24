@@ -122,6 +122,10 @@
             <result type="json"/>
             <interceptor-ref name="demostack"/>
         </action>
+        <action name="getuserlist" class="action.UpdateUserAction" method="queryUserList">
+            <result type="json"/>
+            <interceptor-ref name="demostack"/>
+        </action>
 
         <action name="signon" class="action.UpdateUserAction" method="signOn">
             <result type="json"/>
@@ -145,10 +149,6 @@
             <result type="json"/>
             <interceptor-ref name="demostack"/>
         </action>
-        <action name="getcart" class="action.QueryCartAction" method="queryCart">
-            <result type="json"/>
-            <interceptor-ref name="demostack"/>
-        </action>
         <action name="addcart" class="action.UpdateCartItemAction" method="updateCartItem">
             <result type="json"/>
             <interceptor-ref name="demostack"/>
@@ -157,6 +157,25 @@
             <result type="json"/>
             <interceptor-ref name="demostack"/>
         </action>
-
+        <action name="queryicon" class="action.UpdateIconAction" method="queryImg">
+            <result type="json"/>
+            <interceptor-ref name="demostack"/>
+        </action>
+        <action name="inserticon" class="action.UpdateIconAction" method="addImg">
+            <result type="json"/>
+            <interceptor-ref name="demostack"/>
+        </action>
+        <action name="getcart" class="action.QueryCartAction" method="queryCart">
+            <result type="json"/>
+            <interceptor-ref name="demostack"/>
+        </action>
+        <action name="changepw" class="action.UpdateUserAction" method="update">
+            <result type="json"/>
+            <interceptor-ref name="demostack"/>
+        </action>
+        <action name="banfree" class="action.UpdateUserAction" method="banfree">
+            <result type="json"/>
+            <interceptor-ref name="demostack"/>
+        </action>
     </package>
 </struts>

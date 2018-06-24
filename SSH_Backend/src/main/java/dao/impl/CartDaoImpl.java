@@ -47,7 +47,7 @@ public class CartDaoImpl extends HibernateDaoSupport implements CartDao {
             "from CartItem as c where c.userid=?", userid);
         Cart cart = new Cart();
         List<Book> books = new ArrayList<Book>();
-        if(items == null){
+        if((items == null) || (items.size() == 0)){
             cart.setUserid(userid);
             cart.setBooksInCart(books);
         }
@@ -58,13 +58,15 @@ public class CartDaoImpl extends HibernateDaoSupport implements CartDao {
                 @SuppressWarnings("unchecked")
                 List<Book> getbooks = (List<Book>) getHibernateTemplate().find(
                         "from Book as b where b.id=?", bookid);
-                Book book = books.size() > 0 ? getbooks.get(0) : null;
+                Book book = getbooks.get(0);
+                //Book book = books.size() > 0 ? getbooks.get(0) : null;
                 if(book != null){
                     books.add(book);
                 }
             }
             cart.setUserid(userid);
             cart.setBooksInCart(books);
+            cart.setBookCarts(items);
         }
         return cart;
     }

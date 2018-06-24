@@ -42,6 +42,8 @@ public class UserDaoImpl extends HibernateDaoSupport implements UserDao {
         @SuppressWarnings("unchecked")
         List<User> users = (List<User>) getHibernateTemplate()
                 .find("from User");
+        System.out.println("USER:");
+        System.out.println(users);
         return users;
     }
 
