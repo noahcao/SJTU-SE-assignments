@@ -40,13 +40,13 @@ Google的论文[《Omega flexible, scalable schedulers for large compute cluster
 
 ![311557cb-53b5-3f18-b48e-143727795743](assets/311557cb-53b5-3f18-b48e-143727795743.png)
 
-#####1. 中央式调度器（Monolithic scheduler）
+##### 1. 中央式调度器（Monolithic scheduler）
 
 中央式调度器的特点是，资源的调度和作业的管理功能全部放到一个进程中完成，开源界典型的代表是Hadoop JobTracker的实现。这种设计方式的缺点很明显，扩展性差：首先，集群规模受限，其次，新的调度策略难以融入现有代码中，比如之前仅支持MapReduce作业，现在要支持流式作业，而将流式作业的调度策略嵌入到中央式调度器中是一项很难的工作。
 
 Omega论文中提到了一种对中央式调度器的优化方案：将每种调度策略放到单独一个路径（模块）中，不同的作业由不同的调度策略进行调度。这种方案在作业量和集群规模比较小时，能大大缩短作业相应时间，但由于所有调度策略仍在一个集中式的组件中，整个系统扩展性没有变得更好。
 
-#####2. 双层调度器（Two-level scheduler）
+##### 2. 双层调度器（Two-level scheduler）
 
 为了解决中央式调度器的不足，双层调度器是一种很容易想到的解决之道（实际上是分而治之策略或者是策略下放机制）。双层调度器仍保留一个经简化的中央式调度器，但调度策略下放到各个应用程序调度器完成。这种调度器的典型代表是Apache Mesos和Hadoop YARN。Omega论文重点介绍了[Mesos](http://dongxicheng.org/category/apache-mesos/)，[Mesos](http://dongxicheng.org/category/apache-mesos/)是twitter开源的资源管理系统。
 
@@ -63,7 +63,7 @@ Omega论文中提到了一种对中央式调度器的优化方案：将每种调
 
 ![mesos-arch](assets/mesos-arch.jpg)
 
-#####3. 共享状态调度器（Shared State Scheduler）
+##### 3. 共享状态调度器（Shared State Scheduler）
 
 为了克服双层调度器的以上两个缺点，Google开发了下一代资源管理系统Omega,Omega是一种基于共享状态的调度器，该调度器将双层调度器中的集中式资源调度模块简化成了一些持久化的共享数据（状态）和针对这些数据的验证代码，而这里的“共享数据”实际上就是整个集群的实时资源使用信息。一旦引入共享数据后，共享数据的并发访问方式就成为该系统设计的核心，而Omega则采用了传统数据库中基于多版本的并发访问控制方式（也称为“乐观锁”, MVCC, Multi-Version Concurrency Control），这大大提升了Omega的并发性。
 
