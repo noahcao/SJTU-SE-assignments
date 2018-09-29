@@ -221,7 +221,7 @@ Omega让资源邀约更进一步。在Mesos中，资源邀约是悲观的或独�
   * 每个task代表了运行在一个容器或者一个物理机器内的一系列Linux进程
 
   用户通常通过向Borg发送远程过程调用，即利用一些命令行工具，来操作job或者我们的监视系统。  
-  ![job和task的生命周期](assets/borg2.png)
+  ![job和task的生命周期](assets/borg1.png)
 
 * **allocation**  
   Borg的alloc操作是指在一台机器上预留一些资源，从而能够在其上运行一个或者多个资源；这些资源不管是否被使用都是保持被分配状态的。Allocs操作可以被用来保留资源用于未来task的使用，也可以用于在停止以及启动一个task之间保存资源，还可以用于将不同job里的task收集起来，让它们运行在同一台机器中
@@ -239,7 +239,7 @@ Omega让资源邀约更进一步。在Mesos中，资源邀约是悲观的或独�
 ### Structure
 
   一个Borg的cell由一系列的机器组成，通常在cell运行着一个逻辑的中央控制器叫做Borgmaster，在cell中的每台机器上则运行着一个叫Borglet的代理进程  
-  ![Borg系统架构](assets/borg1.png)
+  ![Borg系统架构](assets/borg2.png)
 
 * **Borgmaster**  
   * 主Borgmaster进程  
