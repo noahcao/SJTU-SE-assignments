@@ -2,7 +2,7 @@
 
 ## Networks
 
-###IPv4 & IPv6\*
+### IPv4 & IPv6\*
 
 随着世界互联网设备和节点规模的增加，诞生于[1981年](https://tools.ietf.org/html/rfc791)的[IPv4](https://zh.wikipedia.org/wiki/IPv4)(**I**nternet **P**rotocol **v**ersion **4**)]逐渐难以继续满足拓展性的需求,1998年IPv6被正式以[互联网标注规范](https://tools.ietf.org/html/rfc2460)的定义形式出台。相比较传统的IPv4，IPv6有许多显著的优点：
 
@@ -15,7 +15,7 @@
 
 ### 交换机(Switch)和路由器(Router)
 
-####交换机的性能指标
+#### 交换机的性能指标
 
 **交换机**是一种基于MAC地址识别，能完成封装转发数据包功能的网络设备。它可以为接入交换机的任意两个[网络节点](https://baike.baidu.com/item/%E7%BD%91%E7%BB%9C%E8%8A%82%E7%82%B9/9338583)提供独享的电信号通路。最常见的交换机是[以太网交换机](https://baike.baidu.com/item/%E4%BB%A5%E5%A4%AA%E7%BD%91%E4%BA%A4%E6%8D%A2%E6%9C%BA/10186103)。其他常见的还有电话语音交换机、[光纤交换机](https://baike.baidu.com/item/%E5%85%89%E7%BA%A4%E4%BA%A4%E6%8D%A2%E6%9C%BA/8396782)等。它主要的性能指标有：
 
@@ -229,7 +229,7 @@ Ceph项目最早起源于Sage就读博士期间的工作（最早的成果于200
 - 视频存储。
 - …
 	
-###2. Ceph IO流程及数据分布
+### 2. Ceph IO流程及数据分布
 
 ![](../assets/2099201-db0fd6e3e3f49f68.png)
 
