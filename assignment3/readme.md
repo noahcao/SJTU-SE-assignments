@@ -4,9 +4,104 @@ This is the 3rd team homework, focusing on the study of [Kafka](https://kafka.ap
 
 
 
+## Part C - Quantitative Analyzing
+
+#### Producer Test
+
+###### 1. Relation with threads
+
+- Test Command
+	
+	> kafka-producer-perf-test.bat --broker-list localhost:9092 topics test-rep-one --messages 100000 --message-size 4096 --batch-size 1000 --threads i
+
+- Test Result
+
+	Threads | MB/S | nMsg/S
+	----|------|----
+	1 | 104.6691  | 26795.2840
+	3 | 143.3998  | 36710.3524
+	5 | 109.5415  | 28042.6248
+	7 | 116.0789  | 29716.1961
+
+###### 2. Relation with batch-size
+
+- Test Command
+	> kafka-producer-perf-test.bat --broker-list localhost:9092 topics test-rep-one --messages 100000 --message-size 4096 --batch-size i --threads 3 
+
+- Test Result
+
+	Batch-size | MB/S | nMsg/S
+	----|------|----
+	100 | 117.6215  | 30111.1111
+	500 | 143.6846  | 36629.6703
+	1000 | 148.6947  | 38065.8546
+
+###### 3. Relation with message-size
+
+- Test Command
+	> kafka-producer-perf-test.bat --broker-list localhost:9092 topics test-rep-one --messages 100000 --message-size i --batch-size 1000 --threads 3 
+
+- Test Result
+
+	Message-size | MB/S | nMsg/S
+	----|------|----
+	512 | 47.3595  | 96992.2405
+	1024 | 80.0453  | 81966.3934
+	4096 | 131.5666  | 33681.0374
+
+###### 4. Relation with acks
+
+- Test Command
+	> kafka-producer-perf-test.bat --broker-list localhost:9092 topics test-rep-one --messages 100000 --message-size 4096 --batch-size 1000 --threads 3 --request-num-acks 0/1 
+
+- Test Result
+
+	ack | MB/S | nMsg/S
+	----|------|----
+	non-response | 133.1360  | 34082.8221
+	leader-response |  138.7149 | 35511.0085
+
+###### 5. Relation with compression-codec
+
+- Test Command
+	> kafka-producer-perf-test.bat --broker-list localhost:9092 topics test-rep-one --messages 100000 --message-size 4096 --batch-size 1000 --threads 3 --compression-codec 0/1/2 
+
+- Test Result
+
+	compression-codec | MB/S | nMsg/S
+	----|------|----
+	non-compression | 142.0957  | 36376.5005
+	Gzip | 84.8992  | 21734.1882
+	Snappy | 133.4544  | 34164.3321
 
 
+#### Consumer Test
 
+###### 1. Relation with threads
+
+- Test Command
+	> kafka-consumer-perf-test.bat --zookeeper localhost:2181 --messages 100000 --topic-rep-one --thread i
+
+- Test Result
+
+	Threads | MB/S | nMsg/S
+	----|------|----
+	1 | 186.2780  | 47687.1722
+	3 | 208.6672  | 53418.8034
+	6 | 217.1345  | 55586.4369
+
+###### 2. Relation with messages
+
+- Test Command
+	> kafka-consumer-perf-test.bat --zookeeper localhost:2181 --messages i --topic-rep-one --thread 3
+
+- Test Result
+
+	Messages | MB/S | nMsg/S
+	----|------|----
+	50000 | 218.3482  | 55897.1492
+	100000 | 208.6672  | 53418.8034
+	200000 | 223.3419  | 57175.5289
 
 ## Part D - Stream Processing and Scenario Demonstration
 
