@@ -71,4 +71,4 @@ public class WordCountApplication {
 }
 ```
 
-This is a simple stream processing demo which processes the stream from "TextLinesTopic", a <string, string> pair, and output the <String, Long> pair into "WordsWithCountsTopic" .
+This is a simple stream processing demo which processes the stream from "TextLinesTopic", a <String, String> pair, and output the <String, Long> pair into "WordsWithCountsTopic". "String" refers to the text word and "Long" refers to its count.
