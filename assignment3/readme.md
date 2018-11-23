@@ -42,6 +42,7 @@ Start by
 kafka-server-start.bat ../../config/server.properties
 ```
 ### Producer & Consumer
+#### Shell test
 (After starting a server)  
 Create a topic *test*
 ```shell
@@ -58,6 +59,71 @@ Start a consumer
 kafka-console-consumer.bat --zookeeper localhost:2181 --topic test --from-beginning
 ```
 Then you can send messages in producer and all consumers can receive the messages
+#### Java code
+Create a topic
+```java
+public static void main(String[] args) {
+    Properties props = new Properties();
+    props.put("bootstrap.servers", "192.168.180.128:9092");
+    AdminClient adminClient = AdminClient.create(props);
+    ArrayList<NewTopic> topics = new ArrayList<NewTopic>();
+    NewTopic newTopic = new NewTopic("topic-test", 1, (short) 1);
+    topics.add(newTopic);
+    CreateTopicsResult result = adminClient.createTopics(topics);
+    try {
+        result.all().get();
+    } catch (InterruptedException e) {
+        e.printStackTrace();
+    } catch (ExecutionException e) {
+        e.printStackTrace();
+    }
+}
+```
+Start a prodicer
+```java
+public static void main(String[] args){
+    Properties props = new Properties();
+    props.put("bootstrap.servers", "192.168.180.128:9092");
+    props.put("acks", "all");
+    props.put("retries", 0);
+    props.put("batch.size", 16384);
+    props.put("linger.ms", 1);
+    props.put("buffer.memory", 33554432);
+    props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+    props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+
+    Producer<String, String> producer = new KafkaProducer<String, String>(props);
+    for (int i = 0; i < 100; i++)
+        producer.send(new ProducerRecord<String, String>("topic-test", Integer.toString(i), Integer.toString(i)));
+
+    producer.close();
+}
+```
+Start a consumer
+```java
+public static void main(String[] args){
+    Properties props = new Properties();
+    props.put("bootstrap.servers", "192.168.12.65:9092");
+    props.put("group.id", "test");
+    props.put("enable.auto.commit", "true");
+    props.put("auto.commit.interval.ms", "1000");
+    props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+    props.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+    final KafkaConsumer<String, String> consumer = new KafkaConsumer<String,String>(props);
+    consumer.subscribe(Arrays.asList("topic-test"),new ConsumerRebalanceListener() {
+        public void onPartitionsRevoked(Collection<TopicPartition> collection) {
+        }
+        public void onPartitionsAssigned(Collection<TopicPartition> collection) {
+            consumer.seekToBeginning(collection);
+        }
+    });
+    while (true) {
+        ConsumerRecords<String, String> records = consumer.poll(100);
+        for (ConsumerRecord<String, String> record : records)
+            System.out.printf("offset = %d, key = %s, value = %s%n", record.offset(), record.key(), record.value());
+    }
+}
+```
 
 ## Part C - Quantitative Analyzing
 
