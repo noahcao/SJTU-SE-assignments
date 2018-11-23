@@ -75,6 +75,10 @@ This is the 3rd team homework, focusing on the study of [Kafka](https://kafka.ap
 	Snappy | 133.4544  | 34164.3321
 
 
+###### 6.Conclusion
+
+In the case of specific resources, with 3 threads, message-size of 4KB, batch-size of 1000, leader-response and non-compression setting, the performance is the best.
+
 #### Consumer Test
 
 ###### 1. Relation with threads
@@ -102,6 +106,10 @@ This is the 3rd team homework, focusing on the study of [Kafka](https://kafka.ap
 	50000 | 218.3482  | 55897.1492
 	100000 | 208.6672  | 53418.8034
 	200000 | 223.3419  | 57175.5289
+
+###### 3. Conclusion
+
+With 7 threads, consumer can get relatively good performance.
 
 ## Part D - Stream Processing and Scenario Demonstration
 
