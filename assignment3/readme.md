@@ -2,6 +2,85 @@
 
 This is the 3rd team homework, focusing on the study of [Kafka](https://kafka.apache.org/)
 
+## Part A
+
+To evluate the device storage and network performance, we design a metrics and report the experiment procedure and results as follows. The plantform for evaluation has the specs:
+
+```
+CPU: Intel(R) Xeon(R) CPU E5-2630 v4 @ 2.20GHz
+Memory: 20G DDR3
+System: Ubuntu 16.04 LTS
+```
+
+### Storage
+
+- Test commands
+
+Storage performance is evaluated on both READ and WRITE operations. We use linux built-in *dd*  commands to perform the evaluation in steps:
+
+```
+# These commands read/write files on disk by sequence
+READ: 		time dd if=/dev/sda2 of=/dev/null bs=8k count=${block_number}
+WRITE: 		time dd if=/dev/zero f=/opt/iotest bs=8k count=${block_number}
+READ&WRITE:	time dd if=/dev/sda2 f=/opt/iotest bs=8k count=${block_number}
+```
+
+We set **block_number=10k, 20k, 40k, 80k** for evaluation. Results are reported as follows:
+
+- Test results
+
+	bytes| READ | WRITE | R & W 
+	----|------|----|----
+	10k * 8k | 4.0 GB/s | 717 MB/s | 573 MB/s 
+	20k * 8k | 3.8 GB/s | 587 MB/s | 562 MB/s
+	40k * 8k | 3.8 GB/s | 469 MB/s | 420 MB/s
+	80k * 8k | 3.6 GB/s | 365 MB/s | 330 MB/s
+
+### Network
+
+The evaluation on network performance is based on [netperf](https://hewlettpackard.github.io/netperf/). Designed metrics is performed in multiple steps. We use the machine described above as client device and another cloud machine as the server. Server's specs is as follows:
+
+```
+CPU: Intel Core i7-4790k
+Memory: 8G DDR3
+OS: Ubuntu 16.04 LTS
+```
+
+- Test commands
+
+1.  evaluation on default network transcation
+> netperf -H server_ip -p port -l 60
+2.  evaluation on UDP communication
+> netperf -H server_ip -t UDP_STREAM -p port -l 60
+3. evaluation on multiple rounds of request-response communication
+> netperf -H server_ip -t TCP_RR -p port -l 60	 
+4. evaluation on repeated request-reponse communication with new connection
+> netperf -H server_ip -t TCP_CRR -p port -l 60
+
+- Test results
+
+```
+1. 	Recv   Send    Send
+	Socket Socket  Message  Elapsed
+	Size   Size    Size     Time     Throughput
+	bytes  bytes   bytes    secs.    10^6bits/sec
+
+2. 	Size    Size     Time         Okay Errors   Throughput
+	bytes   bytes    secs            #      #   10^6bits/sec
+	212992   65507   60.00      109256      0     954.27
+	212992           60.00        2910             25.42
+
+3. 	Socket Size   Request  Resp.   Elapsed  Trans.
+	Send   Recv   Size     Size    Time     Rate
+	bytes  Bytes  bytes    bytes   secs.    per sec
+	16384  87380  1        1       60.07       5.23
+
+4. 	Socket Size   Request  Resp.   Elapsed  Trans.
+	Send   Recv   Size     Size    Time     Rate
+	bytes  Bytes  bytes    bytes   secs.    per sec
+	16384  87380  1        1       60.00       2.57
+```
+
 ## Part B
 ### How to setup
 #### Install zookeeper
