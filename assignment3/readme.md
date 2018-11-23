@@ -2,7 +2,62 @@
 
 This is the 3rd team homework, focusing on the study of [Kafka](https://kafka.apache.org/)
 
+## Part B
+### How to setup
+#### Install zookeeper
+Download zookeeper-3.4.6 release  
+Modify `zoo.cfg`
+```shell
+dataDir=../zkData
+dataLogDir=../zkLog
+clientPort=2181
+server.1=0.0.0.0:2888:1388 # assume myid is 1
+server.2=IP:2888:1388
+server.3=IP:2888:1388
+```
+Create file zkData/myid which contains its unique id
+#### Install kafka
+Download kafka_2.9.2-0.8.2.2.tgz  
+Modify `server.properties`
+```shell
+broker.id=0
 
+port=9092
+host.name=127.0.0.1
+
+message.max.bytes=50485760
+
+default.replication.factor=2
+
+replica.fetch.max.bytes=50485760
+
+log.dirs=/tmp/kafka-logs
+
+num.partitions=2
+#corresponding to the configuration set up above in zoookeeper
+zookeeper.connect=127.0.0.1:2181,IP:clientPort,IP:clientPort
+```
+Start by 
+```shell
+kafka-server-start.bat ../../config/server.properties
+```
+### Producer & Consumer
+(After starting a server)  
+Create a topic *test*
+```shell
+kafka-topics.bat --create --zookeeper 127.0.0.1:2181 --replication-factor 1 --partitions 1 --topic test
+```
+Start a producer
+```shell
+kafka-console-producer.bat --broker-list localhost:9092 --topic test
+
+This is a message
+```
+Start a consumer
+```shell
+kafka-console-consumer.bat --zookeeper localhost:2181 --topic test --from-beginning
+```
+Then you can send messages in producer and all consumers can receive the messages
 
 ## Part C - Quantitative Analyzing
 
