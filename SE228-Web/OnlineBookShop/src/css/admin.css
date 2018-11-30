@@ -1,0 +1,63 @@
+#adminPage{
+  background-color: whitesmoke;
+  height: 900px;
+  padding: 10px;
+}
+#adminWindow{
+  margin-top: 10px;
+}
+
+.fence{
+	height: 760px;
+	padding-left: 0px;
+	background-color: white;
+}
+
+#pageContainer{
+	height: 100%;
+	width: 100%;
+}
+
+#leftList{
+	width: 100%;
+	border: double;
+	height: 650px;
+	padding: 0px;
+}
+
+.Title{
+	height:100px;
+	margin: 0px;
+	text-align: center;
+	padding-top: 30px;
+	border: double
+}
+
+.leftCard{
+	height: 130px;
+	background-color: white;
+	text-align: center;
+	padding-top: 20px;
+}
+
+.li{
+	height:100px;
+	border: solid;
+}
+
+.midCard{
+	border-top: solid;
+	height: 120px;
+	background-color: white;
+	text-align: center;
+}
+.fullBtn{
+	height: 100%;
+	width: 100%;
+}
+
+
+
+
+
+
