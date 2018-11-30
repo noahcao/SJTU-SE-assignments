@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+  <script src="https://cdn.bootcss.com/jquery/3.1.1/jquery.min.js "></script>
+  <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js " integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+  <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css
+
+" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+    crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap-theme.min.css
+
+" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+    crossorigin="anonymous">
+
+
+  <script type="text/javascript">
+    function processImage() {
+      // **********************************************
+      // *** Update or verify the following values. ***
+      // **********************************************
+
+      // Replace the subscriptionKey string value with your valid subscription key.
+      var subscriptionKey = "29798f81f2394f7f91b9e0f750ed414e";
+
+      // Replace or verify the region.
+      //
+      // You must use the same region in your REST API call as you used to obtain your subscription keys.
+      // For example, if you obtained your subscription keys from the westus region, replace
+      // "westcentralus" in the URI below with "westus".
+      //
+      // NOTE: Free trial subscription keys are generated in the westcentralus region, so if you are using
+      // a free trial subscription key, you should not need to change this region.
+      var uriBase = "https://westcentralus.api.cognitive.microsoft.com/face/v1.0/detect";
+
+      // Request parameters.
+      var params = {
+        "returnFaceId": "true",
+        "returnFaceLandmarks": "false",
+        "returnFaceAttributes": "age,gender,headPose,smile,facialHair,glasses,emotion,hair,makeup,occlusion,accessories,blur,exposure,noise",
+      };
+
+      // Display the image.
+      var sourceImageUrl = document.getElementById("inputImage").value;
+      document.querySelector("#sourceImage").src = sourceImageUrl;
+
+      // Perform the REST API call.
+      $.ajax({
+        url: uriBase + "?" + $.param(params),
+
+        // Request headers.
+        beforeSend: function(xhrObj){
+          xhrObj.setRequestHeader("Content-Type","application/json");
+          xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key", subscriptionKey);
+        },
+
+        type: "POST",
+
+        // Request body.
+        data: '{"url": ' + '"' + sourceImageUrl + '"}',
+      })
+
+        .done(function(data) {
+          // Show formatted JSON on webpage.
+          $("#responseTextArea").val(JSON.stringify(data, null, 2));
+        })
+
+        .fail(function(jqXHR, textStatus, errorThrown) {
+          // Display error message.
+          var errorString = (errorThrown === "") ? "Error. " : errorThrown + " (" + jqXHR.status + "): ";
+          errorString += (jqXHR.responseText === "") ? "" : (jQuery.parseJSON(jqXHR.responseText).message) ?
+            jQuery.parseJSON(jqXHR.responseText).message : jQuery.parseJSON(jqXHR.responseText).error.message;
+          alert(errorString);
+        });
+    };
+  </script>
+</head>
+<body>
+<div id="app">
+  {{ message }}
+</div>
+<script>
+</script>
+</body>
+</html>
