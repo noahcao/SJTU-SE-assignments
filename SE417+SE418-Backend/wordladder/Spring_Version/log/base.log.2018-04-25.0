@@ -1,0 +1,110 @@
+2018-04-25 13:04:50,780 INFO (StartupInfoLogger.java:50)- Starting BackendApplication on Lordinateur-de-NoahCao.local with PID 31818 (started by noahcao in /Users/noahcao/SJTU/17-18_2/后端课程/SJTU_SE_Backend/wordladder/Spring_Version)
+2018-04-25 13:04:50,786 DEBUG (StartupInfoLogger.java:53)- Running with Spring Boot v2.0.0.RELEASE, Spring v5.0.4.RELEASE
+2018-04-25 13:04:50,790 INFO (SpringApplication.java:652)- No active profile set, falling back to default profiles: default
+2018-04-25 13:04:54,709 INFO (StartupInfoLogger.java:59)- Started BackendApplication in 4.876 seconds (JVM running for 6.675)
+2018-04-25 13:49:23,557 INFO (StartupInfoLogger.java:50)- Starting BackendApplication on Lordinateur-de-NoahCao.local with PID 32180 (started by noahcao in /Users/noahcao/SJTU/17-18_2/后端课程/SJTU_SE_Backend/wordladder/Spring_Version)
+2018-04-25 13:49:23,565 DEBUG (StartupInfoLogger.java:53)- Running with Spring Boot v2.0.0.RELEASE, Spring v5.0.4.RELEASE
+2018-04-25 13:49:23,567 INFO (SpringApplication.java:652)- No active profile set, falling back to default profiles: default
+2018-04-25 13:49:26,137 INFO (StartupInfoLogger.java:59)- Started BackendApplication in 3.523 seconds (JVM running for 4.772)
+2018-04-25 13:52:30,944 INFO (StartupInfoLogger.java:50)- Starting BackendApplication on Lordinateur-de-NoahCao.local with PID 32214 (started by noahcao in /Users/noahcao/SJTU/17-18_2/后端课程/SJTU_SE_Backend/wordladder/Spring_Version)
+2018-04-25 13:52:30,949 DEBUG (StartupInfoLogger.java:53)- Running with Spring Boot v2.0.0.RELEASE, Spring v5.0.4.RELEASE
+2018-04-25 13:52:30,951 INFO (SpringApplication.java:652)- No active profile set, falling back to default profiles: default
+2018-04-25 13:52:33,948 INFO (StartupInfoLogger.java:59)- Started BackendApplication in 3.948 seconds (JVM running for 5.613)
+2018-04-25 13:58:28,150 INFO (StartupInfoLogger.java:50)- Starting BackendApplication on Lordinateur-de-NoahCao.local with PID 32274 (started by noahcao in /Users/noahcao/SJTU/17-18_2/后端课程/SJTU_SE_Backend/wordladder/Spring_Version)
+2018-04-25 13:58:28,157 DEBUG (StartupInfoLogger.java:53)- Running with Spring Boot v2.0.0.RELEASE, Spring v5.0.4.RELEASE
+2018-04-25 13:58:28,159 INFO (SpringApplication.java:652)- No active profile set, falling back to default profiles: default
+2018-04-25 13:58:30,636 INFO (StartupInfoLogger.java:59)- Started BackendApplication in 3.205 seconds (JVM running for 4.178)
+2018-04-25 14:35:09,023 INFO (StartupInfoLogger.java:50)- Starting BackendApplication on Lordinateur-de-NoahCao.local with PID 32490 (started by noahcao in /Users/noahcao/SJTU/17-18_2/后端课程/SJTU_SE_Backend/wordladder/Spring_Version)
+2018-04-25 14:35:09,029 DEBUG (StartupInfoLogger.java:53)- Running with Spring Boot v2.0.0.RELEASE, Spring v5.0.4.RELEASE
+2018-04-25 14:35:09,032 INFO (SpringApplication.java:652)- No active profile set, falling back to default profiles: default
+2018-04-25 14:35:49,144 INFO (StartupInfoLogger.java:50)- Starting BackendApplication on Lordinateur-de-NoahCao.local with PID 32492 (started by noahcao in /Users/noahcao/SJTU/17-18_2/后端课程/SJTU_SE_Backend/wordladder/Spring_Version)
+2018-04-25 14:35:49,149 DEBUG (StartupInfoLogger.java:53)- Running with Spring Boot v2.0.0.RELEASE, Spring v5.0.4.RELEASE
+2018-04-25 14:35:49,152 INFO (SpringApplication.java:652)- No active profile set, falling back to default profiles: default
+2018-04-25 14:36:05,735 INFO (StartupInfoLogger.java:50)- Starting BackendApplication on Lordinateur-de-NoahCao.local with PID 32495 (started by noahcao in /Users/noahcao/SJTU/17-18_2/后端课程/SJTU_SE_Backend/wordladder/Spring_Version)
+2018-04-25 14:36:05,741 DEBUG (StartupInfoLogger.java:53)- Running with Spring Boot v2.0.0.RELEASE, Spring v5.0.4.RELEASE
+2018-04-25 14:36:05,743 INFO (SpringApplication.java:652)- No active profile set, falling back to default profiles: default
+2018-04-25 14:36:08,749 INFO (StartupInfoLogger.java:59)- Started BackendApplication in 3.593 seconds (JVM running for 4.755)
+2018-04-25 14:39:15,654 INFO (StartupInfoLogger.java:50)- Starting BackendApplication on Lordinateur-de-NoahCao.local with PID 32533 (started by noahcao in /Users/noahcao/SJTU/17-18_2/后端课程/SJTU_SE_Backend/wordladder/Spring_Version)
+2018-04-25 14:39:15,658 DEBUG (StartupInfoLogger.java:53)- Running with Spring Boot v2.0.0.RELEASE, Spring v5.0.4.RELEASE
+2018-04-25 14:39:15,671 INFO (SpringApplication.java:652)- No active profile set, falling back to default profiles: default
+2018-04-25 14:39:18,271 INFO (StartupInfoLogger.java:59)- Started BackendApplication in 3.553 seconds (JVM running for 4.766)
+2018-04-25 14:43:27,459 INFO (StartupInfoLogger.java:50)- Starting BackendApplication on Lordinateur-de-NoahCao.local with PID 32558 (started by noahcao in /Users/noahcao/SJTU/17-18_2/后端课程/SJTU_SE_Backend/wordladder/Spring_Version)
+2018-04-25 14:43:27,463 DEBUG (StartupInfoLogger.java:53)- Running with Spring Boot v2.0.0.RELEASE, Spring v5.0.4.RELEASE
+2018-04-25 14:43:27,466 INFO (SpringApplication.java:652)- No active profile set, falling back to default profiles: default
+2018-04-25 14:43:33,201 INFO (StartupInfoLogger.java:59)- Started BackendApplication in 6.639 seconds (JVM running for 7.784)
+2018-04-25 14:43:39,394 INFO (StartupInfoLogger.java:50)- Starting BackendApplication on Lordinateur-de-NoahCao.local with PID 32563 (started by noahcao in /Users/noahcao/SJTU/17-18_2/后端课程/SJTU_SE_Backend/wordladder/Spring_Version)
+2018-04-25 14:43:39,397 DEBUG (StartupInfoLogger.java:53)- Running with Spring Boot v2.0.0.RELEASE, Spring v5.0.4.RELEASE
+2018-04-25 14:43:39,400 INFO (SpringApplication.java:652)- No active profile set, falling back to default profiles: default
+2018-04-25 14:43:42,248 INFO (StartupInfoLogger.java:59)- Started BackendApplication in 3.373 seconds (JVM running for 4.242)
+2018-04-25 15:15:42,100 INFO (StartupInfoLogger.java:50)- Starting BackendApplication on Lordinateur-de-NoahCao.local with PID 32681 (started by noahcao in /Users/noahcao/SJTU/17-18_2/后端课程/SJTU_SE_Backend/wordladder/Spring_Version)
+2018-04-25 15:15:42,107 DEBUG (StartupInfoLogger.java:53)- Running with Spring Boot v2.0.0.RELEASE, Spring v5.0.4.RELEASE
+2018-04-25 15:15:42,109 INFO (SpringApplication.java:652)- No active profile set, falling back to default profiles: default
+2018-04-25 15:15:45,006 INFO (StartupInfoLogger.java:59)- Started BackendApplication in 3.561 seconds (JVM running for 5.765)
+2018-04-25 15:18:05,776 INFO (StartupInfoLogger.java:50)- Starting BackendApplication on Lordinateur-de-NoahCao.local with PID 32845 (started by noahcao in /Users/noahcao/SJTU/17-18_2/后端课程/SJTU_SE_Backend/wordladder/Spring_Version)
+2018-04-25 15:18:05,780 DEBUG (StartupInfoLogger.java:53)- Running with Spring Boot v2.0.0.RELEASE, Spring v5.0.4.RELEASE
+2018-04-25 15:18:05,783 INFO (SpringApplication.java:652)- No active profile set, falling back to default profiles: default
+2018-04-25 15:18:08,623 INFO (StartupInfoLogger.java:59)- Started BackendApplication in 3.513 seconds (JVM running for 5.036)
+2018-04-25 15:19:08,651 INFO (StartupInfoLogger.java:50)- Starting BackendApplication on Lordinateur-de-NoahCao.local with PID 32857 (started by noahcao in /Users/noahcao/SJTU/17-18_2/后端课程/SJTU_SE_Backend/wordladder/Spring_Version)
+2018-04-25 15:19:08,654 DEBUG (StartupInfoLogger.java:53)- Running with Spring Boot v2.0.0.RELEASE, Spring v5.0.4.RELEASE
+2018-04-25 15:19:08,656 INFO (SpringApplication.java:652)- No active profile set, falling back to default profiles: default
+2018-04-25 15:19:12,949 INFO (StartupInfoLogger.java:59)- Started BackendApplication in 4.887 seconds (JVM running for 5.85)
+2018-04-25 15:23:40,097 INFO (StartupInfoLogger.java:50)- Starting BackendApplication on Lordinateur-de-NoahCao.local with PID 32952 (started by noahcao in /Users/noahcao/SJTU/17-18_2/后端课程/SJTU_SE_Backend/wordladder/Spring_Version)
+2018-04-25 15:23:40,100 DEBUG (StartupInfoLogger.java:53)- Running with Spring Boot v2.0.0.RELEASE, Spring v5.0.4.RELEASE
+2018-04-25 15:23:40,101 INFO (SpringApplication.java:652)- No active profile set, falling back to default profiles: default
+2018-04-25 15:23:43,621 INFO (StartupInfoLogger.java:59)- Started BackendApplication in 4.5 seconds (JVM running for 6.045)
+2018-04-25 15:34:19,875 INFO (StartupInfoLogger.java:50)- Starting BackendApplication on Lordinateur-de-NoahCao.local with PID 33126 (started by noahcao in /Users/noahcao/SJTU/17-18_2/后端课程/SJTU_SE_Backend/wordladder/Spring_Version)
+2018-04-25 15:34:19,879 DEBUG (StartupInfoLogger.java:53)- Running with Spring Boot v2.0.0.RELEASE, Spring v5.0.4.RELEASE
+2018-04-25 15:34:19,882 INFO (SpringApplication.java:652)- No active profile set, falling back to default profiles: default
+2018-04-25 15:34:22,710 INFO (StartupInfoLogger.java:59)- Started BackendApplication in 3.527 seconds (JVM running for 4.694)
+2018-04-25 15:35:39,998 INFO (StartupInfoLogger.java:50)- Starting BackendApplication on Lordinateur-de-NoahCao.local with PID 33139 (started by noahcao in /Users/noahcao/SJTU/17-18_2/后端课程/SJTU_SE_Backend/wordladder/Spring_Version)
+2018-04-25 15:35:40,003 DEBUG (StartupInfoLogger.java:53)- Running with Spring Boot v2.0.0.RELEASE, Spring v5.0.4.RELEASE
+2018-04-25 15:35:40,012 INFO (SpringApplication.java:652)- No active profile set, falling back to default profiles: default
+2018-04-25 15:35:43,393 INFO (StartupInfoLogger.java:59)- Started BackendApplication in 4.34 seconds (JVM running for 5.644)
+2018-04-25 15:46:16,543 INFO (StartupInfoLogger.java:50)- Starting BackendApplication on Lordinateur-de-NoahCao.local with PID 33213 (started by noahcao in /Users/noahcao/SJTU/17-18_2/后端课程/SJTU_SE_Backend/wordladder/Spring_Version)
+2018-04-25 15:46:16,546 DEBUG (StartupInfoLogger.java:53)- Running with Spring Boot v2.0.0.RELEASE, Spring v5.0.4.RELEASE
+2018-04-25 15:46:16,548 INFO (SpringApplication.java:652)- No active profile set, falling back to default profiles: default
+2018-04-25 15:46:20,060 INFO (StartupInfoLogger.java:59)- Started BackendApplication in 4.506 seconds (JVM running for 5.836)
+2018-04-25 15:47:35,782 INFO (StartupInfoLogger.java:50)- Starting BackendApplication on Lordinateur-de-NoahCao.local with PID 33242 (started by noahcao in /Users/noahcao/SJTU/17-18_2/后端课程/SJTU_SE_Backend/wordladder/Spring_Version)
+2018-04-25 15:47:35,800 DEBUG (StartupInfoLogger.java:53)- Running with Spring Boot v2.0.0.RELEASE, Spring v5.0.4.RELEASE
+2018-04-25 15:47:35,813 INFO (SpringApplication.java:652)- No active profile set, falling back to default profiles: default
+2018-04-25 15:47:39,205 INFO (StartupInfoLogger.java:59)- Started BackendApplication in 4.1 seconds (JVM running for 5.112)
+2018-04-25 16:04:21,059 INFO (StartupInfoLogger.java:50)- Starting BackendApplication on Lordinateur-de-NoahCao.local with PID 33513 (started by noahcao in /Users/noahcao/SJTU/17-18_2/后端课程/SJTU_SE_Backend/wordladder/Spring_Version)
+2018-04-25 16:04:21,062 DEBUG (StartupInfoLogger.java:53)- Running with Spring Boot v2.0.0.RELEASE, Spring v5.0.4.RELEASE
+2018-04-25 16:04:21,064 INFO (SpringApplication.java:652)- No active profile set, falling back to default profiles: default
+2018-04-25 16:04:23,644 INFO (StartupInfoLogger.java:59)- Started BackendApplication in 3.575 seconds (JVM running for 4.63)
+2018-04-25 16:08:47,587 INFO (StartupInfoLogger.java:50)- Starting BackendApplication on Lordinateur-de-NoahCao.local with PID 33589 (started by noahcao in /Users/noahcao/SJTU/17-18_2/后端课程/SJTU_SE_Backend/wordladder/Spring_Version)
+2018-04-25 16:08:47,594 DEBUG (StartupInfoLogger.java:53)- Running with Spring Boot v2.0.0.RELEASE, Spring v5.0.4.RELEASE
+2018-04-25 16:08:47,600 INFO (SpringApplication.java:652)- No active profile set, falling back to default profiles: default
+2018-04-25 16:08:51,695 INFO (StartupInfoLogger.java:59)- Started BackendApplication in 4.898 seconds (JVM running for 6.173)
+2018-04-25 16:14:17,833 INFO (StartupInfoLogger.java:50)- Starting BackendApplication on Lordinateur-de-NoahCao.local with PID 33639 (started by noahcao in /Users/noahcao/SJTU/17-18_2/后端课程/SJTU_SE_Backend/wordladder/Spring_Version)
+2018-04-25 16:14:17,864 DEBUG (StartupInfoLogger.java:53)- Running with Spring Boot v2.0.0.RELEASE, Spring v5.0.4.RELEASE
+2018-04-25 16:14:17,873 INFO (SpringApplication.java:652)- No active profile set, falling back to default profiles: default
+2018-04-25 16:14:21,760 INFO (StartupInfoLogger.java:59)- Started BackendApplication in 4.65 seconds (JVM running for 5.843)
+2018-04-25 16:17:54,952 INFO (StartupInfoLogger.java:50)- Starting BackendApplication on Lordinateur-de-NoahCao.local with PID 33706 (started by noahcao in /Users/noahcao/SJTU/17-18_2/后端课程/SJTU_SE_Backend/wordladder/Spring_Version)
+2018-04-25 16:17:54,960 DEBUG (StartupInfoLogger.java:53)- Running with Spring Boot v2.0.0.RELEASE, Spring v5.0.4.RELEASE
+2018-04-25 16:17:54,965 INFO (SpringApplication.java:652)- No active profile set, falling back to default profiles: default
+2018-04-25 16:17:59,475 INFO (StartupInfoLogger.java:59)- Started BackendApplication in 5.415 seconds (JVM running for 7.438)
+2018-04-25 16:20:59,346 INFO (StartupInfoLogger.java:50)- Starting BackendApplication on Lordinateur-de-NoahCao.local with PID 33776 (started by noahcao in /Users/noahcao/SJTU/17-18_2/后端课程/SJTU_SE_Backend/wordladder/Spring_Version)
+2018-04-25 16:20:59,350 DEBUG (StartupInfoLogger.java:53)- Running with Spring Boot v2.0.0.RELEASE, Spring v5.0.4.RELEASE
+2018-04-25 16:20:59,353 INFO (SpringApplication.java:652)- No active profile set, falling back to default profiles: default
+2018-04-25 16:21:03,933 INFO (StartupInfoLogger.java:59)- Started BackendApplication in 5.992 seconds (JVM running for 7.744)
+2018-04-25 16:23:08,619 INFO (StartupInfoLogger.java:50)- Starting BackendApplication on Lordinateur-de-NoahCao.local with PID 33813 (started by noahcao in /Users/noahcao/SJTU/17-18_2/后端课程/SJTU_SE_Backend/wordladder/Spring_Version)
+2018-04-25 16:23:08,623 DEBUG (StartupInfoLogger.java:53)- Running with Spring Boot v2.0.0.RELEASE, Spring v5.0.4.RELEASE
+2018-04-25 16:23:08,667 INFO (SpringApplication.java:652)- No active profile set, falling back to default profiles: default
+2018-04-25 16:23:12,790 INFO (StartupInfoLogger.java:59)- Started BackendApplication in 4.793 seconds (JVM running for 6.009)
+2018-04-25 16:24:50,117 INFO (StartupInfoLogger.java:50)- Starting BackendApplication on Lordinateur-de-NoahCao.local with PID 33865 (started by noahcao in /Users/noahcao/SJTU/17-18_2/后端课程/SJTU_SE_Backend/wordladder/Spring_Version)
+2018-04-25 16:24:50,123 DEBUG (StartupInfoLogger.java:53)- Running with Spring Boot v2.0.0.RELEASE, Spring v5.0.4.RELEASE
+2018-04-25 16:24:50,125 INFO (SpringApplication.java:652)- No active profile set, falling back to default profiles: default
+2018-04-25 16:24:54,670 INFO (StartupInfoLogger.java:59)- Started BackendApplication in 5.086 seconds (JVM running for 6.886)
+2018-04-25 16:27:14,616 INFO (StartupInfoLogger.java:50)- Starting BackendApplication on Lordinateur-de-NoahCao.local with PID 33896 (started by noahcao in /Users/noahcao/SJTU/17-18_2/后端课程/SJTU_SE_Backend/wordladder/Spring_Version)
+2018-04-25 16:27:14,630 DEBUG (StartupInfoLogger.java:53)- Running with Spring Boot v2.0.0.RELEASE, Spring v5.0.4.RELEASE
+2018-04-25 16:27:14,632 INFO (SpringApplication.java:652)- No active profile set, falling back to default profiles: default
+2018-04-25 16:27:18,146 INFO (StartupInfoLogger.java:59)- Started BackendApplication in 4.531 seconds (JVM running for 5.579)
+2018-04-25 16:27:56,863 INFO (StartupInfoLogger.java:50)- Starting BackendApplication on Lordinateur-de-NoahCao.local with PID 33925 (started by noahcao in /Users/noahcao/SJTU/17-18_2/后端课程/SJTU_SE_Backend/wordladder/Spring_Version)
+2018-04-25 16:27:56,866 DEBUG (StartupInfoLogger.java:53)- Running with Spring Boot v2.0.0.RELEASE, Spring v5.0.4.RELEASE
+2018-04-25 16:27:56,869 INFO (SpringApplication.java:652)- No active profile set, falling back to default profiles: default
+2018-04-25 16:28:00,844 INFO (StartupInfoLogger.java:59)- Started BackendApplication in 4.991 seconds (JVM running for 6.224)
+2018-04-25 16:38:26,468 INFO (StartupInfoLogger.java:50)- Starting BackendApplication on Lordinateur-de-NoahCao.local with PID 34064 (started by noahcao in /Users/noahcao/SJTU/17-18_2/后端课程/SJTU_SE_Backend/wordladder/Spring_Version)
+2018-04-25 16:38:26,472 DEBUG (StartupInfoLogger.java:53)- Running with Spring Boot v2.0.0.RELEASE, Spring v5.0.4.RELEASE
+2018-04-25 16:38:26,474 INFO (SpringApplication.java:652)- No active profile set, falling back to default profiles: default
+2018-04-25 16:38:29,306 INFO (StartupInfoLogger.java:59)- Started BackendApplication in 3.572 seconds (JVM running for 4.717)

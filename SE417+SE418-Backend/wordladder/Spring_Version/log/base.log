@@ -1,0 +1,4 @@
+2018-04-27 14:59:33,141 INFO (StartupInfoLogger.java:50)- Starting BackendApplication on Lordinateur-de-NoahCao.local with PID 4840 (started by noahcao in /Users/noahcao/SJTU/17-18_2/后端课程/SJTU_SE_Backend/wordladder/Spring_Version)
+2018-04-27 14:59:33,154 DEBUG (StartupInfoLogger.java:53)- Running with Spring Boot v2.0.0.RELEASE, Spring v5.0.4.RELEASE
+2018-04-27 14:59:33,159 INFO (SpringApplication.java:652)- No active profile set, falling back to default profiles: default
+2018-04-27 14:59:38,564 INFO (StartupInfoLogger.java:59)- Started BackendApplication in 6.469 seconds (JVM running for 8.625)
