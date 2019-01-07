@@ -70,6 +70,81 @@ pipeline:
 
 其中workspace制定了pipeline的工作目录，pipeline的build指定了镜像和构建的命令，publish则会发布docker镜像，其中指定了具体的repo和需要的用户名和密码
 
+## Requirement II
+
+### 搭建Kubernetes环境
+
+本次项目采用minikube来安装Kubernetes的单机调试环境
+
+#### 安装docker
+
+```shell
+sudo apt-get update
+sudo apt-get install docker.io
+```
+
+#### 安装虚拟机
+
+```shell
+sudo apt-get install virtualbox
+```
+
+#### 安装kubectl
+
+将kubectl作为一个snap应用安装。
+
+```shell
+sudo snap install kubectl --classic
+```
+
+#### 安装minikube
+
+使用阿里镜像安装minikube
+
+```shell
+curl -Lo minikube http://kubernetes.oss-cn-hangzhou.aliyuncs.com/minikube/releases/v0.28.0/minikube-linux-amd64 && chmod +x minikube && sudo mv minikube /usr/local/bin/
+```
+
+#### 运行minikube
+
+```shell
+minikube start --registry-mirror=https://registry.docker-cn.com
+```
+
+#### 查看Kubernetes控制台
+
+```shell
+galactus@ubuntu:~/temp$ kubectl version
+Client Version: version.Info{Major:"1", Minor:"13", GitVersion:"v1.13.1", GitCommit:"eec55b9ba98609a46fee712359c7b5b365bdd920", GitTreeState:"clean", BuildDate:"2018-12-13T10:39:04Z", GoVersion:"go1.11.2", Compiler:"gc", Platform:"linux/amd64"}
+Server Version: version.Info{Major:"1", Minor:"10", GitVersion:"v1.10.0", GitCommit:"fc32d2f3698e36b93322a3465f63a14e9f0eaead", GitTreeState:"clean", BuildDate:"2018-03-26T16:44:10Z", GoVersion:"go1.9.3", Compiler:"gc", Platform:"linux/amd64"}
+
+galactus@ubuntu:~/temp$ kubectl get cs
+NAME                 STATUS    MESSAGE              ERROR
+scheduler            Healthy   ok                   
+controller-manager   Healthy   ok                   
+etcd-0               Healthy   {"health": "true"}   
+
+galactus@ubuntu:~/temp$ kubectl get pods --all-namespaces
+NAMESPACE     NAME                                    READY   STATUS    RESTARTS   AGE
+default       frontend-696f48469c-hcbxj               1/1     Running   0          6m
+default       frontend-696f48469c-j6fjt               1/1     Running   0          6m
+kube-system   etcd-minikube                           1/1     Running   0          2h
+kube-system   kube-addon-manager-minikube             1/1     Running   3          2d
+kube-system   kube-apiserver-minikube                 1/1     Running   0          2h
+kube-system   kube-controller-manager-minikube        1/1     Running   0          2h
+kube-system   kube-dns-b4bd9576-xtpp7                 3/3     Running   9          2d
+kube-system   kube-proxy-gv66s                        1/1     Running   0          2h
+kube-system   kube-scheduler-minikube                 1/1     Running   2          16h
+kube-system   kubernetes-dashboard-685cfbd9f6-tptsf   1/1     Running   6          2d
+kube-system   storage-provisioner                     1/1     Running   6          2d
+
+```
+
+也可以通过dashboard查看
+
+
+
+
 ## Requirement III
 
 ### deployment
