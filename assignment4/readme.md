@@ -248,3 +248,37 @@ spec:
 > \#7 app: sa-frontend：根据模板创建的 Pod 将被贴上该标签；
 >
 > \#8 imagePullPolicy：当设置成 Always 的时候，每一次新部署都会重新获取容器映像。
+
+## Requirement IV
+
+### Load Balance
+
+在minikube之中支持了replica的设置用于进行load balance的处理。在minkube的集群中，我们运行了front-end, back-end和数据库三个组件作为独立的service。在对外暴露的类型中，minikube支持了ingress和nodeport两种，对于后端模块的访问，我们使用了ingress的方式，对于前端的访问使用了nodeport。通过在Deployment的文件文件中修改replica的数值，我们实现了不同级别的load balance操作。
+
+### Experiment
+
+为了验证之前工作的效果，我们设计了实验测试RPS(Response Per Second)的性能，在这个阶段我们使用了[jmeter](https://jmeter.apache.org/)工具进行测试。通过jmeter中设置多个user和thread参与的访问组，建立HTTP Request的访问请求，测试集群对于访问的响应性能。
+
+我们分别设置了replica = 1和4来考察load balance对于这一关键性能指标的影响。得到的测试结果如下：
+
+#### replica = 1
+
+| Label        | Samples | Average | Median | 90% Line | 95% Line | 99% Line | Min  | Max  | Error % | Throughput | Received KB/sec | Sent KB/sec |
+| ------------ | ------- | ------- | ------ | -------- | -------- | -------- | ---- | ---- | ------- | ---------- | --------------- | ----------- |
+| HTTP Request | 1000    | 1970    | 1974   | 2300     | 2659     | 2998     | 200  | 3989 | 0.00%   | 45.88      | 29.94           | 11.02       |
+| TOTAL        | 1000    | 1970    | 1974   | 2300     | 2659     | 2998     | 200  | 3989 | 0.00%   | 45.88      | 29.94           | 11.02       |
+
+#### replica = 4
+
+| Label        | Samples | Average | Median | 90% Line | 95% Line | 99% Line | Min  | Max  | Error % | Throughput | Received KB/sec | Sent KB/sec |
+| ------------ | ------- | ------- | ------ | -------- | -------- | -------- | ---- | ---- | ------- | ---------- | --------------- | ----------- |
+| HTTP Request | 1000    | 1080    | 1044   | 1553     | 1675     | 1977     | 182  | 2312 | 0.00%   | 75.83      | 47.69           | 19.11       |
+| TOTAL        | 1000    | 1080    | 1044   | 1553     | 1675     | 1977     | 182  | 2312 | 0.00%   | 75.83      | 47.69           | 19.11       |
+
+通过前述的测试可以发现，通过改变replica的数量，无论是throughput还是RPS的指标都得到了明显的提高，其中具体指标为：
+
+* Throughput:: $$ 75.83 / 45.88 = 1.65$$
+
+* Average Response Time: $$1080 / 1970 = 0.55$$
+
+即Throughput增加了65%，而平均反应时间缩短为之前的大概一半。由此可见，load balance对于集群的性能有着明显的提升。
