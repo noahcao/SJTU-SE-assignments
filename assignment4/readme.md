@@ -277,8 +277,8 @@ spec:
 
 通过前述的测试可以发现，通过改变replica的数量，无论是throughput还是RPS的指标都得到了明显的提高，其中具体指标为：
 
-* Throughput:: $$ 75.83 / 45.88 = 1.65$$
+* Throughput::  75.83 / 45.88 = 1.65
 
-* Average Response Time: $$1080 / 1970 = 0.55$$
+* Average Response Time: 1080 / 1970 = 0.55
 
 即Throughput增加了65%，而平均反应时间缩短为之前的大概一半。由此可见，load balance对于集群的性能有着明显的提升。
