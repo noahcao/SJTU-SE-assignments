@@ -1,7 +1,7 @@
 # HW4
 
 
-## Part A
+## Requirement I
 
 ### CI/CD环境搭建
 
@@ -69,3 +69,89 @@ pipeline:
 ```
 
 其中workspace制定了pipeline的工作目录，pipeline的build指定了镜像和构建的命令，publish则会发布docker镜像，其中指定了具体的repo和需要的用户名和密码
+
+## Requirement III
+
+### deployment
+
+```bash
+minikube start
+kubectl create -f $service_filename.yaml
+kubectl apply -f $deploy_filename.yaml --record
+minikube service $service_metadata_name
+```
+
+LoadBalancer service
+
+```yaml
+apiVersion: v1
+kind: Service              # 1
+metadata:
+  name: sa-frontend-lb
+spec:
+  type: LoadBalancer       # 2
+  ports:
+  - port: 80               # 3
+    protocol: TCP          # 4
+    targetPort: 80         # 5
+  selector:                # 6
+    app: sa-frontend       # 7
+```
+
+> \#1 kind：服务；
+>
+> \#2 type：指定类型，我们选择 LoadBalancer，因为我们想平衡 Pod 之间的负荷；
+>
+> \#3 ports：指定服务获取请求的端口；
+>
+> \#4 protocol：定义交流；
+>
+> \#5 targetPort：可以将来访的请求转发到这个端口；
+>
+> \#6 selector：包含选择pod属性的对象；
+>
+> \#7 app：sa-frontend定义了哪个是目标 Pod，只有拥有标签“app: sa-frontend”的才是目标 Pod。
+
+frontend pod
+
+```yaml
+apiVersion: extensions/v1beta1
+kind: Deployment                                          # 1
+metadata:
+  name: sa-frontend
+spec:
+  replicas: 2                                             # 2
+  minReadySeconds: 15
+  strategy:
+    type: RollingUpdate                                   # 3
+    rollingUpdate: 
+      maxUnavailable: 1                                   # 4
+      maxSurge: 1                                         # 5
+  template:                                               # 6
+    metadata:
+      labels:
+        app: sa-frontend                                  # 7
+    spec:
+      containers:
+        - image: rinormaloku/sentiment-analysis-frontend
+          imagePullPolicy: Always                         # 8
+          name: sa-frontend
+          ports:
+            - containerPort: 80
+```
+
+> \#1 kind：部署；
+>
+> \#2 replicas：是部署 Spec 对象的一个属性，定义了我们想运行多少的 Pod。所以是 2；
+>
+> \#3 type：指定从当前版本升迁到下个版本的时候，部署使用的策略。此处的策略 RollingUpdate 可以保证部署期间服务不间断；
+>
+> \#4 maxUnavailable：是 RollingUpdate 对象的一个属性，定义了在升级的时候，最大允许停止的 Pod 数量（与希望的状态相比）。对我们的部署来说，我们有 2 个副本，这意味着在一个 Pod 停止后，我们还会有另外一个 Pod 运行，所以可以保证应用程序可访问；
+>
+> \#5 maxSurge：是 RollingUpdate 对象的另一个属性，定义了添加到部署的最大 Pod 数量（与希望的状态相比）。对我们的部署来说，这意味着在向新版本迁移的时候，我们可以加一个 Pod，那么我们可以同时拥有个 3 个 Pod；
+>
+> \#6 template：指定 Pod 的模板，部署在创建新 Pod 的时候，会用到该模板。很可能这个非常相似的 Pod 会立即吸引你；
+>
+> \#7 app: sa-frontend：根据模板创建的 Pod 将被贴上该标签；
+>
+> \#8 imagePullPolicy：当设置成 Always 的时候，每一次新部署都会重新获取容器映像。
