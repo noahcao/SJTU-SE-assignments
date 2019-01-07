@@ -142,7 +142,7 @@ kube-system   storage-provisioner                     1/1     Running   6       
 
 也可以通过dashboard查看
 
-
+![2361-1514287018852](img/dashboard.jpg)
 
 
 ## Requirement III
