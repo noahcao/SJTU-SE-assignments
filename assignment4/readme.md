@@ -36,17 +36,23 @@ workspace:
   base: /front
   path: src/github.com/XPandora/front-end
 pipeline:
-  build:
-    image: node:latest
+  build: 
+    image: registry.cn-shenzhen.aliyuncs.com/pipipan/node:1.0
     commands:
       - npm install
-      - npm run build
+      - npm run-script build
   publish:
-    image: plugins/docker
-    repo: xpandora/front-end
-    tags: ["latest", "v2"]
-    secrets: [ docker_username, docker_password ]
-    dockerfile: Dockerfile
+    image: docker
+    secrets: [docker_username,docker_password]
+    commands:
+        - docker login --username=$DOCKER_USERNAME --password=$DOCKER_PASSWORD         
+        - docker build -t xpandora/front-end:master -f Dockerfile .
+        - docker push xpandora/front-end:master
+    volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+    when:
+        branch: master
+        status: succes
 ```
 
 后端的.drone.yml配置如下：
@@ -56,19 +62,31 @@ workspace:
   base: /back
   path: src/github.com/XPandora/back-end
 pipeline:
-  build:
-    image: maven:3.3.9-jdk-8-alpine
+  build: 
+    image: registry.cn-hangzhou.aliyuncs.com/acs/maven
     commands:
-      - mvn install
+      - mvn clean package
+    volumes:
+      - /root/maven/repository:/root/.m2/repository
   publish:
-    image: plugins/docker
-    repo: xpandora/back-end
-    tags: ["latest", "v2"]
-    secrets: [ docker_username, docker_password ]
-    dockerfile: Dockerfile
+    image: docker
+    secrets: [docker_username,docker_password]
+    commands:
+        - docker login --username=$DOCKER_USERNAME --password=$DOCKER_PASSWORD         
+        - docker build -t xpandora/back-end:master -f Dockerfile .
+        - docker push xpandora/back-end:master
+    volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+    when:
+        branch: master
+        status: success
 ```
 
 其中workspace制定了pipeline的工作目录，pipeline的build指定了镜像和构建的命令，publish则会发布docker镜像，其中指定了具体的repo和需要的用户名和密码
+
+分别对前后端的工程进行构建并打包上传至docker hub：
+
+![](https://i.imgur.com/E66rbl9.png)
 
 ## Requirement II
 
