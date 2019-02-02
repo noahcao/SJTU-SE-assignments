@@ -2,5 +2,5 @@
 */testcases/
 *.s
 *.log
-*/*.out
-*/refs-*
+*.out
+refs-*/
