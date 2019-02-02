@@ -1,0 +1,6 @@
+*.o
+*/testcases/
+*.s
+*.log
+*/a.out
+
