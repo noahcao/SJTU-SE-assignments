@@ -3,4 +3,5 @@
 *.s
 *.log
 *.out
-refs-*/
+*/refs-*/
+*/.vscode/
