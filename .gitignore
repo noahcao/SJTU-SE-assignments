@@ -2,3 +2,5 @@
 *.bsf
 */.vscode/
 *.out
+*/.idea
+*/node_modules
