@@ -1,0 +1,48 @@
+﻿曹金坤 515260910022
+
+Q1: Compare kern/mpentry.S side by side with boot/boot.S. Bearing in mind that kern/mpentry.S is compiled and linked to run above KERNBASE just like everything else in the kernel, what is the purpose of macro MPBOOTPHYS? Why is it necessary in kern/mpentry.S but not in boot/boot.S? In other words, what could go wrong if it were omitted in kern/mpentry.S?
+A1: The difference is whether to enable A20 for address calculation. Accroding to the explanation in mpentry.S, MPBOOTPHYS is used to calculate the address without dependency to linker.
+
+Q2: It seems that using the big kernel lock guarantees that only one CPU can run the kernel code at a time. Why do we still need separate kernel stacks for each CPU? Describe a scenario in which using a shared kernel stack will go wrong, even with the protection of the big kernel lock.
+A2: The process of each kernel places many value on kernel, which is realized through hardware module. So we can't simply prevent the conflict through lock thus still need to seperate different stacks. Otherwise, different kernels still be likely to read the information from other kernels.
+
+Q3: In your implementation of env_run() you should have called lcr3(). Before and after the call to lcr3(), your code makes references (at least it should) to the variable e, the argument to env_run. Upon loading the %cr3 register, the addressing context used by the MMU is instantly changed. But a virtual address (namely e) has meaning relative to a given address context--the address context specifies the physical address to which the virtual address maps. Why can the pointer e be dereferenced both before and after the addressing switch?
+A3: Because the operation is processed in kernel mode and the pg_dir of each kernel refers to the kern_pgdir. So the pointer can be dereferenced regardless of the kernel id.
+
+Q4: Whenever the kernel switches from one environment to another, it must ensure the old environment's registers are saved so they can be restored properly later. Why? Where does this happen?
+A4: It simply ensures the possibility of recovery from one process to aforeused process.The env status are represented by many pre-defined context variables, which are stored on stacks.
+
+Challenge Realization:
+
+Problem: Implement a shared-memory fork() called sfork() . This version should have the parent and child share all their memory pages (so writes in one environment appear in the other) except for pages in the stack area, which should be treated in the usual copy-on-write manner. Modify user/forktree.c to use sfork() instead of regular fork() . Also, once you have finished implementing IPC in part C, use your sfork() to run user/pingpongs . You will have to find a new way to provide the functionality of the global thisenv pointer.
+
+Solutions: 
+Step1. Similar as the naive fork() implementations, sforck() do page arrangement first between [UTEXT, USTACKTOP - PGSIZE]:	
+		for (i = USTACKTOP - PGSIZE; i >= UTEXT; i -= PGSIZE){
+			if ((uvpd[PDX(i)] & PTE_P) &&
+				(uvpt[PGNUM(i)] & PTE_P) && (uvpt[PGNUM(i)] & PTE_U)){
+			  	 duppage(child_envid, PGNUM(i));
+			}
+			else break;
+		}
+Step2. Then for these legal pages, they are made shared as required: 
+		for (i; i > 0; i -= PGSIZE){
+			if ((uvpd[PDX(i)] & PTE_P) &&
+		    	(uvpt[PGNUM(i)] & PTE_P) &&
+		    	(uvpt[PGNUM(i)] & PTE_U)){
+			    sduppage(child_envid, PGNUM(i));
+			}
+		}
+
+		static int sduppage(envid_t envid, unsigned pn){
+			int r;
+    			void* src_pg = PGADDR(0, pn, 0);
+			sys_page_map(0, src_pg, envid, src pg, (((uvpt[pn] & PTE_SYSCALL))));
+			return 0;	
+		}
+
+Step3. At last, do page allocation and environment settings:
+		extern void _pgfault_upcall();	
+		sys_page_alloc(child_envid, (void *)(0xeebff000), PTE_U|PTE_W|PTE_P);
+		sys_env_set_pgfault_upcall(child_envid, _pgfault_upcall);
+		sys_env_set_status(child_envid, ENV_RUNNABLE);

@@ -1,0 +1,86 @@
+#!/usr/bin/env python
+
+from gradelib import *
+import re
+
+r = Runner(save("jos.out"),
+           stop_breakpoint("readline"),
+           stop_on_reboot())
+
+@test(10, "Isolate env_pgdir and env_kern_pgdir")
+def test_isolate():
+    r.user_test('nosyscall',
+            stop_on_line("hello, world!"), timeout=5,
+            make_args=['DEFS=-DTEST_ENV_TYPE=ENV_TYPE_FS -DTEST_NO_FS -DTEST_NO_NS'])
+    r.match(no = ['User page table has kernel address ........ mapped'])
+
+@test(20, "Put necessary code/data in user mapped area")
+def test_user_mapped():
+    r.user_test('nosyscall',
+            stop_on_line("hello, world!"), timeout=5,
+            make_args=['DEFS=-DTEST_ENV_TYPE=ENV_TYPE_FS -DTEST_NO_FS -DTEST_NO_NS'])
+    r.match(no = ['User page table has kernel address ........ mapped',
+                  'GDT wrong permission in env_pgdir',
+                  'GDT not mapped in env_pgdir',
+                  'cur_kern_pgdir wrong permission in env_pgdir',
+                  'cur_kern_pgdir not mapped in env_pgdir',
+                  'kstack. wrong permission in env_pgdir',
+                  'kstack. not mapped in env_pgdir'])
+
+@test(30, "Enter user program")
+def test_enter_user():
+    r.user_test('nosyscall',
+            stop_on_line("hello, world!"), timeout=15,
+            make_args=['DEFS=-DTEST_ENV_TYPE=ENV_TYPE_FS -DTEST_NO_FS -DTEST_NO_NS'])
+    r.match('hello, world!',
+            no = ['User page table has kernel address ........ mapped',
+                  'GDT wrong permission in env_pgdir',
+                  'GDT not mapped in env_pgdir',
+                  'cur_kern_pgdir wrong permission in env_pgdir',
+                  'cur_kern_pgdir not mapped in env_pgdir',
+                  'kstack. wrong permission in env_pgdir',
+                  'kstack. not mapped in env_pgdir'])
+
+def check_user_isolate(r):
+    r.match("kernel space isolated",
+            no = ['User page table has kernel address ........ mapped',
+                  '.* wrong permission in env_pgdir',
+                  '.* not mapped in env_pgdir'])
+    r.match(".*cr2  0xf0000000")
+    r.match(".*err  0x00000004 \\[user, read, not-present\\]")
+
+@test(30, "Enter kernel again")
+def test_enter_kernel():
+    r.user_test('kpti',
+            stop_on_line("kernel space isolated"), timeout=15)
+    check_user_isolate(r)
+
+def check_consistent(r):
+    r.match("consistent env_kern_pgdir",
+            "string in .text",
+            "string in .rodata",
+            "string in .data",
+            "string in page alloc",
+            "string in sys_page_map",
+            "string in ipc recv")
+
+@test(30, "Consistent env_kern_pgdir")
+def test_check_env_kern_pgdir():
+    r.user_test('kpti',
+            stop_on_line("consistent env_kern_pgdir"), timeout=15)
+    check_user_isolate(r)
+    check_consistent(r)
+
+def check_no_leak(r):
+    r.match("no memory leak")
+
+@test(10, "No memory leak")
+def test_no_memory_leak():
+    r.user_test('kpti',
+            stop_on_line("no memory leak"), timeout=120,
+            make_args=["DEFS=-DTEST_NO_FS -DTEST_NO_NS", "QEMUEXTRA=-m 8"])
+    check_user_isolate(r)
+    check_consistent(r)
+    check_no_leak(r)
+
+run_tests()

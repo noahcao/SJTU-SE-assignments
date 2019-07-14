@@ -1,0 +1,57 @@
+make[1]: Entering directory '/mnt/hgfs/Lab/jos-2019-spring'
+make[1]: 'obj/fs/fs.img' is up to date.
+make[1]: Leaving directory '/mnt/hgfs/Lab/jos-2019-spring'
+qemu-system-i386 -drive file=obj/kern/kernel.img,index=0,media=disk,format=raw -serial mon:stdio -gdb tcp::25000 -D qemu.log -smp 1 -drive file=obj/fs/fs.img,index=1,media=disk,format=raw -net user -net nic,model=e1000 -redir tcp:25001::7 -redir tcp:25002::80 -redir udp:25001::7 -net dump,file=qemu.pcap 
+6828 decimal is 015254 octal!
+pading space in the right to number 22: 22      .
+chnum1: 29 chnum2: 30
+
+error! writing through NULL pointer! (%n argument)
+
+warning! The value %n argument pointed to has been overflowed!
+chnum1: -1
+show me the sign: +1024, -1024
+Physical memory: 131072K available, base = 640K, extended = 130432K
+boot_alloc memory at f0699000
+boot_alloc memory at f069a000
+boot_alloc memory at f06da000
+boot_alloc memory at f06fa000
+boot_alloc memory at f06fa000
+check_page_free_list() succeeded!
+check_page_alloc() succeeded!
+check_page() succeeded!
+check_kern_pgdir() succeeded!
+boot_alloc memory at f06fa000
+check_page_free_list() succeeded!
+check_page_installed_pgdir() succeeded!
+SMP: CPU 0 found 1 CPU(s)
+enabled interrupts: 1 2 4
+PCI: 00:00.0: 8086:1237: class: 6.0 (Bridge device) irq: 0
+PCI: 00:01.0: 8086:7000: class: 6.1 (Bridge device) irq: 0
+PCI: 00:01.1: 8086:7010: class: 1.1 (Storage controller) irq: 0
+PCI: 00:01.3: 8086:7113: class: 6.80 (Bridge device) irq: 9
+PCI: 00:02.0: 1234:1111: class: 3.0 (Display controller) irq: 0
+PCI: 00:03.0: 8086:100e: class: 2.0 (Network controller) irq: 11
+PCI function 00:03.0 (8086:100e) enabled
+base->EERD: 1414660112
+base->EERD thhhhhhere: 1414660112
+base->EERD: 301990160
+base->EERD thhhhhhere: 301990160
+base->EERD: 1446248976
+base->EERD thhhhhhere: 1446248976
+FS is running
+started at 0xeebff000
+FS can do I/O
+Device 1 presence: 1
+started at 0xeebff000
+Sending ARP announcement...
+come here
+input: 0000   5254 0012 3456 5255  0a00 0202 0806 0001
+input: 0010   0800 0604 0002 5255  0a00 0202 0a00 0202
+input: 0020   5254 0012 3456 0a00  020f 0000 0000 0000
+block cache is good
+input: 0030   0000 0000 0000 0000  0000 0000 0000 0000
+superblock is good
+
+Waiting for packets...
+bitmap is good
