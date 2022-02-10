@@ -17,7 +17,7 @@
     "axios": "^0.18.0",
     "bootstrap-table": "^1.12.1",
     "jquery": "^2.2.3",
-    "node-sass": "^4.8.3",
+    "node-sass": "^7.0.0",
     "popper.js": "^1.14.1",
     "sass-loader": "^6.0.7",
     "vue": "^2.5.2",
